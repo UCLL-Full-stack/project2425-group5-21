@@ -1,8 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/twPj_hbU)
+
 # Project template
 
-To get started, open the Readme.md files in the analysis, back-end and front-end folders.
+Title: MR Typer
 
-Change this readme file to describe your project, change the title and fill in your name below.
+Description: MR Typer allows users to register, log in, and track their typing progress. Users can take typing tests, compete with others in real-time, and view their rankings on the leaderboard. They can also participate in tournaments to challenge their skills and aim for the top spot.
 
-### \<Student 1 name\> / \<Student 2 name\>
+### \<Manny Singh\> / \<Robert Callens\>
