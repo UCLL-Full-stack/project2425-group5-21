@@ -1,5 +1,6 @@
 import { set } from 'date-fns';
 import { Tournament } from '../../model/tournament';
+import { TypingTest } from '../../model/typingTest';
 
 const startDate = set(new Date(), { hours: 8, minutes: 30 });
 const endDate = set(new Date(), { hours: 10, minutes: 30 });
@@ -82,4 +83,23 @@ test('given: missing difficulity, when: tournament is created, then: an error is
 
     // then
     expect(tournament).toThrow('Difficulity is required');
+});
+
+test('given: valid values for tournament, when: tournament is created, then: tournament is created with those values', () => {
+    // given
+    const validTournament = {
+        name: 'Progamming java quiz',
+        startDate: startDate,
+        endDate: endDate,
+        difficulity: 'hard',
+    };
+
+    // when
+    const tournament = new Tournament(validTournament);
+
+    // then
+    expect(tournament.getName()).toBe(validTournament.name);
+    expect(tournament.getStartDate()).toBe(validTournament.startDate);
+    expect(tournament.getEndDate()).toBe(validTournament.endDate);
+    expect(tournament.getDifficulity()).toBe(validTournament.difficulity);
 });

@@ -1,5 +1,4 @@
 import { User } from '../model/user';
-import { id } from 'date-fns/locale';
 
 const users = [
     new User({
