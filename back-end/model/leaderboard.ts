@@ -1,9 +1,11 @@
+import { User } from './user';
+
 export class Leaderboard {
-    private id: number;
-    private rankings: [];
+    private id?: number;
+    private rankings: User[];
     private maxPlayers: number;
 
-    constructor(leaderboard: { id: number; rankings: []; maxPlayers: number }) {
+    constructor(leaderboard: { id?: number; rankings: User[]; maxPlayers: number }) {
         this.validate(leaderboard);
 
         this.id = leaderboard.id;
@@ -11,11 +13,11 @@ export class Leaderboard {
         this.maxPlayers = leaderboard.maxPlayers;
     }
 
-    getId(): number {
+    getId(): number | undefined {
         return this.id;
     }
 
-    getRankings(): [] {
+    getRankings(): User[] {
         return this.rankings;
     }
 
@@ -23,11 +25,11 @@ export class Leaderboard {
         return this.maxPlayers;
     }
 
-    setId(id: number): void {
+    setId(id: number | undefined): void {
         this.id = id;
     }
 
-    setRankings(rankings: []): void {
+    setRankings(rankings: User[]): void {
         this.rankings = rankings;
     }
 
@@ -35,7 +37,7 @@ export class Leaderboard {
         this.maxPlayers = maxPlayers;
     }
 
-    validate(leaderboard: { rankings: []; maxPlayers: number }) {
+    validate(leaderboard: { rankings: User[]; maxPlayers: number }) {
         if (!leaderboard.rankings || leaderboard.rankings.length === 0) {
             throw new Error('Rankings must contain at least one player');
         }

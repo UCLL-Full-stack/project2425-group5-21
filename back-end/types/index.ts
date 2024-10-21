@@ -1,3 +1,22 @@
 type Role = 'admin' | 'player';
 
-export { Role };
+type UserInput = {
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    role: Role | null;
+};
+
+type ProfileInput = {
+    id?: number;
+    username: string;
+    bio: string;
+    avgWPM: number | null;
+    startDate: Date | null;
+    role: Role | null;
+};
+
+export { Role, UserInput, ProfileInput };

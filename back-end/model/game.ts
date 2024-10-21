@@ -1,15 +1,17 @@
+import { User } from './user';
+
 export class Game {
     private id?: number;
-    private startDate: Date;
-    private endDate: Date;
-    private players: [];
+    private startDate: Date | null;
+    private endDate: Date | null;
+    private players: User[];
     private status: string;
 
     constructor(game: {
         id?: number;
-        startDate: Date;
-        endDate: Date;
-        players: [];
+        startDate: Date | null;
+        endDate: Date | null;
+        players: User[];
         status: string;
     }) {
         this.validate(game);
@@ -25,15 +27,15 @@ export class Game {
         return this.id;
     }
 
-    getStartDate(): Date {
+    getStartDate(): Date | null {
         return this.startDate;
     }
 
-    getEndDate(): Date {
+    getEndDate(): Date | null {
         return this.endDate;
     }
 
-    getPlayers(): [] {
+    getPlayers(): User[] {
         return this.players;
     }
 
@@ -45,15 +47,15 @@ export class Game {
         this.id = id;
     }
 
-    setStartDate(startDate: Date): void {
+    setStartDate(startDate: Date | null): void {
         this.startDate = startDate;
     }
 
-    setEndDate(endDate: Date): void {
+    setEndDate(endDate: Date | null): void {
         this.endDate = endDate;
     }
 
-    setPlayers(players: []): void {
+    setPlayers(players: User[]): void {
         this.players = players;
     }
 
@@ -61,12 +63,20 @@ export class Game {
         this.status = status;
     }
 
-    validate(game: { startDate: Date; endDate: Date; players: []; status: string }) {
-        if (!game.startDate) {
+    validate(game: {
+        startDate: Date | null;
+        endDate: Date | null;
+        players: User[];
+        status: string;
+    }) {
+        if (game.startDate === null) {
             throw new Error('Start date is required');
         }
-        if (!game.endDate) {
+        if (game.endDate === null) {
             throw new Error('End date is required');
+        }
+        if (game.startDate > game.endDate) {
+            throw new Error('Start date cannot be after end date');
         }
         if (!game.players || game.players.length === 0) {
             throw new Error('At least one player is required');

@@ -1,15 +1,15 @@
 export class Tournament {
     private id?: number;
     private name: string;
-    private startDate: Date;
-    private endDate: Date;
+    private startDate: Date | null;
+    private endDate: Date | null;
     private difficulity: string;
 
     constructor(tournament: {
         id?: number;
         name: string;
-        startDate: Date;
-        endDate: Date;
+        startDate: Date | null;
+        endDate: Date | null;
         difficulity: string;
     }) {
         this.validate(tournament);
@@ -29,11 +29,11 @@ export class Tournament {
         return this.name;
     }
 
-    getStartDate(): Date {
+    getStartDate(): Date | null {
         return this.startDate;
     }
 
-    getEndDate(): Date {
+    getEndDate(): Date | null {
         return this.endDate;
     }
 
@@ -49,11 +49,11 @@ export class Tournament {
         this.name = name;
     }
 
-    setStartDate(startDate: Date): void {
+    setStartDate(startDate: Date | null): void {
         this.startDate = startDate;
     }
 
-    setEndDate(endDate: Date): void {
+    setEndDate(endDate: Date | null): void {
         this.endDate = endDate;
     }
 
@@ -61,15 +61,23 @@ export class Tournament {
         this.difficulity = difficulity;
     }
 
-    validate(tournament: { name: string; startDate: Date; endDate: Date; difficulity: string }) {
+    validate(tournament: {
+        name: string;
+        startDate: Date | null;
+        endDate: Date | null;
+        difficulity: string;
+    }) {
         if (!tournament.name?.trim()) {
             throw new Error('Name is required');
         }
-        if (!tournament.startDate) {
+        if (tournament.startDate === null) {
             throw new Error('Start date is required');
         }
-        if (!tournament.endDate) {
+        if (tournament.endDate === null) {
             throw new Error('End date is required');
+        }
+        if (tournament.startDate > tournament.endDate) {
+            throw new Error('Start date cannot be after end date');
         }
         if (!tournament.difficulity?.trim()) {
             throw new Error('Difficulity is required');

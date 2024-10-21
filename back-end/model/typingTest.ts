@@ -1,59 +1,73 @@
 export class TypingTest {
-    private id: number;
-    private wpm: number;
-    private accuracy: number;
-    private date: Date;
+    private id?: number;
+    private wpm: number | null;
+    private accuracy: number | null;
+    private time: number | null;
 
-    constructor(typingTest: { id: number; wpm: number; accuracy: number; date: Date }) {
+    constructor(typingTest: {
+        id?: number;
+        wpm: number | null;
+        accuracy: number | null;
+        time: number | null;
+    }) {
         this.validate(typingTest);
 
         this.id = typingTest.id;
         this.wpm = typingTest.wpm;
         this.accuracy = typingTest.accuracy;
-        this.date = typingTest.date;
+        this.time = typingTest.time;
     }
 
-    getId(): number {
+    getId(): number | undefined {
         return this.id;
     }
 
-    getWpm(): number {
+    getWpm(): number | null {
         return this.wpm;
     }
 
-    getAccuracy(): number {
+    getAccuracy(): number | null {
         return this.accuracy;
     }
 
-    getDate(): Date {
-        return this.date;
+    getTime(): number | null {
+        return this.time;
     }
 
-    setId(id: number): void {
+    setId(id: number | undefined): void {
         this.id = id;
     }
 
-    setWpm(wpm: number): void {
+    setWpm(wpm: number | null): void {
         this.wpm = wpm;
     }
 
-    setAccuracy(accuracy: number): void {
+    setAccuracy(accuracy: number | null): void {
         this.accuracy = accuracy;
     }
 
-    setDate(date: Date): void {
-        this.date = date;
+    setTime(time: number | null): void {
+        this.time = time;
     }
 
-    validate(typingTest: { wpm: number; accuracy: number; date: Date }) {
-        if (typingTest.wpm <= 0) {
+    validate(typingTest: { wpm: number | null; accuracy: number | null; time: number | null }) {
+        if (!typingTest.wpm) {
+            throw new Error('WPM is required');
+        }
+        if (typingTest.wpm < 0) {
             throw new Error('WPM must be a positive value');
+        }
+        if (!typingTest.accuracy) {
+            throw new Error('Accuracy is required');
         }
         if (typingTest.accuracy < 0 || typingTest.accuracy > 100) {
             throw new Error('Accuracy must be between 0 and 100');
         }
-        if (!typingTest.date) {
-            throw new Error('Date is required');
+        if (!typingTest.time) {
+            throw new Error('Time is required');
+        }
+        if (typingTest.time < 0) {
+            throw new Error('Time must be a positive value');
         }
     }
 
@@ -62,7 +76,7 @@ export class TypingTest {
             this.id === typingTest.getId() &&
             this.wpm === typingTest.getWpm() &&
             this.accuracy === typingTest.getAccuracy() &&
-            this.date.getTime() === typingTest.getDate().getTime()
+            this.time === typingTest.getTime()
         );
     }
 }
