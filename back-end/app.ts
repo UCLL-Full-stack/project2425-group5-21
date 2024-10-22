@@ -8,6 +8,10 @@ import { userRouter } from './controller/user.routes';
 import { tournamentRouter } from './controller/tournament.routes';
 import profileService from './service/profile.service';
 import { profileRouter } from './controller/profile.routes';
+import { typingtestRouter } from './controller/typingtest.routes';
+import { challengeRouter } from './controller/challenge.routes';
+import { leaderboardRouter } from './controller/leaderboard.router';
+import { gameRouter } from './controller/game.routes';
 
 const app = express();
 dotenv.config();
@@ -18,6 +22,10 @@ app.use(bodyParser.json());
 app.use('/users', userRouter);
 app.use('/tournaments', tournamentRouter);
 app.use('/profiles', profileRouter);
+app.use('/typingtests', typingtestRouter);
+app.use('/challenges', challengeRouter);
+app.use('/leaderboards', leaderboardRouter);
+app.use('/games', gameRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

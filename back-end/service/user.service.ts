@@ -5,4 +5,15 @@ const getAllUsers = async (): Promise<User[]> => {
     return userDb.getAllUsers();
 };
 
-export default { getAllUsers };
+const getUserById = async (id: number): Promise<User | null> => {
+    const user = userDb.getUserById(id);
+    if (!user) {
+        throw new Error('User not found');
+    }
+    return user;
+};
+
+export default {
+    getAllUsers,
+    getUserById,
+};
