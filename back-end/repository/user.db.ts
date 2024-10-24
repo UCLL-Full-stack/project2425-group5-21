@@ -64,6 +64,34 @@ const users = [
         password: 'davidb123',
         role: 'player',
     }),
+    // New users added
+    new User({
+        id: 8,
+        username: 'sarahsmith',
+        firstName: 'Sarah',
+        lastName: 'Smith',
+        email: 'sarah.smith@ucll.be',
+        password: 'sarahs123',
+        role: 'player',
+    }),
+    new User({
+        id: 9,
+        username: 'brucelee',
+        firstName: 'Bruce',
+        lastName: 'Lee',
+        email: 'bruce.lee@ucll.be',
+        password: 'brucel123',
+        role: 'admin',
+    }),
+    new User({
+        id: 10,
+        username: 'rachelgreen',
+        firstName: 'Rachel',
+        lastName: 'Green',
+        email: 'rachel.green@ucll.be',
+        password: 'rachelg123',
+        role: 'player',
+    }),
 ];
 
 const getAllUsers = (): User[] => {
