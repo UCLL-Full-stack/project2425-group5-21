@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import leaderboardService from '../service/leaderboard.service';
 
-const leaderboardRouter = express.Router();
+const leaderboardRoutes = express.Router();
 
-leaderboardRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+leaderboardRoutes.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const leaderboards = await leaderboardService.getAllLeaderboards();
         res.status(200).json(leaderboards);
@@ -14,4 +14,4 @@ leaderboardRouter.get('/', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-export { leaderboardRouter };
+export { leaderboardRoutes };

@@ -104,4 +104,5 @@ test('given: valid values for leaderboard, when: leaderboard is created, then: l
     // then
     expect(leaderboard.getRankings()).toEqual(validLeaderboard.rankings);
     expect(leaderboard.getMaxPlayers()).toEqual(validLeaderboard.maxPlayers);
+    expect(leaderboard.getType()).toEqual(validLeaderboard.type);
 });

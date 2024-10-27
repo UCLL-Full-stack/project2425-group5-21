@@ -5,6 +5,7 @@ export class Profile {
     private username: string;
     private bio: string;
     private avgWPM: number | null;
+    private highestWPM: number | null;
     private startDate: Date | null;
     private role: Role | null;
 
@@ -13,6 +14,7 @@ export class Profile {
         username: string;
         bio: string;
         avgWPM: number | null;
+        highestWPM: number | null;
         startDate: Date | null;
         role: Role | null;
     }) {
@@ -22,6 +24,7 @@ export class Profile {
         this.username = profile.username;
         this.bio = profile.bio;
         this.avgWPM = profile.avgWPM;
+        this.highestWPM = profile.highestWPM;
         this.startDate = profile.startDate;
         this.role = profile.role;
     }
@@ -40,6 +43,10 @@ export class Profile {
 
     getAvgWPM(): number | null {
         return this.avgWPM;
+    }
+
+    getHighestWPM(): number | null {
+        return this.highestWPM;
     }
 
     getStartDate(): Date | null {
@@ -66,6 +73,10 @@ export class Profile {
         this.avgWPM = avgWPM;
     }
 
+    setHighestWPM(highestWPM: number | null): void {
+        this.highestWPM = highestWPM;
+    }
+
     setStartDate(startDate: Date | null): void {
         this.startDate = startDate;
     }
@@ -78,6 +89,7 @@ export class Profile {
         username: string;
         bio: string;
         avgWPM: number | null;
+        highestWPM: number | null;
         startDate: Date | null;
         role: Role | null;
     }) {
@@ -93,6 +105,12 @@ export class Profile {
         if (profile.avgWPM < 0) {
             throw new Error('Average WPM must be positive');
         }
+        if (!profile.highestWPM) {
+            throw new Error('Highest WPM is required');
+        }
+        if (profile.highestWPM < 0) {
+            throw new Error('Highest WPM must be positive');
+        }
         if (!profile.startDate) {
             throw new Error('Start date is required');
         }
@@ -106,6 +124,7 @@ export class Profile {
             this.username === profile.getUsername() &&
             this.bio === profile.getBio() &&
             this.avgWPM === profile.getAvgWPM() &&
+            this.highestWPM === profile.getHighestWPM() &&
             this.startDate === profile.getStartDate() &&
             this.role === profile.getRole()
         );

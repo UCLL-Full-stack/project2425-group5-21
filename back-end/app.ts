@@ -10,7 +10,7 @@ import profileService from './service/profile.service';
 import { profileRouter } from './controller/profile.routes';
 import { typingtestRouter } from './controller/typingtest.routes';
 import { challengeRouter } from './controller/challenge.routes';
-import { leaderboardRouter } from './controller/leaderboard.router';
+import { leaderboardRoutes } from './controller/leaderboard.routes';
 import { gameRouter } from './controller/game.routes';
 
 const app = express();
@@ -24,7 +24,7 @@ app.use('/tournaments', tournamentRouter);
 app.use('/profiles', profileRouter);
 app.use('/typingtests', typingtestRouter);
 app.use('/challenges', challengeRouter);
-app.use('/leaderboards', leaderboardRouter);
+app.use('/leaderboards', leaderboardRoutes);
 app.use('/games', gameRouter);
 
 app.get('/status', (req, res) => {
