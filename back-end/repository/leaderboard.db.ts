@@ -1,17 +1,17 @@
 import { Leaderboard } from '../model/leaderboard';
-import userDb from './user.db';
-import { User } from '../model/user';
+import profileDb from './profile.db';
+import { Profile } from '../model/profile';
 
 const leaderboards = [
     new Leaderboard({
         id: 1,
-        rankings: Array.from({ length: 5 }, (_, i) => userDb.getUserById(i + 1)).filter(user => user !== null) as User[],
+        rankings: Array.from({ length: 5 }, (_, i) => profileDb.getProfileById(i + 1)).filter(user => user !== null) as Profile[],
         maxPlayers: 5,
         type: 15,
     }),
     new Leaderboard({
         id: 2,
-        rankings: Array.from({ length: 5 }, (_, i) => userDb.getUserById(i + 6)).filter(user => user !== null) as User[],
+        rankings: Array.from({ length: 5 }, (_, i) => profileDb.getProfileById(i + 1)).filter(user => user !== null) as Profile[],
         maxPlayers: 5,
         type: 30,
     }),
