@@ -1,39 +1,37 @@
 import { Leaderboard } from '../../model/leaderboard';
-import { User } from '../../model/user';
-import { Role, UserInput } from '../../types';
+import {Profile} from "../../model/profile";
+import {set} from "date-fns";
+
+// date
+
+const startDate = set(new Date(), { hours: 8, minutes: 30 });
 
 // users
 
-const userInput1: UserInput = {
+const profile1 = new Profile({
+    id: 1,
     username: 'johndoe',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@ucll.be',
-    password: 'johnd123',
+    bio: 'I love to program and to type fast.',
+    avgWPM: 122.34,
+    highestWPM: 140.34,
+    startDate: startDate,
     role: 'player',
-};
-
-const userInput2: UserInput = {
-    username: 'janetoe',
-    firstName: 'Jane',
-    lastName: 'Toe',
-    email: 'jane.toe@ucll.be',
-    password: 'janet123',
-    role: 'admin',
-};
-
-const user1 = new User({
-    ...userInput1,
 });
 
-const user2 = new User({
-    ...userInput2,
+const profile2 = new Profile({
+    id: 2,
+    username: 'janedoe',
+    bio: 'I enjoy solving puzzles and achieving high typing speeds.',
+    avgWPM: 98,
+    highestWPM: 120.34,
+    startDate: startDate,
+    role: 'player',
 });
 
 test('given: 0 max players, when: leaderboard is created, then: an error is thrown', () => {
     // given
     const invalidLeaderboard = {
-        rankings: [user1, user2],
+        rankings: [profile1, profile2],
         maxPlayers: 0,
         type: 15,
     };
@@ -63,7 +61,7 @@ test('given: no rankings, when: leaderboard is created, then: an error is thrown
 test('given: null type, when: leaderboard is created, then: an error is thrown', () => {
     // given
     const invalidLeaderboard = {
-        rankings: [user1, user2],
+        rankings: [profile1, profile2],
         maxPlayers: 2,
         type: null,
     };
@@ -78,7 +76,7 @@ test('given: null type, when: leaderboard is created, then: an error is thrown',
 test('given: a type not 15, 30 or 60, when: leaderboard is created, then: an error is thrown', () => {
     // given
     const invalidLeaderboard = {
-        rankings: [user1, user2],
+        rankings: [profile1, profile2],
         maxPlayers: 2,
         type: 90,
     };
@@ -93,7 +91,7 @@ test('given: a type not 15, 30 or 60, when: leaderboard is created, then: an err
 test('given: valid values for leaderboard, when: leaderboard is created, then: leaderboard is created with those values', () => {
     // given
     const validLeaderboard = {
-        rankings: [user1, user2],
+        rankings: [profile1, profile2],
         maxPlayers: 2,
         type: 15,
     };

@@ -1,11 +1,8 @@
 import { set } from 'date-fns';
 import { Game } from '../../model/game';
 import { User } from '../../model/user';
-import { Role, UserInput } from '../../types';
 
-// users
-
-const userInput1: UserInput = {
+const user1 = new User({
     id: 1,
     username: 'johndoe',
     firstName: 'John',
@@ -13,27 +10,17 @@ const userInput1: UserInput = {
     email: 'john.doe@ucll.be',
     password: 'johnd123',
     role: 'player',
-};
+});
 
-const userInput2: UserInput = {
-    id: 1,
+const user2 = new User({
+    id: 2,
     username: 'janetoe',
     firstName: 'Jane',
     lastName: 'Toe',
     email: 'jane.toe@ucll.be',
     password: 'janet123',
     role: 'player',
-};
-
-const user1 = new User({
-    ...userInput1,
 });
-
-const user2 = new User({
-    ...userInput2,
-});
-
-// dates
 
 const startDate = set(new Date(), { hours: 8, minutes: 30 });
 const endDate = set(new Date(), { hours: 10, minutes: 30 });

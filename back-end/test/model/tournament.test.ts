@@ -1,6 +1,5 @@
 import { set } from 'date-fns';
 import { Tournament } from '../../model/tournament';
-import { TypingTest } from '../../model/typingTest';
 
 const startDate = set(new Date(), { hours: 8, minutes: 30 });
 const endDate = set(new Date(), { hours: 10, minutes: 30 });

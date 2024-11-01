@@ -1,4 +1,3 @@
-import { wrap } from 'module';
 import { TypingTest } from '../../model/typingTest';
 
 test('given: missing wpm, when: typingtest is created, then: an error is thrown', () => {
