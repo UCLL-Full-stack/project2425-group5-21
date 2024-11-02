@@ -33,7 +33,6 @@ test('given: 0 max players, when: leaderboard is created, then: an error is thro
     const invalidLeaderboard = {
         rankings: [profile1, profile2],
         maxPlayers: 0,
-        type: 15,
     };
 
     // when
@@ -48,7 +47,6 @@ test('given: no rankings, when: leaderboard is created, then: an error is thrown
     const invalidLeaderboard = {
         rankings: [],
         maxPlayers: 2,
-        type: 15,
     };
 
     // when
@@ -58,42 +56,11 @@ test('given: no rankings, when: leaderboard is created, then: an error is thrown
     expect(leaderboard).toThrow('Rankings must contain at least one player');
 });
 
-test('given: null type, when: leaderboard is created, then: an error is thrown', () => {
-    // given
-    const invalidLeaderboard = {
-        rankings: [profile1, profile2],
-        maxPlayers: 2,
-        type: null,
-    };
-
-    // when
-    const leaderboard = () => new Leaderboard(invalidLeaderboard);
-
-    // then
-    expect(leaderboard).toThrow('Type is required');
-});
-
-test('given: a type not 15, 30 or 60, when: leaderboard is created, then: an error is thrown', () => {
-    // given
-    const invalidLeaderboard = {
-        rankings: [profile1, profile2],
-        maxPlayers: 2,
-        type: 90,
-    };
-
-    // when
-    const leaderboard = () => new Leaderboard(invalidLeaderboard);
-
-    // then
-    expect(leaderboard).toThrow('Type must only be 15, 30, or 60');
-});
-
 test('given: valid values for leaderboard, when: leaderboard is created, then: leaderboard is created with those values', () => {
     // given
     const validLeaderboard = {
         rankings: [profile1, profile2],
         maxPlayers: 2,
-        type: 15,
     };
 
     // when
@@ -102,5 +69,4 @@ test('given: valid values for leaderboard, when: leaderboard is created, then: l
     // then
     expect(leaderboard.getRankings()).toEqual(validLeaderboard.rankings);
     expect(leaderboard.getMaxPlayers()).toEqual(validLeaderboard.maxPlayers);
-    expect(leaderboard.getType()).toEqual(validLeaderboard.type);
 });

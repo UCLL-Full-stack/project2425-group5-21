@@ -28,6 +28,7 @@
  */
 import express, { NextFunction, Request, Response } from 'express';
 import profileService from '../service/profile.service';
+import {ProfileInput} from "../types";
 
 const profileRouter = express.Router();
 
@@ -56,5 +57,33 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
         }
     }
 });
+
+// profileRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+//     const { id } = req.params;
+//     const updatedData = req.body;
+//
+//     try {
+//         const updatedProfile = await profileService.updateProfile(Number(id), updatedData);
+//         if (!updatedProfile) {
+//             return res.status(404).json({ status: 'error', message: 'Profile not found' });
+//         }
+//         res.status(200).json(updatedProfile);
+//     }  catch (error) {
+//         if (error instanceof Error) {
+//             res.status(400).json({ status: 'error', errorMessage: error.message });
+//         }
+//     }
+// });
+
+profileRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profile = <ProfileInput>req.body;
+        const result = await profileService.createProfile(profile);
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
 
 export { profileRouter };

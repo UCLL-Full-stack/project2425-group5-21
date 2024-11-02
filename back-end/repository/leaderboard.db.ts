@@ -2,43 +2,26 @@ import { Leaderboard } from '../model/leaderboard';
 import profileDb from './profile.db';
 import { Profile } from '../model/profile';
 
-// Function to get random profiles and sort them by highest WPM
-const getRandomProfiles = (totalProfiles: Profile[], count: number): Profile[] => {
-    const shuffled = totalProfiles.sort(() => 0.5 - Math.random());
-    const selectedProfiles = shuffled.slice(0, count);
+const getTopProfiles = (totalProfiles: Profile[], count: number): Profile[] => {
+    const sortedProfiles = totalProfiles
+        .sort((a, b) => (b.getHighestWPM() || 0) - (a.getHighestWPM() || 0));
 
-    return selectedProfiles.sort((a, b) => {
-        const aWPM = a.getHighestWPM() || 0;
-        const bWPM = b.getHighestWPM() || 0;
-        return bWPM - aWPM;
+    return sortedProfiles.slice(0, count);
+};
+
+const createLeaderboard = (id: number): Leaderboard => {
+    const allProfiles = profileDb.getAllProfiles();
+    return new Leaderboard({
+        id,
+        rankings: getTopProfiles(allProfiles, 10),
+        maxPlayers: 10,
     });
 };
 
-const allProfiles = profileDb.getAllProfiles();
-
-const leaderboards = [
-    new Leaderboard({
-        id: 1,
-        rankings: getRandomProfiles(allProfiles, 10),
-        maxPlayers: 10,
-        type: 15,
-    }),
-    new Leaderboard({
-        id: 2,
-        rankings: getRandomProfiles(allProfiles, 10),
-        maxPlayers: 10,
-        type: 30,
-    }),
-    new Leaderboard({
-        id: 3,
-        rankings: getRandomProfiles(allProfiles, 10),
-        maxPlayers: 10,
-        type: 60,
-    }),
-];
-
 const getAllLeaderboards = (): Leaderboard[] => {
-    return leaderboards;
+    return [
+        createLeaderboard(1)
+    ];
 };
 
 export default {

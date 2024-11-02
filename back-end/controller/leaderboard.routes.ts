@@ -15,9 +15,6 @@
  *            maxPlayers:
  *              type: number
  *              description: Number of max players.
- *            type:
- *              type: number
- *              description: Type number leaderboard.
  *
  */
 import express, { Request, Response, NextFunction } from 'express';

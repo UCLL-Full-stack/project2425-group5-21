@@ -1,3 +1,5 @@
+type Role = 'admin' | 'player';
+
 export type Player = {
     id: number;
     username: string;
@@ -9,7 +11,13 @@ export type Player = {
 
 export type Leaderboard = {
     id: number;
-    type: string;
     maxPlayers: number;
     rankings: (Player | null)[];
+};
+
+export type Profile = {
+    id?: number;
+    username: string;
+    highestWPM: number | null;
+    role: Role | null;
 };
