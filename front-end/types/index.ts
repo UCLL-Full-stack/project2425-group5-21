@@ -18,6 +18,9 @@ export type Leaderboard = {
 export type Profile = {
     id?: number;
     username: string;
+    bio: string;
+    avgWPM: number | null;
     highestWPM: number | null;
+    startDate: Date | null;
     role: Role | null;
 };

@@ -58,23 +58,25 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
-// profileRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
-//     const { id } = req.params;
-//     const updatedData = req.body;
-//
-//     try {
-//         const updatedProfile = await profileService.updateProfile(Number(id), updatedData);
-//         if (!updatedProfile) {
-//             return res.status(404).json({ status: 'error', message: 'Profile not found' });
-//         }
-//         res.status(200).json(updatedProfile);
-//     }  catch (error) {
-//         if (error instanceof Error) {
-//             res.status(400).json({ status: 'error', errorMessage: error.message });
-//         }
-//     }
-// });
-
+/**
+ * @swagger
+ * /profiles:
+ *   post:
+ *      summary: Create a new profile.
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ProfileInput'
+ *      responses:
+ *         200:
+ *            description: The created profile.
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/Profile'
+ */
 profileRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const profile = <ProfileInput>req.body;

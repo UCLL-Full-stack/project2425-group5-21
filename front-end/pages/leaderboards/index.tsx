@@ -3,10 +3,12 @@ import { Leaderboard as LeaderboardType } from "@/types";
 import LeaderboardService from "@/services/LeaderboardService";
 import Head from "next/head";
 import Header from "@/components/header";
+import AddProfileForm from "@/components/Profile/addProfile";
 
 const Leaderboard: React.FC = () => {
     const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     const getLeaderboards = async () => {
         setError(null);
@@ -26,8 +28,10 @@ const Leaderboard: React.FC = () => {
         getLeaderboards();
     }, []);
 
-    const filteredLeaderboard = leaderboard[0];
-
+    const handleProfileAdded = async () => {
+        await getLeaderboards();
+        setModalOpen(false);
+    };
 
     return (
         <>
@@ -40,46 +44,35 @@ const Leaderboard: React.FC = () => {
                     <h1 className="text-4xl font-extrabold text-center mb-8 tracking-widest">
                         🏆 Leaderboard 🏆
                     </h1>
-
                     {error && <p className="text-red-500">{error}</p>}
-
-                    {filteredLeaderboard ? (
-                        <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-8 transition duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold">Leaderboard</h2>
-                                <p className="text-gray-400">Max Players: {filteredLeaderboard.maxPlayers}</p>
-                            </div>
-                            <table className="w-full table-auto border-collapse text-center">
-                                <thead>
-                                <tr className="bg-gray-700">
-                                    <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Rank</th>
-                                    <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Username</th>
-                                    <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Highest WPM</th>
-                                    <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Role</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {filteredLeaderboard.rankings.map((player, index) => (
-                                    player ? (
-                                        <tr key={player.id} className="bg-gray-800 hover:bg-gray-700 transition duration-150">
-                                            <td className="px-4 py-4 border-b border-gray-600">{index + 1}</td>
-                                            <td className="px-4 py-4 border-b border-gray-600 font-bold">{player.username}</td>
-                                            <td className="px-4 py-4 border-b border-gray-600">{player.highestWPM}</td>
-                                            <td className="px-4 py-4 border-b border-gray-600">{player.role}</td>
-                                        </tr>
-                                    ) : (
-                                        <tr key={index} className="bg-gray-700">
-                                            <td className="px-4 py-4 border-b border-gray-600">{index + 1}</td>
-                                            <td className="px-4 py-4 border-b border-gray-600 text-gray-500">Slot Empty</td>
-                                        </tr>
-                                    )
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <p className="text-center text-gray-500">No data available for this leaderboard.</p>
-                    )}
+                    <button onClick={() => setModalOpen(true)} className="bg-blue-600 text-white py-2 px-4 rounded mb-4">
+                        Add Profile
+                    </button>
+                    {isModalOpen && <AddProfileForm onProfileAdded={handleProfileAdded} />}
+                    <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-8">
+                        <table className="w-full table-auto border-collapse text-center">
+                            <thead>
+                            <tr className="bg-gray-700">
+                                <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Rank</th>
+                                <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Username</th>
+                                <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Highest WPM</th>
+                                <th className="px-4 py-3 font-semibold uppercase text-sm border-b border-gray-600">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {leaderboard[0]?.rankings?.map((player) => (
+                                player ? (
+                                    <tr key={player.id} className="bg-gray-800 hover:bg-gray-700 transition duration-150">
+                                        <td className="px-4 py-4 border-b border-gray-600">{leaderboard[0].rankings.indexOf(player) + 1}</td>
+                                        <td className="px-4 py-4 border-b border-gray-600 font-bold">{player.username}</td>
+                                        <td className="px-4 py-4 border-b border-gray-600">{player.highestWPM}</td>
+                                        <td className="px-4 py-4 border-b border-gray-600">{player.role}</td>
+                                    </tr>
+                                ) : null
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </>

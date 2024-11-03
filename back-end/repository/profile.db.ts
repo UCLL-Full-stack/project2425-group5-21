@@ -1,6 +1,4 @@
 import { Profile } from '../model/profile';
-import { set } from 'date-fns';
-import {ProfileInput} from "../types";
 
 const profiles = [
     new Profile({
@@ -58,17 +56,6 @@ const getProfileById = (id: number): Profile | undefined => {
     return profiles.find((profile) => profile.getId() === id);
 };
 
-// const updateProfile = (id: number, updatedData: ProfileInput): Profile | null => {
-//     const profile = getProfileById(id);
-//
-//     if (!profile) {
-//         throw new Error(`Profile with id ${id} does not exist.`);
-//     }
-//
-//     profile.updateProfile(updatedData);
-//     return profile;
-// };
-
 const createProfile = (profile: Profile): Profile => {
     profiles.push(profile);
     return profile;
@@ -77,6 +64,5 @@ const createProfile = (profile: Profile): Profile => {
 export default {
     getAllProfiles,
     getProfileById,
-    // updateProfile,
     createProfile,
 };

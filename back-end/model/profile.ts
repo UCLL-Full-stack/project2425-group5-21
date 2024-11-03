@@ -129,31 +129,4 @@ export class Profile {
             this.role === profile.getRole()
         );
     }
-
-    // updateProfile(updatedData: ProfileInput) {
-    //     if (updatedData.username !== undefined) {
-    //         this.setUsername(updatedData.username);
-    //     }
-    //     if (updatedData.bio !== undefined) {
-    //         this.setBio(updatedData.bio);
-    //     }
-    //     if (updatedData.avgWPM !== undefined) {
-    //         if (updatedData.avgWPM === null || updatedData.avgWPM < 0) {
-    //             throw new Error('Average WPM must be a positive number or null');
-    //         }
-    //         this.setAvgWPM(updatedData.avgWPM);
-    //     }
-    //     if (updatedData.highestWPM !== undefined) {
-    //         if (updatedData.highestWPM === null || updatedData.highestWPM < 0) {
-    //             throw new Error('Highest WPM must be a positive number or null');
-    //         }
-    //         this.setHighestWPM(updatedData.highestWPM);
-    //     }
-    //     if (updatedData.startDate !== undefined) {
-    //         this.setStartDate(updatedData.startDate);
-    //     }
-    //     if (updatedData.role !== undefined) {
-    //         this.setRole(updatedData.role);
-    //     }
-    // }
 }
