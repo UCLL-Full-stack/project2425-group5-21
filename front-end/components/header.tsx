@@ -10,10 +10,10 @@ const Header: React.FC = () => {
                 </a>
 
                 <nav className="flex space-x-6 ml-auto">
-                    <Link href="/" className="nav-link text-lg text-white hover:text-yellow-400">
+                    <Link href="/" className="nav-link text-lg text-white hover:text-[#49a8b8]">
                         Home
                     </Link>
-                    <Link href="/leaderboards" className="nav-link text-lg text-white hover:text-yellow-400">
+                    <Link href="/leaderboards" className="nav-link text-lg text-white hover:text-[#49a8b8]">
                         Leaderboard
                     </Link>
                 </nav>
