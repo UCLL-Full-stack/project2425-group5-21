@@ -9,7 +9,7 @@ const Leaderboard: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<number | null>(null);
+  const [selectedType, setSelectedType] = useState<number>(15);
 
   const getLeaderboards = async (type?: number) => {
     setError(null);
