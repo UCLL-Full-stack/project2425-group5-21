@@ -2,7 +2,6 @@ type Role = 'admin' | 'player';
 
 type UserInput = {
     id?: number;
-    username: string;
     firstName: string;
     lastName: string;
     email: string;

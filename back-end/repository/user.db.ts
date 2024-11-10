@@ -3,7 +3,6 @@ import { User } from '../model/user';
 const users = [
     new User({
         id: 1,
-        username: 'johndoe',
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@ucll.be',
@@ -12,7 +11,6 @@ const users = [
     }),
     new User({
         id: 2,
-        username: 'janedoe',
         firstName: 'Jane',
         lastName: 'Doe',
         email: 'jane.doe@ucll.be',
@@ -21,7 +19,6 @@ const users = [
     }),
     new User({
         id: 3,
-        username: 'michaelking',
         firstName: 'Michael',
         lastName: 'King',
         email: 'michael.king@ucll.be',
@@ -30,7 +27,6 @@ const users = [
     }),
     new User({
         id: 4,
-        username: 'lindawalker',
         firstName: 'Linda',
         lastName: 'Walker',
         email: 'linda.walker@ucll.be',
@@ -39,7 +35,6 @@ const users = [
     }),
     new User({
         id: 5,
-        username: 'chrisjohnson',
         firstName: 'Chris',
         lastName: 'Johnson',
         email: 'chris.johnson@ucll.be',

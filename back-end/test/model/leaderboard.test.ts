@@ -1,6 +1,6 @@
 import { Leaderboard } from '../../model/leaderboard';
-import {Profile} from "../../model/profile";
-import {set} from "date-fns";
+import { Profile } from '../../model/profile';
+import { set } from 'date-fns';
 
 // date
 
@@ -33,6 +33,7 @@ test('given: 0 max players, when: leaderboard is created, then: an error is thro
     const invalidLeaderboard = {
         rankings: [profile1, profile2],
         maxPlayers: 0,
+        type: 15,
     };
 
     // when
@@ -42,11 +43,42 @@ test('given: 0 max players, when: leaderboard is created, then: an error is thro
     expect(leaderboard).toThrow('Max players must be greater than 0');
 });
 
+test('given: null type, when: leaderboard is created, then: an error is thrown', () => {
+    // given
+    const invalidLeaderboard = {
+        rankings: [profile1, profile2],
+        maxPlayers: 2,
+        type: null,
+    };
+
+    // when
+    const leaderboard = () => new Leaderboard(invalidLeaderboard);
+
+    // then
+    expect(leaderboard).toThrow('Type is required');
+});
+
+test('given: wrong type (not 15, 30, 60), when: leaderboard is created, then: an error is thrown', () => {
+    // given
+    const invalidLeaderboard = {
+        rankings: [profile1, profile2],
+        maxPlayers: 2,
+        type: 10,
+    };
+
+    // when
+    const leaderboard = () => new Leaderboard(invalidLeaderboard);
+
+    // then
+    expect(leaderboard).toThrow('Type must be either 15, 30, or 60');
+});
+
 test('given: no rankings, when: leaderboard is created, then: an error is thrown', () => {
     // given
     const invalidLeaderboard = {
         rankings: [],
         maxPlayers: 2,
+        type: 15,
     };
 
     // when
@@ -61,6 +93,7 @@ test('given: valid values for leaderboard, when: leaderboard is created, then: l
     const validLeaderboard = {
         rankings: [profile1, profile2],
         maxPlayers: 2,
+        type: 15,
     };
 
     // when

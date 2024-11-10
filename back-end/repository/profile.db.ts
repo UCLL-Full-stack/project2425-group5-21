@@ -61,8 +61,13 @@ const createProfile = (profile: Profile): Profile => {
     return profile;
 };
 
+const clearProfiles = (): void => {
+    profiles.length = 0;
+};
+
 export default {
     getAllProfiles,
     getProfileById,
     createProfile,
+    clearProfiles,
 };

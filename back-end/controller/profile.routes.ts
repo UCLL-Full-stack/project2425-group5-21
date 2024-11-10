@@ -28,7 +28,8 @@
  */
 import express, { NextFunction, Request, Response } from 'express';
 import profileService from '../service/profile.service';
-import {ProfileInput} from "../types";
+import leaderboardService from '../service/leaderboard.service';
+import { ProfileInput } from '../types';
 
 const profileRouter = express.Router();
 
@@ -87,5 +88,50 @@ profileRouter.post('/', async (req: Request, res: Response, next: NextFunction) 
     }
 });
 
+/**
+ * @swagger
+ * /profiles/{type}:
+ *   post:
+ *      summary: Create a new profile and add it to a leaderboard by type (e.g., 15, 30, 60).
+ *      parameters:
+ *        - in: path
+ *          name: type
+ *          required: true
+ *          description: The leaderboard type (e.g., 15, 30, 60).
+ *          schema:
+ *            type: number
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ProfileInput'
+ *      responses:
+ *         200:
+ *            description: The created profile and updated leaderboard.
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/Leaderboard'
+ */
+
+profileRouter.post('/:type', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profileInput = <ProfileInput>req.body;
+
+        const leaderboardType: number = parseInt(req.params.type, 10);
+
+        const newProfile = await profileService.createProfile(profileInput);
+
+        const leaderboard = await leaderboardService.addProfileToLeaderboardType(
+            profileInput,
+            leaderboardType
+        );
+
+        res.status(200).json(leaderboard);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export { profileRouter };
