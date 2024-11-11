@@ -46,7 +46,7 @@ const Leaderboard: React.FC = () => {
       </Head>
       <Header />
       <main className="h-screen bg-[#120e17] flex flex-col  items-center text-white">
-        <div className="flex h-20 items-center justify-between w-11/12 max-w-4xl mt-10">
+        <div className="flex h-20 items-center justify-between w-11/12 max-w-4xl mt-40">
           <h1 className="text-4xl font-extrabold tracking-widest my-8 text-white">
             Leaderboard
           </h1>
