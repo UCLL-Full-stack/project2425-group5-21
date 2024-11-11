@@ -1,54 +1,27 @@
 import { User } from '../model/user';
+import database from './database';
 
-const users = [
-    new User({
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@ucll.be',
-        password: 'johnd123',
-        role: 'player',
-    }),
-    new User({
-        id: 2,
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'jane.doe@ucll.be',
-        password: 'janed123',
-        role: 'player',
-    }),
-    new User({
-        id: 3,
-        firstName: 'Michael',
-        lastName: 'King',
-        email: 'michael.king@ucll.be',
-        password: 'michael123',
-        role: 'player',
-    }),
-    new User({
-        id: 4,
-        firstName: 'Linda',
-        lastName: 'Walker',
-        email: 'linda.walker@ucll.be',
-        password: 'linda123',
-        role: 'player',
-    }),
-    new User({
-        id: 5,
-        firstName: 'Chris',
-        lastName: 'Johnson',
-        email: 'chris.johnson@ucll.be',
-        password: 'chrisj123',
-        role: 'admin',
-    }),
-];
-
-const getAllUsers = (): User[] => {
-    return users;
+const getAllUsers = async (): Promise<User[]> => {
+    try {
+        const usersPrisma = await database.user.findMany();
+        return usersPrisma.map((userPrisma) => User.from(userPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
 };
 
-const getUserById = (id: number): User | undefined => {
-    return users.find((user) => user.getId() === id);
+const getUserById = async (id: number): Promise<User | null> => {
+    try {
+        const userPrisma = await database.user.findUnique({
+            where: { id },
+        });
+
+        return userPrisma ? User.from(userPrisma) : null;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
 };
 
 export default {

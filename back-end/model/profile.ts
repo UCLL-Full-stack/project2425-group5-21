@@ -1,22 +1,22 @@
-import {ProfileInput, Role} from '../types';
+import { Role as PrismaRole, Profile as ProfilePrisma } from '@prisma/client';
 
 export class Profile {
     private id?: number;
     private username: string;
     private bio: string;
-    private avgWPM: number | null;
-    private highestWPM: number | null;
-    private startDate: Date | null;
-    private role: Role | null;
+    private avgWPM: number;
+    private highestWPM: number;
+    private startDate: Date;
+    private role: PrismaRole;
 
     constructor(profile: {
         id?: number;
         username: string;
         bio: string;
-        avgWPM: number | null;
-        highestWPM: number | null;
-        startDate: Date | null;
-        role: Role | null;
+        avgWPM: number;
+        highestWPM: number;
+        startDate: Date;
+        role: PrismaRole;
     }) {
         this.validate(profile);
 
@@ -41,19 +41,19 @@ export class Profile {
         return this.bio;
     }
 
-    getAvgWPM(): number | null {
+    getAvgWPM(): number {
         return this.avgWPM;
     }
 
-    getHighestWPM(): number | null {
+    getHighestWPM(): number {
         return this.highestWPM;
     }
 
-    getStartDate(): Date | null {
+    getStartDate(): Date {
         return this.startDate;
     }
 
-    getRole(): Role | null {
+    getRole(): PrismaRole {
         return this.role;
     }
 
@@ -69,29 +69,29 @@ export class Profile {
         this.bio = bio;
     }
 
-    setAvgWPM(avgWPM: number | null): void {
+    setAvgWPM(avgWPM: number): void {
         this.avgWPM = avgWPM;
     }
 
-    setHighestWPM(highestWPM: number | null): void {
+    setHighestWPM(highestWPM: number): void {
         this.highestWPM = highestWPM;
     }
 
-    setStartDate(startDate: Date | null): void {
+    setStartDate(startDate: Date): void {
         this.startDate = startDate;
     }
 
-    setRole(role: Role | null): void {
+    setRole(role: PrismaRole): void {
         this.role = role;
     }
 
     validate(profile: {
         username: string;
         bio: string;
-        avgWPM: number | null;
-        highestWPM: number | null;
-        startDate: Date | null;
-        role: Role | null;
+        avgWPM: number;
+        highestWPM: number;
+        startDate: Date;
+        role: PrismaRole;
     }) {
         if (!profile.username?.trim()) {
             throw new Error('Username is required');
@@ -99,13 +99,13 @@ export class Profile {
         if (!profile.bio?.trim()) {
             throw new Error('Bio is required');
         }
-        if (!profile.avgWPM) {
+        if (profile.avgWPM === null || profile.avgWPM === undefined) {
             throw new Error('Average WPM is required');
         }
         if (profile.avgWPM < 0) {
             throw new Error('Average WPM must be positive');
         }
-        if (!profile.highestWPM) {
+        if (profile.highestWPM === null || profile.highestWPM === undefined) {
             throw new Error('Highest WPM is required');
         }
         if (profile.highestWPM < 0) {
@@ -128,5 +128,28 @@ export class Profile {
             this.startDate === profile.getStartDate() &&
             this.role === profile.getRole()
         );
+    }
+
+    static from({ id, username, bio, avgWPM, highestWPM, startDate, role }: ProfilePrisma) {
+        return new Profile({
+            id,
+            username,
+            bio,
+            avgWPM: avgWPM ?? 0,
+            highestWPM: highestWPM ?? 0,
+            startDate: startDate ?? 0,
+            role,
+        });
+    }
+
+    toPrisma() {
+        return {
+            username: this.username,
+            bio: this.bio,
+            avgWPM: this.avgWPM,
+            highestWPM: this.highestWPM,
+            startDate: this.startDate,
+            role: this.role,
+        };
     }
 }

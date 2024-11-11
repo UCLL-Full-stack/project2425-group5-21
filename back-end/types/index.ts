@@ -1,5 +1,7 @@
-type Role = 'admin' | 'player';
-
+enum Role {
+    Player = 'player',
+    Admin = 'admin',
+}
 type UserInput = {
     id?: number;
     firstName: string;
@@ -13,10 +15,10 @@ type ProfileInput = {
     id?: number;
     username: string;
     bio: string;
-    avgWPM: number | null;
-    highestWPM: number | null;
-    startDate: Date | null;
-    role: Role | null;
+    avgWPM: number;
+    highestWPM: number;
+    startDate: Date;
+    role: Role;
 };
 
 export { Role, UserInput, ProfileInput };

@@ -3,7 +3,7 @@ import { TypingTest } from '../../model/typingTest';
 test('given: missing wpm, when: typingtest is created, then: an error is thrown', () => {
     // given
     const invalidTypingTest = {
-        wpm: null,
+        wpm: undefined as any,
         accuracy: 97,
         time: 15,
     };
@@ -34,7 +34,7 @@ test('given: missing accuracy, when: typingtest is created, then: an error is th
     // given
     const invalidTypingTest = {
         wpm: 120,
-        accuracy: null,
+        accuracy: undefined as any,
         time: 15,
     };
 
@@ -65,7 +65,7 @@ test('given: missing time, when: typingtest is created, then: an error is thrown
     const invalidTypingTest = {
         wpm: 120,
         accuracy: 98,
-        time: null,
+        time: undefined as any,
     };
 
     // when

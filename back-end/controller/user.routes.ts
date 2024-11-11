@@ -50,48 +50,9 @@ const userRouter = express.Router();
  *                  $ref: '#/components/schemas/User'
  */
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-   try {
-       const users = await userService.getAllUsers();
-       res.status(200).json(users);
-   } catch (error) {
-       if (error instanceof Error) {
-           res.status(400).json({ status: 'error', errorMessage: error.message });
-       }
-   }
-});
-
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Get a user by ID.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the user to retrieve.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: User found.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: User not found.
- */
-userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = Number(req.params.id);
-        const user = await userService.getUserById(userId);
-
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            res.status(404).json({ status: 'error', errorMessage: 'User not found' });
-        }
+        const users = await userService.getAllUsers();
+        res.status(200).json(users);
     } catch (error) {
         if (error instanceof Error) {
             res.status(400).json({ status: 'error', errorMessage: error.message });

@@ -12,8 +12,8 @@ const getTopProfiles = (totalProfiles: Profile[], count: number): Profile[] => {
     return sortedProfiles.slice(0, count);
 };
 
-const createLeaderboards = (): Leaderboard[] => {
-    const allProfiles = profileDb.getAllProfiles();
+const createLeaderboards = async (): Promise<Leaderboard[]> => {
+    const allProfiles = await profileDb.getAllProfiles();
     return [
         new Leaderboard({
             id: 1,
@@ -36,12 +36,12 @@ const createLeaderboards = (): Leaderboard[] => {
     ];
 };
 
-const getAllLeaderboards = (): Leaderboard[] => {
-    return createLeaderboards();
+const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
+    return await createLeaderboards();
 };
 
-const getLeaderboardByType = ({ type }: { type: number }): Leaderboard | null => {
-    const leaderboards = createLeaderboards();
+const getLeaderboardByType = async ({ type }: { type: number }): Promise<Leaderboard | null> => {
+    const leaderboards = await createLeaderboards();
     return leaderboards.find((leaderboard) => leaderboard.getType() === type) || null;
 };
 

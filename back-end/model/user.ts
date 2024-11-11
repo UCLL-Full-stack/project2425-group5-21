@@ -1,4 +1,4 @@
-import { Role } from '../types';
+import { Role as PrismaRole, User as UserPrisma } from '@prisma/client';
 
 export class User {
     private id?: number;
@@ -6,7 +6,7 @@ export class User {
     private lastName: string;
     private email: string;
     private password: string;
-    private role: Role | null;
+    private role: PrismaRole;
 
     constructor(user: {
         id?: number;
@@ -14,7 +14,7 @@ export class User {
         lastName: string;
         email: string;
         password: string;
-        role: Role | null;
+        role: PrismaRole;
     }) {
         this.validate(user);
 
@@ -46,7 +46,7 @@ export class User {
         return this.password;
     }
 
-    getRole(): Role | null {
+    getRole(): PrismaRole | null {
         return this.role;
     }
 
@@ -70,7 +70,7 @@ export class User {
         this.password = password;
     }
 
-    setRole(role: Role | null): void {
+    setRole(role: PrismaRole): void {
         this.role = role;
     }
 
@@ -79,7 +79,7 @@ export class User {
         lastName: string;
         email: string;
         password: string;
-        role: Role | null;
+        role: PrismaRole;
     }) {
         if (!user.firstName?.trim()) {
             throw new Error('First name is required');
@@ -106,5 +106,16 @@ export class User {
             this.password === user.getPassword() &&
             this.role === user.getRole()
         );
+    }
+
+    static from({ id, firstName, lastName, email, password, role }: UserPrisma) {
+        return new User({
+            id,
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+        });
     }
 }

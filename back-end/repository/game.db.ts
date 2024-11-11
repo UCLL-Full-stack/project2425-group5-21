@@ -3,40 +3,46 @@ import { set } from 'date-fns';
 import userDb from './user.db';
 import { User } from '../model/user';
 
-// dates
-
 const startDate = set(new Date(), { hours: 8, minutes: 30 });
 const endDate = set(new Date(), { hours: 10, minutes: 30 });
 
-const games = [
-    new Game({
-        startDate: startDate,
-        endDate: endDate,
-        players: [userDb.getUserById(1), userDb.getUserById(2)].filter((user) => user !== null) as User[],
-        status: 'active',
-    }),
-    new Game({
-        startDate: startDate,
-        endDate: endDate,
-        players: [userDb.getUserById(1), userDb.getUserById(3)].filter((user) => user !== null) as User[],
-        status: 'inactive',
-    }),
-    new Game({
-        startDate: startDate,
-        endDate: endDate,
-        players: [userDb.getUserById(5), userDb.getUserById(6)].filter((user) => user !== null) as User[],
-        status: 'active',
-    }),
-    new Game({
-        startDate: startDate,
-        endDate: endDate,
-        players: [userDb.getUserById(4), userDb.getUserById(7)].filter((user) => user !== null) as User[],
-        status: 'inactive',
-    }),
-];
+const createGames = async (): Promise<Game[]> => {
+    const user1 = await userDb.getUserById(1);
+    const user2 = await userDb.getUserById(2);
+    const user3 = await userDb.getUserById(3);
+    const user4 = await userDb.getUserById(4);
+    const user5 = await userDb.getUserById(5);
 
-const getAllGames = (): Game[] => {
-    return games;
+    return [
+        new Game({
+            startDate: startDate,
+            endDate: endDate,
+            players: [user1, user2].filter((user): user is User => user !== null),
+            status: 'active',
+        }),
+        new Game({
+            startDate: startDate,
+            endDate: endDate,
+            players: [user1, user3].filter((user): user is User => user !== null),
+            status: 'inactive',
+        }),
+        new Game({
+            startDate: startDate,
+            endDate: endDate,
+            players: [user5, user4].filter((user): user is User => user !== null),
+            status: 'active',
+        }),
+        new Game({
+            startDate: startDate,
+            endDate: endDate,
+            players: [user4, user2].filter((user): user is User => user !== null),
+            status: 'inactive',
+        }),
+    ];
+};
+
+const getAllGames = async (): Promise<Game[]> => {
+    return createGames();
 };
 
 export default {

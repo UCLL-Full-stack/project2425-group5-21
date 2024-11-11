@@ -1,15 +1,12 @@
 import { Profile } from '../model/profile';
 import profileDb from '../repository/profile.db';
-import {ProfileInput} from "../types";
+import { ProfileInput } from '../types';
 
 const getAllProfiles = async (): Promise<Profile[]> => {
     return profileDb.getAllProfiles();
 };
 
 const createProfile = async (profileInput: ProfileInput): Promise<Profile> => {
-    if (!profileInput.id) {
-        throw new Error('Profile ID is required');
-    }
     if (!profileInput.username) {
         throw new Error('Username is required');
     }
@@ -27,11 +24,6 @@ const createProfile = async (profileInput: ProfileInput): Promise<Profile> => {
     }
     if (!profileInput.role) {
         throw new Error('Role is required');
-    }
-
-    const existingProfile = profileDb.getProfileById(profileInput.id);
-    if (existingProfile) {
-        throw new Error('Profile with this ID already exists.');
     }
 
     const newProfile = new Profile(profileInput);

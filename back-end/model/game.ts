@@ -2,15 +2,15 @@ import { User } from './user';
 
 export class Game {
     private id?: number;
-    private startDate: Date | null;
-    private endDate: Date | null;
+    private startDate: Date;
+    private endDate: Date;
     private players: User[];
     private status: string;
 
     constructor(game: {
         id?: number;
-        startDate: Date | null;
-        endDate: Date | null;
+        startDate: Date;
+        endDate: Date;
         players: User[];
         status: string;
     }) {
@@ -27,11 +27,11 @@ export class Game {
         return this.id;
     }
 
-    getStartDate(): Date | null {
+    getStartDate(): Date {
         return this.startDate;
     }
 
-    getEndDate(): Date | null {
+    getEndDate(): Date {
         return this.endDate;
     }
 
@@ -47,11 +47,11 @@ export class Game {
         this.id = id;
     }
 
-    setStartDate(startDate: Date | null): void {
+    setStartDate(startDate: Date): void {
         this.startDate = startDate;
     }
 
-    setEndDate(endDate: Date | null): void {
+    setEndDate(endDate: Date): void {
         this.endDate = endDate;
     }
 
@@ -63,12 +63,7 @@ export class Game {
         this.status = status;
     }
 
-    validate(game: {
-        startDate: Date | null;
-        endDate: Date | null;
-        players: User[];
-        status: string;
-    }) {
+    validate(game: { startDate: Date; endDate: Date; players: User[]; status: string }) {
         if (game.startDate === null) {
             throw new Error('Start date is required');
         }

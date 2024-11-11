@@ -1,15 +1,12 @@
+import { TypingTest as TypingTestPrisma } from '@prisma/client';
+
 export class TypingTest {
     private id?: number;
-    private wpm: number | null;
-    private accuracy: number | null;
-    private time: number | null;
+    private wpm: number;
+    private accuracy: number;
+    private time: number;
 
-    constructor(typingTest: {
-        id?: number;
-        wpm: number | null;
-        accuracy: number | null;
-        time: number | null;
-    }) {
+    constructor(typingTest: { id?: number; wpm: number; accuracy: number; time: number }) {
         this.validate(typingTest);
 
         this.id = typingTest.id;
@@ -22,15 +19,15 @@ export class TypingTest {
         return this.id;
     }
 
-    getWpm(): number | null {
+    getWpm(): number {
         return this.wpm;
     }
 
-    getAccuracy(): number | null {
+    getAccuracy(): number {
         return this.accuracy;
     }
 
-    getTime(): number | null {
+    getTime(): number {
         return this.time;
     }
 
@@ -38,32 +35,32 @@ export class TypingTest {
         this.id = id;
     }
 
-    setWpm(wpm: number | null): void {
+    setWpm(wpm: number): void {
         this.wpm = wpm;
     }
 
-    setAccuracy(accuracy: number | null): void {
+    setAccuracy(accuracy: number): void {
         this.accuracy = accuracy;
     }
 
-    setTime(time: number | null): void {
+    setTime(time: number): void {
         this.time = time;
     }
 
-    validate(typingTest: { wpm: number | null; accuracy: number | null; time: number | null }) {
-        if (!typingTest.wpm) {
+    validate(typingTest: { wpm: number; accuracy: number; time: number }) {
+        if (typingTest.wpm === undefined || typingTest.wpm === null) {
             throw new Error('WPM is required');
         }
         if (typingTest.wpm < 0) {
             throw new Error('WPM must be a positive value');
         }
-        if (!typingTest.accuracy) {
+        if (typingTest.accuracy === undefined || typingTest.accuracy === null) {
             throw new Error('Accuracy is required');
         }
         if (typingTest.accuracy < 0 || typingTest.accuracy > 100) {
             throw new Error('Accuracy must be between 0 and 100');
         }
-        if (!typingTest.time) {
+        if (typingTest.time === undefined || typingTest.time === null) {
             throw new Error('Time is required');
         }
         if (typingTest.time < 0) {
@@ -78,5 +75,14 @@ export class TypingTest {
             this.accuracy === typingTest.getAccuracy() &&
             this.time === typingTest.getTime()
         );
+    }
+
+    static from({ id, wpm, accuracy, time }: TypingTestPrisma) {
+        return new TypingTest({
+            id,
+            wpm,
+            accuracy,
+            time,
+        });
     }
 }

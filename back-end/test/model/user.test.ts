@@ -1,15 +1,15 @@
 import { User } from '../../model/user';
-import { UserInput } from '../../types';
+import { Role } from '../../types';
 
 test('given: missing first name, when: user is created, then: an error is thrown', () => {
     // given
 
-    const invalidUser: UserInput = {
+    const invalidUser = {
         firstName: '',
         lastName: 'Doe',
         email: 'john.doe@ucll.be',
         password: 'johnd123',
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -22,12 +22,12 @@ test('given: missing first name, when: user is created, then: an error is thrown
 test('given: missing last name, when: user is created, then: an error is thrown', () => {
     // given
 
-    const invalidUser: UserInput = {
+    const invalidUser = {
         firstName: 'John',
         lastName: '',
         email: 'john.doe@ucll.be',
         password: 'johnd123',
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -40,12 +40,12 @@ test('given: missing last name, when: user is created, then: an error is thrown'
 test('given: missing email, when: user is created, then: an error is thrown', () => {
     // given
 
-    const invalidUser: UserInput = {
+    const invalidUser = {
         firstName: 'John',
         lastName: 'Doe',
         email: '',
         password: 'johnd123',
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -58,12 +58,12 @@ test('given: missing email, when: user is created, then: an error is thrown', ()
 test('given: missing password, when: user is created, then: an error is thrown', () => {
     // given
 
-    const invalidUser: UserInput = {
+    const invalidUser = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@ucll.be',
         password: '',
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -76,12 +76,12 @@ test('given: missing password, when: user is created, then: an error is thrown',
 test('given: missing role, when: user is created, then: an error is thrown', () => {
     // given
 
-    const invalidUser: UserInput = {
+    const invalidUser = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@ucll.be',
         password: 'johnd123',
-        role: null,
+        role: null as any,
     };
 
     // when
@@ -94,12 +94,12 @@ test('given: missing role, when: user is created, then: an error is thrown', () 
 test('given: valid values for user, when: user is created, then: an error is thrown', () => {
     // given
 
-    const validUser: UserInput = {
+    const validUser = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@ucll.be',
         password: 'johnd123',
-        role: 'player',
+        role: Role.Player,
     };
 
     // when

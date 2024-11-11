@@ -1,6 +1,6 @@
 import { set } from 'date-fns';
 import { Profile } from '../../model/profile';
-import { ProfileInput } from '../../types';
+import { Role } from '../../types';
 
 // start date
 
@@ -9,14 +9,13 @@ const startDate = set(new Date(), { hours: 8, minutes: 30 });
 test('given: missing username, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: '',
         bio: 'I love to program and to type fast.',
         avgWPM: 122.34,
         highestWPM: 145.56,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -29,14 +28,13 @@ test('given: missing username, when: profile is created, then: an error is throw
 test('given: missing bio, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: '',
         avgWPM: 122.34,
         highestWPM: 145.56,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -49,14 +47,13 @@ test('given: missing bio, when: profile is created, then: an error is thrown', (
 test('given: negative avgWPM, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: -1,
         highestWPM: 145.56,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -69,14 +66,13 @@ test('given: negative avgWPM, when: profile is created, then: an error is thrown
 test('given: missing avgWPM, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
-        avgWPM: null,
+        avgWPM: undefined as any,
         highestWPM: 145.56,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -89,14 +85,13 @@ test('given: missing avgWPM, when: profile is created, then: an error is thrown'
 test('given: negative highestWPM, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: 120.23,
         highestWPM: -1,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -109,14 +104,13 @@ test('given: negative highestWPM, when: profile is created, then: an error is th
 test('given: missing highestWPM, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: 120.56,
-        highestWPM: null,
+        highestWPM: undefined as any,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when
@@ -129,14 +123,13 @@ test('given: missing highestWPM, when: profile is created, then: an error is thr
 test('given: missing role, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: 122.34,
         highestWPM: 145.56,
         startDate: startDate,
-        role: null,
+        role: null as any,
     };
 
     // when
@@ -149,14 +142,13 @@ test('given: missing role, when: profile is created, then: an error is thrown', 
 test('given: missing start date, when: profile is created, then: an error is thrown', () => {
     // given
 
-    const invalidProfile: ProfileInput = {
-        id: 1,
+    const invalidProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: 122.34,
         highestWPM: 145.56,
-        startDate: null,
-        role: 'player',
+        startDate: undefined as any,
+        role: Role.Player,
     };
 
     // when
@@ -169,14 +161,13 @@ test('given: missing start date, when: profile is created, then: an error is thr
 test('given: valid values for profile, when: profile is created, then: profile is created with those values', () => {
     // given
 
-    const validProfile: ProfileInput = {
-        id: 1,
+    const validProfile = {
         username: 'johndoe',
         bio: 'I love to program and to type fast.',
         avgWPM: 122.34,
         highestWPM: 145.56,
         startDate: startDate,
-        role: 'player',
+        role: Role.Player,
     };
 
     // when

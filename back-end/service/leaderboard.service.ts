@@ -5,11 +5,11 @@ import profileDb from '../repository/profile.db';
 import { ProfileInput } from '../types';
 
 const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
-    return leaderboardDb.getAllLeaderboards();
+    return await leaderboardDb.getAllLeaderboards();
 };
 
-const getLeaderboardByType = (type: number): Leaderboard => {
-    const leaderboard = leaderboardDb.getLeaderboardByType({ type });
+const getLeaderboardByType = async (type: number): Promise<Leaderboard> => {
+    const leaderboard = await leaderboardDb.getLeaderboardByType({ type });
     if (!leaderboard) throw new Error(`Leaderboard doesn't exist with type ${type}.`);
     return leaderboard;
 };
@@ -40,7 +40,7 @@ const addProfileToLeaderboardType = async (
         throw new Error('Role is required');
     }
 
-    const leaderboard = leaderboardDb.getLeaderboardByType({ type });
+    const leaderboard = await leaderboardDb.getLeaderboardByType({ type });
 
     const newProfile = new Profile(profileInput);
 
