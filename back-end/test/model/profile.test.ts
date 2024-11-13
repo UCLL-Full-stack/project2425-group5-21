@@ -158,7 +158,7 @@ test('given: missing start date, when: profile is created, then: an error is thr
     expect(profile).toThrow('Start date is required');
 });
 
-test('given: valid values for profile, when: profile is created, then: profile is created with those values', () => {
+test('given: valid values for a profile, when: profile is created, then: profile is created with those values', () => {
     // given
 
     const validProfile = {
