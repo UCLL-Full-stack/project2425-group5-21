@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import { set } from 'date-fns';
+import { id } from 'date-fns/locale';
+import { connect } from 'http2';
 
 const prisma = new PrismaClient();
 
@@ -6,6 +9,11 @@ const main = async () => {
     await prisma.profile.deleteMany();
     await prisma.user.deleteMany();
     await prisma.typingTest.deleteMany();
+    await prisma.leaderboard.deleteMany();
+    await prisma.game.deleteMany();
+
+    const startDate = set(new Date(), { hours: 8, minutes: 30 });
+    const endDate = set(new Date(), { hours: 10, minutes: 30 });
 
     const profile1 = await prisma.profile.create({
         data: {
@@ -43,22 +51,62 @@ const main = async () => {
     const profile4 = await prisma.profile.create({
         data: {
             username: 'lindawalker',
-            bio: 'Typing enthusiast and tech aficionado.',
+            bio: 'Admin by day, typist by night.',
             avgWPM: 105.6,
             highestWPM: 125.0,
             startDate: new Date(2017, 10, 2),
-            role: 'player',
+            role: 'admin',
         },
     });
 
-    const profile5 = await prisma.profile.create({
+    const leaderboard1 = await prisma.leaderboard.create({
         data: {
-            username: 'chrisjohnson',
-            bio: 'Admin by day, typist by night.',
-            avgWPM: 110.8,
-            highestWPM: 135.2,
-            startDate: new Date(2022, 10, 2),
-            role: 'admin',
+            maxPlayers: 10,
+            type: 15,
+            profiles: {
+                connect: [
+                    { id: profile1.id },
+                    { id: profile2.id },
+                    { id: profile3.id },
+                    { id: profile4.id },
+                ],
+            },
+        },
+    });
+
+    const leaderboard2 = await prisma.leaderboard.create({
+        data: {
+            maxPlayers: 10,
+            type: 30,
+            profiles: {
+                connect: [{ id: profile1.id }, { id: profile2.id }, { id: profile3.id }],
+            },
+        },
+    });
+
+    const leaderboard3 = await prisma.leaderboard.create({
+        data: {
+            maxPlayers: 10,
+            type: 60,
+            profiles: {
+                connect: [{ id: profile1.id }, { id: profile2.id }],
+            },
+        },
+    });
+
+    const game1 = await prisma.game.create({
+        data: {
+            startDate: new Date(2017, 10, 2, 8, 30),
+            endDate: new Date(2017, 10, 2, 8, 35),
+            status: 'active',
+        },
+    });
+
+    const game2 = await prisma.game.create({
+        data: {
+            startDate: new Date(2017, 10, 2, 21, 30),
+            endDate: new Date(2017, 10, 2, 21, 35),
+            status: 'inactive',
         },
     });
 
@@ -69,6 +117,9 @@ const main = async () => {
             email: 'john.doe@ucll.be',
             password: 'johnd123',
             role: 'player',
+            game: {
+                connect: { id: game1.id },
+            },
         },
     });
 
@@ -79,6 +130,9 @@ const main = async () => {
             email: 'jane.doe@ucll.be',
             password: 'janed123',
             role: 'player',
+            game: {
+                connect: { id: game1.id },
+            },
         },
     });
 
@@ -89,6 +143,9 @@ const main = async () => {
             email: 'michael.king@ucll.be',
             password: 'michael123',
             role: 'player',
+            game: {
+                connect: { id: game2.id },
+            },
         },
     });
 
@@ -99,16 +156,9 @@ const main = async () => {
             email: 'linda.walker@ucll.be',
             password: 'linda123',
             role: 'player',
-        },
-    });
-
-    const user5 = await prisma.user.create({
-        data: {
-            firstName: 'Chris',
-            lastName: 'Johnson',
-            email: 'chris.johnson@ucll.be',
-            password: 'chrisj123',
-            role: 'admin',
+            game: {
+                connect: { id: game2.id },
+            },
         },
     });
 

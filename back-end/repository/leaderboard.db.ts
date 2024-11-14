@@ -1,8 +1,7 @@
 import { Leaderboard } from '../model/leaderboard';
 import profileDb from './profile.db';
 import { Profile } from '../model/profile';
-
-let leaderboards: Leaderboard[] = [];
+import database from './database';
 
 const getTopProfiles = (totalProfiles: Profile[], count: number): Profile[] => {
     const sortedProfiles = totalProfiles.sort(
@@ -16,43 +15,72 @@ const createLeaderboards = async (): Promise<Leaderboard[]> => {
     const allProfiles = await profileDb.getAllProfiles();
     return [
         new Leaderboard({
-            id: 1,
-            rankings: getTopProfiles(allProfiles, 10),
             maxPlayers: 10,
             type: 15,
+            profiles: getTopProfiles(allProfiles, 10),
         }),
         new Leaderboard({
-            id: 2,
-            rankings: getTopProfiles(allProfiles, 3),
             maxPlayers: 10,
             type: 30,
+            profiles: getTopProfiles(allProfiles, 3),
         }),
         new Leaderboard({
-            id: 3,
-            rankings: getTopProfiles(allProfiles, 2),
             maxPlayers: 10,
             type: 60,
+            profiles: getTopProfiles(allProfiles, 2),
         }),
     ];
 };
 
 const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
-    return await createLeaderboards();
+    try {
+        const leaderboardsPrisma = await database.leaderboard.findMany({
+            include: {
+                profiles: true,
+            },
+        });
+        return leaderboardsPrisma.map((leaderboardPrisma) => Leaderboard.from(leaderboardPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
 };
 
 const getLeaderboardByType = async ({ type }: { type: number }): Promise<Leaderboard | null> => {
-    const leaderboards = await createLeaderboards();
-    return leaderboards.find((leaderboard) => leaderboard.getType() === type) || null;
-};
-
-const updateLeaderboard = (updatedLeaderboard: Leaderboard) => {
-    const index = leaderboards.findIndex(
-        (leaderboard) => leaderboard.getId() === updatedLeaderboard.getId()
-    );
-    if (index !== -1) {
-        leaderboards[index] = updatedLeaderboard;
+    try {
+        const leaderboardPrisma = await database.leaderboard.findFirst({
+            where: { type },
+            include: {
+                profiles: true,
+            },
+        });
+        return leaderboardPrisma ? Leaderboard.from(leaderboardPrisma) : null;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
+
+const updateLeaderboard = async (updatedLeaderboard: Leaderboard): Promise<void> => {
+    try {
+        await database.leaderboard.update({
+            where: { id: updatedLeaderboard.getId() },
+            data: {
+                maxPlayers: updatedLeaderboard.getMaxPlayers(),
+                type: updatedLeaderboard.getType(),
+                profiles: {
+                    set: updatedLeaderboard
+                        .getProfiles()
+                        .map((profile) => ({ id: profile.getId() })),
+                },
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllLeaderboards,
     getLeaderboardByType,

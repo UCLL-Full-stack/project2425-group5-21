@@ -1,38 +1,39 @@
 import { Profile } from './profile';
+import { Leaderboard as LeaderboardPrisma, Profile as ProfilePrisma } from '@prisma/client';
 
 export class Leaderboard {
     private id?: number;
-    private rankings: Profile[];
-    private maxPlayers: number | null;
-    private type: number | null;
+    private maxPlayers: number;
+    private type: number;
+    private profiles: Profile[];
 
     constructor(leaderboard: {
         id?: number;
-        rankings: Profile[];
-        maxPlayers: number | null;
-        type: number | null;
+        maxPlayers: number;
+        type: number;
+        profiles: Profile[];
     }) {
         this.validate(leaderboard);
 
         this.id = leaderboard.id;
-        this.rankings = leaderboard.rankings;
         this.maxPlayers = leaderboard.maxPlayers;
         this.type = leaderboard.type;
+        this.profiles = leaderboard.profiles;
     }
 
     getId(): number | undefined {
         return this.id;
     }
 
-    getRankings(): Profile[] {
-        return this.rankings;
+    getProfiles(): Profile[] {
+        return this.profiles;
     }
 
-    getMaxPlayers(): number | null {
+    getMaxPlayers(): number {
         return this.maxPlayers;
     }
 
-    getType(): number | null {
+    getType(): number {
         return this.type;
     }
 
@@ -40,8 +41,8 @@ export class Leaderboard {
         this.id = id;
     }
 
-    setRankings(rankings: Profile[]): void {
-        this.rankings = rankings;
+    setProfiles(profiles: Profile[]): void {
+        this.profiles = profiles;
     }
 
     setMaxPlayers(maxPlayers: number): void {
@@ -53,13 +54,13 @@ export class Leaderboard {
     }
 
     addProfile(profile: Profile) {
-        if (!this.maxPlayers || this.rankings.length < this.maxPlayers) {
-            this.rankings.push(profile);
+        if (!this.maxPlayers || this.profiles.length < this.maxPlayers) {
+            this.profiles.push(profile);
         }
     }
 
-    validate(leaderboard: { rankings: Profile[]; maxPlayers: number | null; type: number | null }) {
-        if (!leaderboard.rankings || leaderboard.rankings.length === 0) {
+    validate(leaderboard: { profiles: Profile[]; maxPlayers: number; type: number }) {
+        if (!leaderboard.profiles || leaderboard.profiles.length === 0) {
             throw new Error('Rankings must contain at least one player');
         }
 
@@ -79,9 +80,23 @@ export class Leaderboard {
     equals(leaderboard: Leaderboard): boolean {
         return (
             this.id === leaderboard.getId() &&
-            this.rankings.length === leaderboard.getRankings().length &&
             this.maxPlayers === leaderboard.getMaxPlayers() &&
-            this.type === leaderboard.getType()
+            this.type === leaderboard.getType() &&
+            this.profiles.length === leaderboard.getProfiles().length
         );
+    }
+
+    static from({
+        id,
+        maxPlayers,
+        type,
+        profiles,
+    }: LeaderboardPrisma & { profiles: ProfilePrisma[] }) {
+        return new Leaderboard({
+            id,
+            maxPlayers,
+            type,
+            profiles: profiles.map((profile) => Profile.from(profile)),
+        });
     }
 }

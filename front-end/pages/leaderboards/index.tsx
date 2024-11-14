@@ -106,7 +106,7 @@ const Leaderboard: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {leaderboard[0]?.rankings?.map((player, index) =>
+              {leaderboard[0]?.profiles?.map((player, index) =>
                 player ? (
                   <tr
                     key={player.id}
