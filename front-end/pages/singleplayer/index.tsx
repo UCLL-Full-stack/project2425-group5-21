@@ -1,36 +1,40 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Head from 'next/head';
+import React, { useEffect, useState, useRef } from "react";
+import Head from "next/head";
 import Header from "@/components/header";
 
 const Home: React.FC = () => {
   const allWords = [
     "from", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "keyboard",
     "monitor", "speed", "test", "race", "game", "challenge", "practice", "skill",
-    "accuracy", "effort", "focus", "energy", "learn", "improve", "progress", "success",
-    "goal", "complete", "start", "finish", "try", "repeat", "mistake", "correct",
-    "words", "letters", "sentence", "flow", "rhythm", "technique", "fast", "slow",
-    "persevere", "achieve", "understand", "concept", "time", "memory", "test",
-    "confidence", "competence", "control", "growth", "habit", "practice", "method",
-    "optimize", "performance", "action", "reaction", "passion", "consistency",
-    "dedication", "focus", "drive", "learning", "engagement", "clarity", "insight",
-    "vision", "routine", "success", "system", "goal", "outcome", "task", "process",
-    "steps", "result", "plan", "goal", "aspiration", "ambition", "target", "mission",
-    "strategy", "priority", "objective", "perspective", "context", "framework", 
-    "roadmap", "journey", "adventure", "explore", "discover", "insight", "knowledge"
+    // ... other words
   ];
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [typedLetters, setTypedLetters] = useState<string>("");
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const [currentLetterIndex, setCurrentLetterIndex] = useState<number>(0);
-  const wordRefs = useRef<(HTMLDivElement | null)[]>([]); 
+  const [timeLeft, setTimeLeft] = useState<number>(15);
+  const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  const [stats, setStats] = useState<any>(null);
+  const wordRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Generate random words on component load
   useEffect(() => {
-    const randomWords = Array.from({ length: 46 }, () => allWords[Math.floor(Math.random() * allWords.length)]);
+    const randomWords = Array.from({ length: 65 }, () =>
+      allWords[Math.floor(Math.random() * allWords.length)]
+    );
     setSelectedWords(randomWords);
   }, []);
 
+  // Handle key presses
   const handleKeyPress = (event: KeyboardEvent) => {
+    if (isGameFinished) return; // Disable typing after the game finishes
+
+    if (!isGameStarted) {
+      setIsGameStarted(true);
+    }
+
     if (event.key === "Backspace") {
       if (typedLetters.length > 0) {
         const newTypedLetters = typedLetters.slice(0, -1);
@@ -51,13 +55,78 @@ const Home: React.FC = () => {
     }
   };
 
+  // Timer logic: Start only when isGameStarted is true
+  useEffect(() => {
+    if (!isGameStarted || timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          finishGame(); // Finish the game when time is up
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, [isGameStarted, timeLeft]);
+
+  // Attach and clean up key press listener
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [typedLetters]);
+  }, [typedLetters, isGameStarted, isGameFinished]);
 
+  // Calculate and show stats when the game finishes
+  const finishGame = () => {
+    setIsGameStarted(false);
+    setIsGameFinished(true);
+
+    const typedWordsArray = typedLetters.trim().split(" ");
+    const correctWords = selectedWords.filter(
+      (word, index) => word === typedWordsArray[index]
+    );
+
+    const totalCharsTyped = typedLetters.length;
+    const correctCharsTyped = selectedWords
+      .join(" ")
+      .split("")
+      .filter((char, index) => typedLetters[index] === char).length;
+
+    const accuracy = totalCharsTyped
+      ? Math.round((correctCharsTyped / totalCharsTyped) * 100)
+      : 0;
+
+    const wpm = Math.round((typedWordsArray.length / 15) * 60);
+
+    setStats({
+      accuracy,
+      wpm,
+    });
+  };
+
+  // Reset game handler
+  const resetGame = () => {
+    setIsGameStarted(false);
+    setIsGameFinished(false);
+    setStats(null);
+    setTimeLeft(15); // Reset timer on start
+    setTypedLetters(""); // Clear typed letters
+    setCurrentWordIndex(0);
+    setCurrentLetterIndex(0);
+
+    // Re-generate random words
+    const randomWords = Array.from({ length: 65 }, () =>
+      allWords[Math.floor(Math.random() * allWords.length)]
+    );
+    setSelectedWords(randomWords);
+  };
+
+  // Split words into arrays for rendering
   const splitWords = selectedWords.join(" ").split(" ");
   const typedWordsArray = typedLetters.trim().split(" ");
 
@@ -71,40 +140,67 @@ const Home: React.FC = () => {
       </Head>
       <Header />
       <main className="h-screen bg-[#120e17] flex flex-col justify-center items-center">
-        <section className="relative w-[80%] h-[25%] flex flex-wrap justify-center items-center">
-          {splitWords.map((word, wordIndex) => {
-            const typedWord = typedWordsArray[wordIndex] || "";
-            return (
-              <div className='flex items-center px-2 relative' key={wordIndex} ref={el => (wordRefs.current[wordIndex] = el)}>
-                {word.split("").map((letter, letterIndex) => {
-                  const isTyped = letterIndex < typedWord.length;
-                  const isCorrect = typedWord[letterIndex] === letter;
-                  const isCursorPosition = wordIndex === currentWordIndex && letterIndex === currentLetterIndex;
+        <div className="w-[80%] flex items-center">
+          <p className="font-bold text-3xl">
+            Time Left: {timeLeft} {isGameFinished && "Game Over!"}
+          </p>
+        </div>
 
-                  let className = 'font-bold text-4xl transition-colors duration-300 ';
-                  if (isTyped) {
-                    className += isCorrect 
-                      ? 'text-white/70' 
-                      : 'text-red-500'; 
-                  } else {
-                    className += 'text-white/30'; 
-                  }
+        {isGameFinished ? (
+          <div className="w-[80%] text-center mt-8">
+            <h2 className="text-white text-4xl font-bold mb-6">Game Stats</h2>
+            <ul className="text-white text-lg">
+              <li>Accuracy: {stats.accuracy}%</li>
+              <li>WPM: {stats.wpm}</li>
+            </ul>
+            <button
+              onClick={resetGame}
+              className="mt-6 bg-green-500 text-white px-4 py-2 rounded-lg"
+            >
+              Restart Game
+            </button>
+          </div>
+        ) : (
+          <section className="relative w-[80%] h-[25%] flex flex-wrap justify-start items-center">
+            {splitWords.map((word, wordIndex) => {
+              const typedWord = typedWordsArray[wordIndex] || "";
+              return (
+                <div
+                  className="flex items-center px-2 relative"
+                  key={wordIndex}
+                  ref={(el) => (wordRefs.current[wordIndex] = el)}
+                >
+                  {word.split("").map((letter, letterIndex) => {
+                    const isTyped = letterIndex < typedWord.length;
+                    const isCorrect = typedWord[letterIndex] === letter;
+                    const isCursorPosition =
+                      wordIndex === currentWordIndex &&
+                      letterIndex === currentLetterIndex;
 
-                  return (
-                    <span key={letterIndex} className="relative">
-                      {isCursorPosition && (
-                        <span className="absolute -left-1 w-1 h-10 mt-1 bg-white animate-pulse transition-all"></span>
-                      )}
-                      <p className={className}>
-                        {letter}
-                      </p>
-                    </span>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </section>
+                    let className =
+                      "font-bold text-4xl transition-colors duration-300 ";
+                    if (isTyped) {
+                      className += isCorrect
+                        ? "text-white/70"
+                        : "text-red-500";
+                    } else {
+                      className += "text-white/30";
+                    }
+
+                    return (
+                      <span key={letterIndex} className="relative">
+                        {isCursorPosition && (
+                          <span className="absolute -left-1 w-1 h-10 mt-1 bg-white animate-pulse transition-all"></span>
+                        )}
+                        <p className={className}>{letter}</p>
+                      </span>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </section>
+        )}
       </main>
     </>
   );
