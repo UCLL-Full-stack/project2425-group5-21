@@ -21,7 +21,6 @@ const Home: React.FC = () => {
     "challenge",
     "practice",
     "skill",
-    // ... other words
   ];
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -34,7 +33,6 @@ const Home: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const wordRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Generate random words on component load
   useEffect(() => {
     const randomWords = Array.from(
       { length: 65 },
@@ -43,9 +41,8 @@ const Home: React.FC = () => {
     setSelectedWords(randomWords);
   }, []);
 
-  // Handle key presses
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (isGameFinished) return; // Disable typing after the game finishes
+    if (isGameFinished) return;
 
     if (!isGameStarted) {
       setIsGameStarted(true);
@@ -71,7 +68,6 @@ const Home: React.FC = () => {
     }
   };
 
-  // Timer logic: Start only when isGameStarted is true
   useEffect(() => {
     if (!isGameStarted || timeLeft <= 0) return;
 
@@ -79,17 +75,16 @@ const Home: React.FC = () => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          finishGame(); // Finish the game when time is up
+          finishGame();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer); // Cleanup on unmount
+    return () => clearInterval(timer);
   }, [isGameStarted, timeLeft]);
 
-  // Attach and clean up key press listener
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
@@ -97,7 +92,6 @@ const Home: React.FC = () => {
     };
   }, [typedLetters, isGameStarted, isGameFinished]);
 
-  // Calculate and show stats when the game finishes
   const finishGame = () => {
     setIsGameStarted(false);
     setIsGameFinished(true);
@@ -125,17 +119,15 @@ const Home: React.FC = () => {
     });
   };
 
-  // Reset game handler
   const resetGame = () => {
     setIsGameStarted(false);
     setIsGameFinished(false);
     setStats(null);
-    setTimeLeft(15); // Reset timer on start
-    setTypedLetters(""); // Clear typed letters
+    setTimeLeft(15);
+    setTypedLetters("");
     setCurrentWordIndex(0);
     setCurrentLetterIndex(0);
 
-    // Re-generate random words
     const randomWords = Array.from(
       { length: 65 },
       () => allWords[Math.floor(Math.random() * allWords.length)]
@@ -143,7 +135,6 @@ const Home: React.FC = () => {
     setSelectedWords(randomWords);
   };
 
-  // Split words into arrays for rendering
   const splitWords = selectedWords.join(" ").split(" ");
   const typedWordsArray = typedLetters.trim().split(" ");
 
