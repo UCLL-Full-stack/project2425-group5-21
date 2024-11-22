@@ -1,32 +1,119 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Head from 'next/head';
-import Header from "@/components/header";
+import React, { useEffect, useState, useRef } from "react";
+import Head from "next/head";
+import Header from "@/components/header.jsx";
 
 const Home: React.FC = () => {
   const allWords = [
-    "from", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "keyboard",
-    "monitor", "speed", "test", "race", "game", "challenge", "practice", "skill",
-    "accuracy", "effort", "focus", "energy", "learn", "improve", "progress", "success",
-    "goal", "complete", "start", "finish", "try", "repeat", "mistake", "correct",
-    "words", "letters", "sentence", "flow", "rhythm", "technique", "fast", "slow",
-    "persevere", "achieve", "understand", "concept", "time", "memory", "test",
-    "confidence", "competence", "control", "growth", "habit", "practice", "method",
-    "optimize", "performance", "action", "reaction", "passion", "consistency",
-    "dedication", "focus", "drive", "learning", "engagement", "clarity", "insight",
-    "vision", "routine", "success", "system", "goal", "outcome", "task", "process",
-    "steps", "result", "plan", "goal", "aspiration", "ambition", "target", "mission",
-    "strategy", "priority", "objective", "perspective", "context", "framework", 
-    "roadmap", "journey", "adventure", "explore", "discover", "insight", "knowledge"
+    "from",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dog",
+    "keyboard",
+    "monitor",
+    "speed",
+    "test",
+    "race",
+    "game",
+    "challenge",
+    "practice",
+    "skill",
+    "accuracy",
+    "effort",
+    "focus",
+    "energy",
+    "learn",
+    "improve",
+    "progress",
+    "success",
+    "goal",
+    "complete",
+    "start",
+    "finish",
+    "try",
+    "repeat",
+    "mistake",
+    "correct",
+    "words",
+    "letters",
+    "sentence",
+    "flow",
+    "rhythm",
+    "technique",
+    "fast",
+    "slow",
+    "persevere",
+    "achieve",
+    "understand",
+    "concept",
+    "time",
+    "memory",
+    "test",
+    "confidence",
+    "competence",
+    "control",
+    "growth",
+    "habit",
+    "practice",
+    "method",
+    "optimize",
+    "performance",
+    "action",
+    "reaction",
+    "passion",
+    "consistency",
+    "dedication",
+    "focus",
+    "drive",
+    "learning",
+    "engagement",
+    "clarity",
+    "insight",
+    "vision",
+    "routine",
+    "success",
+    "system",
+    "goal",
+    "outcome",
+    "task",
+    "process",
+    "steps",
+    "result",
+    "plan",
+    "goal",
+    "aspiration",
+    "ambition",
+    "target",
+    "mission",
+    "strategy",
+    "priority",
+    "objective",
+    "perspective",
+    "context",
+    "framework",
+    "roadmap",
+    "journey",
+    "adventure",
+    "explore",
+    "discover",
+    "insight",
+    "knowledge",
   ];
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [typedLetters, setTypedLetters] = useState<string>("");
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const [currentLetterIndex, setCurrentLetterIndex] = useState<number>(0);
-  const wordRefs = useRef<(HTMLDivElement | null)[]>([]); 
+  const wordRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const randomWords = Array.from({ length: 46 }, () => allWords[Math.floor(Math.random() * allWords.length)]);
+    const randomWords = Array.from(
+      { length: 46 },
+      () => allWords[Math.floor(Math.random() * allWords.length)]
+    );
     setSelectedWords(randomWords);
   }, []);
 
@@ -75,19 +162,24 @@ const Home: React.FC = () => {
           {splitWords.map((word, wordIndex) => {
             const typedWord = typedWordsArray[wordIndex] || "";
             return (
-              <div className='flex items-center px-2 relative' key={wordIndex} ref={el => (wordRefs.current[wordIndex] = el)}>
+              <div
+                className="flex items-center px-2 relative"
+                key={wordIndex}
+                ref={(el) => (wordRefs.current[wordIndex] = el)}
+              >
                 {word.split("").map((letter, letterIndex) => {
                   const isTyped = letterIndex < typedWord.length;
                   const isCorrect = typedWord[letterIndex] === letter;
-                  const isCursorPosition = wordIndex === currentWordIndex && letterIndex === currentLetterIndex;
+                  const isCursorPosition =
+                    wordIndex === currentWordIndex &&
+                    letterIndex === currentLetterIndex;
 
-                  let className = 'font-bold text-4xl transition-colors duration-300 ';
+                  let className =
+                    "font-bold text-4xl transition-colors duration-300 ";
                   if (isTyped) {
-                    className += isCorrect 
-                      ? 'text-white/70' 
-                      : 'text-red-500'; 
+                    className += isCorrect ? "text-white/70" : "text-red-500";
                   } else {
-                    className += 'text-white/30'; 
+                    className += "text-white/30";
                   }
 
                   return (
@@ -95,9 +187,7 @@ const Home: React.FC = () => {
                       {isCursorPosition && (
                         <span className="absolute -left-1 w-1 h-10 mt-1 bg-white animate-pulse transition-all"></span>
                       )}
-                      <p className={className}>
-                        {letter}
-                      </p>
+                      <p className={className}>{letter}</p>
                     </span>
                   );
                 })}

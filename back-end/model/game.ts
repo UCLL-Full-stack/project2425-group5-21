@@ -1,26 +1,27 @@
 import { User } from './user';
+import { Game as GamePrisma } from '@prisma/client';
 
 export class Game {
     private id?: number;
     private startDate: Date;
     private endDate: Date;
-    private players: User[];
     private status: string;
+    private users: User[];
 
     constructor(game: {
         id?: number;
         startDate: Date;
         endDate: Date;
-        players: User[];
         status: string;
+        users: User[];
     }) {
         this.validate(game);
 
         this.id = game.id;
         this.startDate = game.startDate;
         this.endDate = game.endDate;
-        this.players = game.players;
         this.status = game.status;
+        this.users = game.users;
     }
 
     getId(): number | undefined {
@@ -35,12 +36,12 @@ export class Game {
         return this.endDate;
     }
 
-    getPlayers(): User[] {
-        return this.players;
-    }
-
     getStatus(): string {
         return this.status;
+    }
+
+    getUsers(): User[] {
+        return this.users;
     }
 
     setId(id: number | undefined): void {
@@ -55,15 +56,15 @@ export class Game {
         this.endDate = endDate;
     }
 
-    setPlayers(players: User[]): void {
-        this.players = players;
+    setUsers(users: User[]): void {
+        this.users = users;
     }
 
     setStatus(status: string): void {
         this.status = status;
     }
 
-    validate(game: { startDate: Date; endDate: Date; players: User[]; status: string }) {
+    validate(game: { startDate: Date; endDate: Date; status: string; users: User[] }) {
         if (game.startDate === null) {
             throw new Error('Start date is required');
         }
@@ -73,7 +74,7 @@ export class Game {
         if (game.startDate > game.endDate) {
             throw new Error('Start date cannot be after end date');
         }
-        if (!game.players || game.players.length === 0) {
+        if (!game.users || game.users.length === 0) {
             throw new Error('At least one player is required');
         }
         if (!game.status?.trim()) {
@@ -85,8 +86,18 @@ export class Game {
         return (
             this.startDate === game.getStartDate() &&
             this.endDate === game.getEndDate() &&
-            this.players.length === game.getPlayers().length &&
-            this.status === game.getStatus()
+            this.status === game.getStatus() &&
+            this.users === game.getUsers()
         );
     }
+
+    // static from({ id, startDate, endDate, status, users }: GamePrisma) {
+    //     return new Game({
+    //         id,
+    //         startDate: new Date(startDate),
+    //         endDate: new Date(endDate),
+    //         status,
+    //         users,
+    //     });
+    // }
 }

@@ -1,13 +1,13 @@
 import { Role as PrismaRole, Profile as ProfilePrisma } from '@prisma/client';
 
 export class Profile {
-    private id?: number;
-    private username: string;
-    private bio: string;
-    private avgWPM: number;
-    private highestWPM: number;
-    private startDate: Date;
-    private role: PrismaRole;
+    public id?: number;
+    public username: string;
+    public bio: string;
+    public avgWPM: number;
+    public highestWPM: number;
+    public startDate: Date;
+    public role: PrismaRole;
 
     constructor(profile: {
         id?: number;

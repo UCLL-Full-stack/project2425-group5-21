@@ -15,6 +15,16 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Game" (
+    "id" SERIAL NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "status" TEXT NOT NULL,
+
+    CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "TypingTest" (
     "id" SERIAL NOT NULL,
     "wpm" DOUBLE PRECISION NOT NULL,
@@ -44,16 +54,6 @@ CREATE TABLE "Profile" (
     "role" "Role" NOT NULL,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Game" (
-    "id" SERIAL NOT NULL,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
-    "status" TEXT NOT NULL,
-
-    CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

@@ -23,6 +23,14 @@ model User {
   gameId          Int           
 }
 
+model Game {
+  id              Int           @id @default(autoincrement())
+  startDate       DateTime
+  endDate         DateTime
+  status          String
+  users           User[]            
+} 
+
 model TypingTest {
   id              Int           @id @default(autoincrement())
   wpm             Float
@@ -47,11 +55,3 @@ model Profile {
   role            Role
   leaderboards    Leaderboard[] 
 }
-
-model Game {
-  id              Int           @id @default(autoincrement())
-  startDate       DateTime
-  endDate         DateTime
-  status          String
-  users           User[]        
-} 

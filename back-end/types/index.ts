@@ -1,8 +1,8 @@
-enum Role {
+export enum Role {
     Player = 'player',
     Admin = 'admin',
 }
-type UserInput = {
+export type UserInput = {
     id?: number;
     firstName: string;
     lastName: string;
@@ -11,7 +11,7 @@ type UserInput = {
     role: Role | null;
 };
 
-type ProfileInput = {
+export type ProfileInput = {
     id?: number;
     username: string;
     bio: string;
@@ -20,5 +20,3 @@ type ProfileInput = {
     startDate: Date;
     role: Role;
 };
-
-export { Role, UserInput, ProfileInput };

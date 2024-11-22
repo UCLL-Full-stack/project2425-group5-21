@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Leaderboard as LeaderboardType } from "@/types";
-import LeaderboardService from "@/services/LeaderboardService";
+import { Leaderboard as LeaderboardType } from "@/types/index.js";
+import LeaderboardService from "@/services/LeaderboardService.js";
 import Head from "next/head";
-import Header from "@/components/header";
-import AddProfileForm from "@/components/Profile/addProfile";
+import Header from "@/components/header.jsx";
+import AddProfileForm from "@/components/Profile/addProfile.jsx";
 
 const Leaderboard: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);

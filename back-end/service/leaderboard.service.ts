@@ -1,8 +1,6 @@
 import { Leaderboard } from '../model/leaderboard';
 import { Profile } from '../model/profile';
 import leaderboardDb from '../repository/leaderboard.db';
-import profileDb from '../repository/profile.db';
-import { ProfileInput } from '../types';
 
 const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
     return await leaderboardDb.getAllLeaderboards();
@@ -15,34 +13,31 @@ const getLeaderboardByType = async (type: number): Promise<Leaderboard> => {
 };
 
 const addProfileToLeaderboardType = async (
-    profileInput: ProfileInput,
+    profile: Profile,
     type: number
 ): Promise<Leaderboard> => {
-    if (!profileInput.id) {
-        throw new Error('Profile ID is required');
-    }
-    if (!profileInput.username) {
+    if (!profile.username) {
         throw new Error('Username is required');
     }
-    if (!profileInput.bio) {
+    if (!profile.bio) {
         throw new Error('Bio is required');
     }
-    if (profileInput.avgWPM === undefined) {
+    if (profile.avgWPM === undefined) {
         throw new Error('AvgWPM is required');
     }
-    if (profileInput.highestWPM === undefined) {
+    if (profile.highestWPM === undefined) {
         throw new Error('HighestWPM is required');
     }
-    if (!profileInput.startDate) {
+    if (!profile.startDate) {
         throw new Error('Start date is required');
     }
-    if (!profileInput.role) {
+    if (!profile.role) {
         throw new Error('Role is required');
     }
 
     const leaderboard = await leaderboardDb.getLeaderboardByType({ type });
 
-    const newProfile = new Profile(profileInput);
+    const newProfile = new Profile(profile);
 
     if (!leaderboard) {
         throw new Error(`Leaderboard doesn't exist with type ${type}.`);

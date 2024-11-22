@@ -118,19 +118,19 @@ profileRouter.post('/', async (req: Request, res: Response, next: NextFunction) 
 profileRouter.post('/:type', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const profileInput = <ProfileInput>req.body;
-
         const leaderboardType: number = parseInt(req.params.type, 10);
 
         const newProfile = await profileService.createProfile(profileInput);
-
         const leaderboard = await leaderboardService.addProfileToLeaderboardType(
-            profileInput,
+            newProfile,
             leaderboardType
         );
 
         res.status(200).json(leaderboard);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ status: 'error', errorMessage: error.message });
+        }
     }
 });
 
