@@ -1,26 +1,18 @@
 import { User } from './user';
-import { Game as GamePrisma } from '@prisma/client';
+import { Game as GamePrisma, User as UserPrisma } from '@prisma/client';
 
 export class Game {
-    private id?: number;
-    private startDate: Date;
-    private endDate: Date;
-    private status: string;
-    private users: User[];
+    public id?: number;
+    public startDate: Date;
+    public endDate: Date;
+    public users: User[];
 
-    constructor(game: {
-        id?: number;
-        startDate: Date;
-        endDate: Date;
-        status: string;
-        users: User[];
-    }) {
+    constructor(game: { id?: number; startDate: Date; endDate: Date; users: User[] }) {
         this.validate(game);
 
         this.id = game.id;
         this.startDate = game.startDate;
         this.endDate = game.endDate;
-        this.status = game.status;
         this.users = game.users;
     }
 
@@ -34,10 +26,6 @@ export class Game {
 
     getEndDate(): Date {
         return this.endDate;
-    }
-
-    getStatus(): string {
-        return this.status;
     }
 
     getUsers(): User[] {
@@ -60,11 +48,7 @@ export class Game {
         this.users = users;
     }
 
-    setStatus(status: string): void {
-        this.status = status;
-    }
-
-    validate(game: { startDate: Date; endDate: Date; status: string; users: User[] }) {
+    validate(game: { startDate: Date; endDate: Date; users: User[] }) {
         if (game.startDate === null) {
             throw new Error('Start date is required');
         }
@@ -77,27 +61,23 @@ export class Game {
         if (!game.users || game.users.length === 0) {
             throw new Error('At least one player is required');
         }
-        if (!game.status?.trim()) {
-            throw new Error('Status is required');
-        }
     }
 
     equals(game: Game): boolean {
         return (
             this.startDate === game.getStartDate() &&
             this.endDate === game.getEndDate() &&
-            this.status === game.getStatus() &&
-            this.users === game.getUsers()
+            this.users.length === game.getUsers().length &&
+            this.users.every((user, index) => user.equals(game.getUsers()[index]))
         );
     }
 
-    // static from({ id, startDate, endDate, status, users }: GamePrisma) {
-    //     return new Game({
-    //         id,
-    //         startDate: new Date(startDate),
-    //         endDate: new Date(endDate),
-    //         status,
-    //         users,
-    //     });
-    // }
+    static from({ id, startDate, endDate, users }: GamePrisma & { users: UserPrisma[] }) {
+        return new Game({
+            id,
+            startDate,
+            endDate,
+            users: users.map((user) => User.from(user)),
+        });
+    }
 }

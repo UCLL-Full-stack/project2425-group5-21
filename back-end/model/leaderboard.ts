@@ -1,32 +1,28 @@
-import { Profile } from './profile';
-import { Leaderboard as LeaderboardPrisma, Profile as ProfilePrisma } from '@prisma/client';
+import { TypingTest } from './typingTest';
+import { Leaderboard as LeaderboardPrisma, TypingTest as TypingTestPrisma } from '@prisma/client';
 
 export class Leaderboard {
-    private id?: number;
-    private maxPlayers: number;
-    private type: number;
-    private profiles: Profile[];
+    public id?: number;
+    public maxPlayers: number;
+    public type: number;
+    public scores: TypingTest[];
 
     constructor(leaderboard: {
         id?: number;
         maxPlayers: number;
         type: number;
-        profiles: Profile[];
+        scores: TypingTest[];
     }) {
         this.validate(leaderboard);
 
         this.id = leaderboard.id;
         this.maxPlayers = leaderboard.maxPlayers;
         this.type = leaderboard.type;
-        this.profiles = leaderboard.profiles;
+        this.scores = leaderboard.scores;
     }
 
     getId(): number | undefined {
         return this.id;
-    }
-
-    getProfiles(): Profile[] {
-        return this.profiles;
     }
 
     getMaxPlayers(): number {
@@ -37,12 +33,16 @@ export class Leaderboard {
         return this.type;
     }
 
+    getScores(): TypingTest[] {
+        return this.scores;
+    }
+
     setId(id: number | undefined): void {
         this.id = id;
     }
 
-    setProfiles(profiles: Profile[]): void {
-        this.profiles = profiles;
+    setScores(scores: TypingTest[]): void {
+        this.scores = scores;
     }
 
     setMaxPlayers(maxPlayers: number): void {
@@ -53,15 +53,9 @@ export class Leaderboard {
         this.type = type;
     }
 
-    addProfile(profile: Profile) {
-        if (!this.maxPlayers || this.profiles.length < this.maxPlayers) {
-            this.profiles.push(profile);
-        }
-    }
-
-    validate(leaderboard: { profiles: Profile[]; maxPlayers: number; type: number }) {
-        if (!leaderboard.profiles || leaderboard.profiles.length === 0) {
-            throw new Error('Rankings must contain at least one player');
+    validate(leaderboard: { scores: TypingTest[]; maxPlayers: number; type: number }) {
+        if (!leaderboard.scores || leaderboard.scores.length === 0) {
+            throw new Error('Scores must contain at least one typing test');
         }
 
         if (!leaderboard.maxPlayers || leaderboard.maxPlayers <= 0) {
@@ -82,7 +76,7 @@ export class Leaderboard {
             this.id === leaderboard.getId() &&
             this.maxPlayers === leaderboard.getMaxPlayers() &&
             this.type === leaderboard.getType() &&
-            this.profiles.length === leaderboard.getProfiles().length
+            this.scores.length === leaderboard.getScores().length
         );
     }
 
@@ -90,13 +84,13 @@ export class Leaderboard {
         id,
         maxPlayers,
         type,
-        profiles,
-    }: LeaderboardPrisma & { profiles: ProfilePrisma[] }) {
+        scores,
+    }: LeaderboardPrisma & { scores: TypingTestPrisma[] }): Leaderboard {
         return new Leaderboard({
             id,
             maxPlayers,
             type,
-            profiles: profiles.map((profile) => Profile.from(profile)),
+            scores: scores.map((score) => TypingTest.from(score)),
         });
     }
 }

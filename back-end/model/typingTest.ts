@@ -1,18 +1,29 @@
 import { TypingTest as TypingTestPrisma } from '@prisma/client';
 
 export class TypingTest {
-    private id?: number;
-    private wpm: number;
-    private accuracy: number;
-    private time: number;
+    public id?: number;
+    public wpm: number;
+    public accuracy: number;
+    public time: number;
+    public userId: number;
+    public gameId?: number | null;
 
-    constructor(typingTest: { id?: number; wpm: number; accuracy: number; time: number }) {
+    constructor(typingTest: {
+        id?: number;
+        wpm: number;
+        accuracy: number;
+        time: number;
+        userId: number;
+        gameId?: number | null;
+    }) {
         this.validate(typingTest);
 
         this.id = typingTest.id;
         this.wpm = typingTest.wpm;
         this.accuracy = typingTest.accuracy;
         this.time = typingTest.time;
+        this.userId = typingTest.userId;
+        this.gameId = typingTest.gameId;
     }
 
     getId(): number | undefined {
@@ -31,6 +42,14 @@ export class TypingTest {
         return this.time;
     }
 
+    getUserId(): number {
+        return this.userId;
+    }
+
+    getGameId(): number | undefined | null {
+        return this.gameId;
+    }
+
     setId(id: number | undefined): void {
         this.id = id;
     }
@@ -47,7 +66,21 @@ export class TypingTest {
         this.time = time;
     }
 
-    validate(typingTest: { wpm: number; accuracy: number; time: number }) {
+    setUserId(userId: number): void {
+        this.userId = userId;
+    }
+
+    setGameId(gameId: number | undefined | null): void {
+        this.gameId = gameId;
+    }
+
+    validate(typingTest: {
+        wpm: number;
+        accuracy: number;
+        time: number;
+        userId: number;
+        gameId?: number | null;
+    }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
             throw new Error('WPM is required');
         }
@@ -66,6 +99,9 @@ export class TypingTest {
         if (typingTest.time < 0) {
             throw new Error('Time must be a positive value');
         }
+        if (!typingTest.userId) {
+            throw new Error('User ID is required');
+        }
     }
 
     equals(typingTest: TypingTest): boolean {
@@ -73,16 +109,30 @@ export class TypingTest {
             this.id === typingTest.getId() &&
             this.wpm === typingTest.getWpm() &&
             this.accuracy === typingTest.getAccuracy() &&
-            this.time === typingTest.getTime()
+            this.time === typingTest.getTime() &&
+            this.userId === typingTest.getUserId() &&
+            this.gameId === typingTest.getGameId()
         );
     }
 
-    static from({ id, wpm, accuracy, time }: TypingTestPrisma) {
+    static from({ id, wpm, accuracy, time, userId, gameId }: TypingTestPrisma): TypingTest {
         return new TypingTest({
             id,
             wpm,
             accuracy,
             time,
+            userId,
+            gameId,
         });
+    }
+
+    toPrisma() {
+        return {
+            wpm: this.wpm,
+            accuracy: this.accuracy,
+            time: this.time,
+            userId: this.userId,
+            gameId: this.gameId,
+        };
     }
 }

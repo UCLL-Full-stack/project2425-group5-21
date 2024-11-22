@@ -14,44 +14,39 @@ enum Role {
 
 model User {
   id              Int           @id @default(autoincrement())
-  firstName       String
-  lastName        String
+  username        String
   email           String        @unique
   password        String
   role            Role
-  game            Game          @relation(fields: [gameId], references: [id])
-  gameId          Int           
+  creationDate    DateTime      @default(now())
+  TypingTests     TypingTest[]
+  games           Game[]
 }
 
 model Game {
   id              Int           @id @default(autoincrement())
   startDate       DateTime
   endDate         DateTime
-  status          String
-  users           User[]            
-} 
+  typingTests     TypingTest[]  
+  users           User[]
+}
 
 model TypingTest {
   id              Int           @id @default(autoincrement())
   wpm             Float
   accuracy        Float
   time            Int
+  user            User          @relation(fields: [userId], references: [id])
+  userId          Int
+  game            Game?         @relation(fields: [gameId], references: [id])
+  gameId          Int?
+  leaderboard     Leaderboard?  @relation(fields: [leaderboardId], references: [id], name: "LeaderboardScores")
+  leaderboardId   Int?
 }
 
 model Leaderboard {
   id              Int           @id @default(autoincrement())
   maxPlayers      Int
-  type            Int 
-  profiles        Profile[]     
-}
-
-model Profile {
-  id              Int           @id @default(autoincrement())
-  username        String        @unique
-  bio             String
-  avgWPM          Float 
-  highestWPM      Float  
-  startDate       DateTime      @default(now())
-  role            Role
-  leaderboards    Leaderboard[] 
+  type            Int
+  scores          TypingTest[]  @relation("LeaderboardScores")
 }

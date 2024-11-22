@@ -4,19 +4,9 @@ export enum Role {
 }
 export type UserInput = {
     id?: number;
-    firstName: string;
-    lastName: string;
+    username: string;
     email: string;
     password: string;
+    creationDate: Date;
     role: Role | null;
-};
-
-export type ProfileInput = {
-    id?: number;
-    username: string;
-    bio: string;
-    avgWPM: number;
-    highestWPM: number;
-    startDate: Date;
-    role: Role;
 };

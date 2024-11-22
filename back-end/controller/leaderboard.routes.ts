@@ -9,9 +9,9 @@
  *              type: number
  *              format: int64
  *              description: Game end date.
- *            Rankings:
+ *            scores:
  *              type: array
- *              description: array of Profiles.
+ *              description: array of TypingTests.
  *            maxPlayers:
  *              type: number
  *              description: Number of max players.
@@ -50,6 +50,7 @@ leaderboardRouter.get('/', async (req: Request, res: Response, next: NextFunctio
         }
     }
 });
+
 /**
  * @swagger
  * /leaderboards/{type}:

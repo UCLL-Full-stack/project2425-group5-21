@@ -1,28 +1,28 @@
 import { Role as PrismaRole, User as UserPrisma } from '@prisma/client';
 
 export class User {
-    private id?: number;
-    private firstName: string;
-    private lastName: string;
-    private email: string;
-    private password: string;
-    private role: PrismaRole;
+    public id?: number;
+    public username: string;
+    public email: string;
+    public password: string;
+    public creationDate: Date;
+    public role: PrismaRole;
 
     constructor(user: {
         id?: number;
-        firstName: string;
-        lastName: string;
+        username: string;
         email: string;
         password: string;
+        creationDate: Date;
         role: PrismaRole;
     }) {
         this.validate(user);
 
         this.id = user.id;
-        this.firstName = user.firstName;
-        this.lastName = user.lastName;
+        this.username = user.username;
         this.email = user.email;
         this.password = user.password;
+        this.creationDate = user.creationDate;
         this.role = user.role;
     }
 
@@ -30,12 +30,8 @@ export class User {
         return this.id;
     }
 
-    getFirstName(): string {
-        return this.firstName;
-    }
-
-    getLastName(): string {
-        return this.lastName;
+    getUsername(): string {
+        return this.username;
     }
 
     getEmail(): string {
@@ -46,52 +42,32 @@ export class User {
         return this.password;
     }
 
-    getRole(): PrismaRole | null {
+    getCreationDate(): Date {
+        return this.creationDate;
+    }
+
+    getRole(): PrismaRole {
         return this.role;
     }
 
-    setId(id: number | undefined): void {
-        this.id = id;
-    }
-
-    setFirstName(firstName: string): void {
-        this.firstName = firstName;
-    }
-
-    setLastName(lastName: string): void {
-        this.lastName = lastName;
-    }
-
-    setEmail(email: string): void {
-        this.email = email;
-    }
-
-    setPassword(password: string): void {
-        this.password = password;
-    }
-
-    setRole(role: PrismaRole): void {
-        this.role = role;
-    }
-
     validate(user: {
-        firstName: string;
-        lastName: string;
+        username: string;
         email: string;
         password: string;
+        creationDate: Date;
         role: PrismaRole;
     }) {
-        if (!user.firstName?.trim()) {
-            throw new Error('First name is required');
-        }
-        if (!user.lastName?.trim()) {
-            throw new Error('Last name is required');
+        if (!user.username?.trim()) {
+            throw new Error('Username is required');
         }
         if (!user.email?.trim()) {
             throw new Error('Email is required');
         }
         if (!user.password?.trim()) {
             throw new Error('Password is required');
+        }
+        if (!user.creationDate) {
+            throw new Error('Creation date is required');
         }
         if (!user.role) {
             throw new Error('Role is required');
@@ -100,21 +76,21 @@ export class User {
 
     equals(user: User): boolean {
         return (
-            this.firstName === user.getFirstName() &&
-            this.lastName === user.getLastName() &&
+            this.username === user.getUsername() &&
             this.email === user.getEmail() &&
             this.password === user.getPassword() &&
+            this.creationDate === user.getCreationDate() &&
             this.role === user.getRole()
         );
     }
 
-    static from({ id, firstName, lastName, email, password, role }: UserPrisma) {
+    static from({ id, username, email, password, creationDate, role }: UserPrisma): User {
         return new User({
             id,
-            firstName,
-            lastName,
+            username,
             email,
             password,
+            creationDate,
             role,
         });
     }
