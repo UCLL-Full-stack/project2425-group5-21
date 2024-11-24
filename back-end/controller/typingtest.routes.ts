@@ -17,7 +17,7 @@
  *              description: Typing test accuracy.
  *            time:
  *              type: number
- *              description: Typing test time.time:
+ *              description: Typing test time.
  *            type:
  *              type: string
  *              description: Typing test type.
@@ -32,6 +32,8 @@ const typingtestRouter = express.Router();
  * @swagger
  * /typingtests:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all typingtests.
  *     responses:
  *       200:

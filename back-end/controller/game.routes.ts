@@ -31,6 +31,8 @@ const gameRouter = express.Router();
  * @swagger
  * /games:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all games.
  *     responses:
  *       200:
@@ -57,6 +59,8 @@ gameRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /games/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a game by ID.
  *     parameters:
  *       - in: path
