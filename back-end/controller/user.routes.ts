@@ -2,33 +2,73 @@
  * @swagger
  *   components:
  *    schemas:
+ *      AuthenticationResponse:
+ *          type: object
+ *          properties:
+ *            message:
+ *              type: string
+ *              description: Authentication response.
+ *            token:
+ *              type: string
+ *              description: JWT access token.
+ *            username:
+ *              type: string
+ *              description: User name.
+ *      AuthenticationRequest:
+ *          type: object
+ *          properties:
+ *            username:
+ *              type: string
+ *              description: User name.
+ *            password:
+ *              type: string
+ *              description: User password.
  *      User:
  *          type: object
  *          properties:
  *            id:
  *              type: number
  *              format: int64
- *              description: User ID.
  *            username:
  *              type: string
- *              description: Profile username.
+ *              description: User name.
  *            email:
  *              type: string
- *              description: User's email.
+ *              description: E-mail.
  *            password:
  *              type: string
- *              description: User's password.
- *            role:
- *              type: string
- *              description: Role of user.
+ *              description: User password.
  *            creationDate:
  *              type: string
  *              format: date-time
  *              description: Date when the user was created.
- *
+ *            role:
+ *               $ref: '#/components/schemas/Role'
+ *      UserInput:
+ *          type: object
+ *          properties:
+ *            username:
+ *              type: string
+ *              description: User name.
+ *            email:
+ *              type: string
+ *              description: E-mail.
+ *            password:
+ *              type: string
+ *              description: User password.
+ *            creationDate:
+ *              type: string
+ *              format: date-time
+ *              description: Date when the user was created.
+ *            role:
+ *               $ref: '#/components/schemas/Role'
+ *      Role:
+ *          type: string
+ *          enum: [player, admin]
  */
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
+import { UserInput } from '../types';
 
 const userRouter = express.Router();
 
@@ -36,6 +76,8 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users.
  *     responses:
  *       200:
@@ -62,6 +104,8 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a user by ID.
  *     parameters:
  *       - in: path
@@ -97,8 +141,49 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
 
 /**
  * @swagger
+ * /users/{username}:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get a user by username.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         description: Username of the user.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A user with the given Username.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+userRouter.get('/:username', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userService.getUserByUsername({ username: req.params.username });
+        if (!user) {
+            return res.status(404).json({
+                status: 'error',
+                errorMessage: `User with username ${req.params.username} not found.`,
+            });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ status: 'error', errorMessage: error.message });
+        }
+    }
+});
+
+/**
+ * @swagger
  * /users/{id}/typingTests:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get typing tests by user ID.
  *     parameters:
  *       - in: path
@@ -132,6 +217,8 @@ userRouter.get('/:id/typingTests', async (req: Request, res: Response, next: Nex
  * @swagger
  * /users/{id}/typingTests/{type}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get typing tests by user ID and type.
  *     parameters:
  *       - in: path
@@ -171,5 +258,63 @@ userRouter.get(
         }
     }
 );
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Login using username/password. Returns an object with JWT token and user name when successful.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AuthenticationRequest'
+ *     responses:
+ *       200:
+ *         description: The created user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthenticationResponse'
+ */
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userInput = <UserInput>req.body;
+        const response = await userService.authenticate(userInput);
+        res.status(200).json({ message: 'Authentication succesful', ...response });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/signup:
+ *   post:
+ *     summary: Create a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: The created user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+userRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userInput = <UserInput>req.body;
+        const user = await userService.createUser(userInput);
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export { userRouter };
