@@ -1,6 +1,7 @@
 import { User } from '../model/user';
 import { TypingTest } from '../model/typingTest';
-import database from './database';
+import database from '../util/database';
+import { UserInput } from '../types';
 
 const getAllUsers = async (): Promise<User[]> => {
     try {
@@ -60,9 +61,43 @@ const getTypingTestsByUserAndType = async (userId: number, type: string): Promis
     }
 };
 
+const getUserByUsername = async ({ username }: { username: string }): Promise<User | null> => {
+    try {
+        const userPrisma = await database.user.findFirst({
+            where: { username },
+        });
+
+        return userPrisma ? User.from(userPrisma) : null;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
+const createUser = async ({
+    username,
+    email,
+    password,
+    creationDate,
+    role,
+}: UserInput): Promise<User> => {
+    try {
+        const userPrisma = await database.user.create({
+            data: { username, email, password, creationDate, role },
+        });
+
+        return User.from(userPrisma);
+    } catch (error) {
+        console.log(error);
+        throw new Error('Database error. See error log for details.');
+    }
+};
+
 export default {
     getAllUsers,
     getUserById,
     getTypingTestsByUser,
     getTypingTestsByUserAndType,
+    createUser,
+    getUserByUsername,
 };
