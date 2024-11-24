@@ -6,7 +6,7 @@ export class TypingTest {
     public accuracy: number;
     public time: number;
     public type: string;
-    public userId?: number | null;
+    public userId: number;
     public gameId?: number | null;
 
     constructor(typingTest: {
@@ -15,7 +15,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        userId?: number | null;
+        userId: number;
         gameId?: number | null;
     }) {
         this.validate(typingTest);
@@ -49,7 +49,7 @@ export class TypingTest {
         return this.type;
     }
 
-    getUserId(): number | undefined | null {
+    getUserId(): number {
         return this.userId;
     }
 
@@ -57,7 +57,7 @@ export class TypingTest {
         return this.gameId;
     }
 
-    setId(id: number | undefined): void {
+    setId(id: number): void {
         this.id = id;
     }
 
@@ -77,7 +77,7 @@ export class TypingTest {
         this.type = type;
     }
 
-    setUserId(userId: number | undefined | null): void {
+    setUserId(userId: number): void {
         this.userId = userId;
     }
 
@@ -90,7 +90,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        userId?: number | null;
+        userId?: number;
         gameId?: number | null;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
