@@ -5,7 +5,8 @@ export class TypingTest {
     public wpm: number;
     public accuracy: number;
     public time: number;
-    public userId: number;
+    public type: string;
+    public userId?: number | null;
     public gameId?: number | null;
 
     constructor(typingTest: {
@@ -13,7 +14,8 @@ export class TypingTest {
         wpm: number;
         accuracy: number;
         time: number;
-        userId: number;
+        type: string;
+        userId?: number | null;
         gameId?: number | null;
     }) {
         this.validate(typingTest);
@@ -22,6 +24,7 @@ export class TypingTest {
         this.wpm = typingTest.wpm;
         this.accuracy = typingTest.accuracy;
         this.time = typingTest.time;
+        this.type = typingTest.type;
         this.userId = typingTest.userId;
         this.gameId = typingTest.gameId;
     }
@@ -42,7 +45,11 @@ export class TypingTest {
         return this.time;
     }
 
-    getUserId(): number {
+    getType(): string {
+        return this.type;
+    }
+
+    getUserId(): number | undefined | null {
         return this.userId;
     }
 
@@ -66,7 +73,11 @@ export class TypingTest {
         this.time = time;
     }
 
-    setUserId(userId: number): void {
+    setType(type: string): void {
+        this.type = type;
+    }
+
+    setUserId(userId: number | undefined | null): void {
         this.userId = userId;
     }
 
@@ -78,7 +89,8 @@ export class TypingTest {
         wpm: number;
         accuracy: number;
         time: number;
-        userId: number;
+        type: string;
+        userId?: number | null;
         gameId?: number | null;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
@@ -99,6 +111,12 @@ export class TypingTest {
         if (typingTest.time < 0) {
             throw new Error('Time must be a positive value');
         }
+        if (!typingTest.type?.trim()) {
+            throw new Error('Type is required');
+        }
+        if (typingTest.type !== 'singleplayer' && typingTest.type !== 'multiplayer') {
+            throw new Error('Type must be either "singleplayer" or "multiplayer"');
+        }
         if (!typingTest.userId) {
             throw new Error('User ID is required');
         }
@@ -110,17 +128,19 @@ export class TypingTest {
             this.wpm === typingTest.getWpm() &&
             this.accuracy === typingTest.getAccuracy() &&
             this.time === typingTest.getTime() &&
+            this.type === typingTest.getType() &&
             this.userId === typingTest.getUserId() &&
             this.gameId === typingTest.getGameId()
         );
     }
 
-    static from({ id, wpm, accuracy, time, userId, gameId }: TypingTestPrisma): TypingTest {
+    static from({ id, wpm, accuracy, time, type, userId, gameId }: TypingTestPrisma): TypingTest {
         return new TypingTest({
             id,
             wpm,
             accuracy,
             time,
+            type,
             userId,
             gameId,
         });
@@ -131,6 +151,7 @@ export class TypingTest {
             wpm: this.wpm,
             accuracy: this.accuracy,
             time: this.time,
+            type: this.type,
             userId: this.userId,
             gameId: this.gameId,
         };

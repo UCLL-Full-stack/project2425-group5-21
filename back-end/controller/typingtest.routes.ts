@@ -17,7 +17,10 @@
  *              description: Typing test accuracy.
  *            time:
  *              type: number
- *              description: Typing test time.
+ *              description: Typing test time.time:
+ *            type:
+ *              type: string
+ *              description: Typing test type.
  *
  */
 import express, { NextFunction, Request, Response } from 'express';
