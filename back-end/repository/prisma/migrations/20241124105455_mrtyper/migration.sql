@@ -28,6 +28,7 @@ CREATE TABLE "TypingTest" (
     "wpm" DOUBLE PRECISION NOT NULL,
     "accuracy" DOUBLE PRECISION NOT NULL,
     "time" INTEGER NOT NULL,
+    "type" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "gameId" INTEGER,
     "leaderboardId" INTEGER,
