@@ -14,8 +14,13 @@ const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
     return userDb.getTypingTestsByUser(userId);
 };
 
+const getTypingTestsByUserAndType = async (userId: number, type: string): Promise<TypingTest[]> => {
+    return userDb.getTypingTestsByUserAndType(userId, type);
+};
+
 export default {
     getAllUsers,
     getUserById,
     getTypingTestsByUser,
+    getTypingTestsByUserAndType,
 };

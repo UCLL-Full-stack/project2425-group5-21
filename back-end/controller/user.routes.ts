@@ -128,4 +128,48 @@ userRouter.get('/:id/typingTests', async (req: Request, res: Response, next: Nex
     }
 });
 
+/**
+ * @swagger
+ * /users/{id}/typingTests/{type}:
+ *   get:
+ *     summary: Get typing tests by user ID and type.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user.
+ *         schema:
+ *           type: number
+ *       - in: path
+ *         name: type
+ *         required: true
+ *         description: Type of the typing test (singleplayer or multiplayer).
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of typing tests for the given user ID and type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/TypingTest'
+ */
+userRouter.get(
+    '/:id/typingTests/:type',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userId = Number(req.params.id);
+            const type = req.params.type;
+            const typingTests = await userService.getTypingTestsByUserAndType(userId, type);
+            res.status(200).json(typingTests);
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(400).json({ status: 'error', errorMessage: error.message });
+            }
+        }
+    }
+);
+
 export { userRouter };
