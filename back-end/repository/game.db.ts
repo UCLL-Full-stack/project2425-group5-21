@@ -1,5 +1,5 @@
 import { Game } from '../model/game';
-import database from './database';
+import database from '../util/database';
 
 const getAllGamesWithUsers = async (): Promise<Game[]> => {
     try {

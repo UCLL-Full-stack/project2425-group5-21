@@ -1,5 +1,5 @@
 import { Leaderboard } from '../model/leaderboard';
-import database from './database';
+import database from '../util/database';
 
 const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
     try {

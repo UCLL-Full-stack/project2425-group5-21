@@ -1,5 +1,5 @@
 import { TypingTest } from '../model/typingTest';
-import database from './database';
+import database from '../util/database';
 
 const getAllTypingTests = async (): Promise<TypingTest[]> => {
     try {
