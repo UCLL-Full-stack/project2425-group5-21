@@ -5,11 +5,11 @@ export enum Role {
 
 export type UserInput = {
     id?: number;
-    username?: string;
-    email?: string;
-    password?: string;
-    creationDate?: Date;
-    role?: Role;
+    username: string;
+    email: string;
+    password: string;
+    creationDate: Date;
+    role: Role;
 };
 
 export type TypingTestInput = {
@@ -34,4 +34,9 @@ export type GameInput = {
     startDate?: Date;
     endDate?: Date;
     users?: UserInput[];
+};
+
+export type AuthenticationResponse = {
+    token: string;
+    username: string;
 };
