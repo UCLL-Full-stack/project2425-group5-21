@@ -49,10 +49,10 @@ export class Game {
     }
 
     validate(game: { startDate: Date; endDate: Date; users: User[] }) {
-        if (game.startDate === null) {
+        if (!game.startDate) {
             throw new Error('Start date is required');
         }
-        if (game.endDate === null) {
+        if (!game.endDate) {
             throw new Error('End date is required');
         }
         if (game.startDate > game.endDate) {
