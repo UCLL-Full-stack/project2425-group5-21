@@ -8,6 +8,7 @@ import { userRouter } from './controller/user.routes';
 import { typingtestRouter } from './controller/typingtest.routes';
 import { leaderboardRouter } from './controller/leaderboard.routes';
 import { gameRouter } from './controller/game.routes';
+import { expressjwt } from 'express-jwt';
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,16 @@ const port = process.env.APP_PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
+    })
+);
+
 app.use('/users', userRouter);
 app.use('/typingtests', typingtestRouter);
 app.use('/leaderboards', leaderboardRouter);
@@ -31,6 +42,20 @@ const swaggerOpts = {
             title: 'Courses API',
             version: '1.0.0',
         },
+        components: {
+            securitySchemes: {
+                BearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [
+            {
+                BearerAuth: [],
+            },
+        ],
     },
     apis: ['./controller/*.routes.ts'],
 };
@@ -39,11 +64,21 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {
-        res.status(401).json({ status: 'unauthorized', message: err.message });
+        res.status(401).json({
+            status: 'unauthorized',
+            message: 'No authorization token was found',
+        });
     } else if (err.name === 'CoursesError') {
         res.status(400).json({ status: 'domain error', message: err.message });
+    } else if (err.name === 'ValidationError') {
+        res.status(422).json({ status: 'validation error', message: err.message });
+    } else if (err.name === 'NotFoundError') {
+        res.status(404).json({ status: 'not found', message: err.message });
     } else {
-        res.status(400).json({ status: 'application error', message: err.message });
+        res.status(500).json({
+            status: 'application error',
+            message: err.message,
+        });
     }
 });
 
