@@ -1,4 +1,6 @@
 import * as dotenv from 'dotenv';
+dotenv.config();
+
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
@@ -11,15 +13,18 @@ import { gameRouter } from './controller/game.routes';
 import { expressjwt } from 'express-jwt';
 
 const app = express();
-dotenv.config();
 const port = process.env.APP_PORT || 3000;
 
-app.use(cors());
+if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is not set');
+}
+
+app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
 app.use(
     expressjwt({
-        secret: process.env.JWT_SECRET || 'default_secret',
+        secret: process.env.JWT_SECRET,
         algorithms: ['HS256'],
     }).unless({
         path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
@@ -68,8 +73,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             status: 'unauthorized',
             message: 'No authorization token was found',
         });
-    } else if (err.name === 'CoursesError') {
-        res.status(400).json({ status: 'domain error', message: err.message });
     } else if (err.name === 'ValidationError') {
         res.status(422).json({ status: 'validation error', message: err.message });
     } else if (err.name === 'NotFoundError') {
