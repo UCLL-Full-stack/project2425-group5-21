@@ -1,7 +1,4 @@
-export enum Role {
-    Player = 'player',
-    Admin = 'admin',
-}
+export type Role = 'player' | 'admin' | 'guest';
 
 export type UserInput = {
     id?: number;
@@ -39,4 +36,5 @@ export type GameInput = {
 export type AuthenticationResponse = {
     token: string;
     username: string;
+    role: String;
 };
