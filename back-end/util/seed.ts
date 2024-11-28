@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,7 @@ const main = async () => {
         data: {
             username: 'johndoe',
             email: 'john.doe@ucll.be',
-            password: 'johndoe123',
+            password: await bcrypt.hash('johndoe123', 12),
             role: 'player',
         },
     });
@@ -21,7 +22,7 @@ const main = async () => {
         data: {
             username: 'janetoe',
             email: 'jane.toe@ucll.be',
-            password: 'janetoe123',
+            password: await bcrypt.hash('janetoe123', 12),
             role: 'player',
         },
     });
@@ -30,7 +31,7 @@ const main = async () => {
         data: {
             username: 'michaelking',
             email: 'michael.king@ucll.be',
-            password: 'michaelking123',
+            password: await bcrypt.hash('michaelking123', 12),
             role: 'player',
         },
     });
@@ -39,7 +40,7 @@ const main = async () => {
         data: {
             username: 'lukasvandilken',
             email: 'lukas.vandilken@ucll.be',
-            password: 'lukasvandilken123',
+            password: await bcrypt.hash('lukasvandilken123', 12),
             role: 'player',
         },
     });
@@ -48,8 +49,17 @@ const main = async () => {
         data: {
             username: 'lindawalker',
             email: 'linda.walker@ucll.be',
-            password: 'lindawalker123',
+            password: await bcrypt.hash('lindawalker123', 12),
             role: 'admin',
+        },
+    });
+
+    const user6 = await prisma.user.create({
+        data: {
+            username: 'guest1235455',
+            email: 'guest1235455@mrtyper.be',
+            password: await bcrypt.hash('guest1235455', 12),
+            role: 'guest',
         },
     });
 
