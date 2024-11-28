@@ -34,10 +34,10 @@ const typingtestRouter = express.Router();
  *   get:
  *     security:
  *       - bearerAuth: []
- *     summary: Get a list of all typingtests.
+ *     summary: Get a list of all typingtest.
  *     responses:
  *       200:
- *         description: A list of typingtests.
+ *         description: A list of typingtest.
  *         content:
  *           application/json:
  *             schema:
@@ -47,12 +47,12 @@ const typingtestRouter = express.Router();
  */
 typingtestRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const typingTests = await typingtestService.getAllTypingTests();
+        const request = req as Request & { auth: { username: string; role: string } };
+        const { username, role } = request.auth;
+        const typingTests = await typingtestService.getTypingTest({ username, role });
         res.status(200).json(typingTests);
     } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ status: 'error', errorMessage: error.message });
-        }
+        next(error);
     }
 });
 
