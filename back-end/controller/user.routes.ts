@@ -164,12 +164,6 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
 userRouter.get('/:username', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userService.getUserByUsername({ username: req.params.username });
-        if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                errorMessage: `User with username ${req.params.username} not found.`,
-            });
-        }
         res.status(200).json(user);
     } catch (error) {
         if (error instanceof Error) {
@@ -263,7 +257,7 @@ userRouter.get(
  * @swagger
  * /users/login:
  *   post:
- *     summary: Login using username/password. Returns an object with JWT token and user name when successful.
+ *     summary: Login using username/password. Returns an object with JWT token, user name and role when successful.
  *     requestBody:
  *       required: true
  *       content:
@@ -281,6 +275,7 @@ userRouter.get(
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userInput = <UserInput>req.body;
+        console.log(userInput);
         const response = await userService.authenticate(userInput);
         res.status(200).json({ message: 'Authentication succesful', ...response });
     } catch (error) {
