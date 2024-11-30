@@ -1,12 +1,13 @@
-import { Role as PrismaRole, User as UserPrisma } from '@prisma/client';
+import { User as UserPrisma } from '@prisma/client';
+import { Role } from '../types';
 
 export class User {
-    public id?: number;
-    public username: string;
-    public email: string;
-    public password: string;
-    public creationDate: Date;
-    public role: PrismaRole;
+    readonly id?: number;
+    readonly username: string;
+    readonly email: string;
+    readonly password: string;
+    readonly creationDate: Date;
+    readonly role: string;
 
     constructor(user: {
         id?: number;
@@ -14,7 +15,7 @@ export class User {
         email: string;
         password: string;
         creationDate: Date;
-        role: PrismaRole;
+        role: string;
     }) {
         this.validate(user);
 
@@ -46,7 +47,7 @@ export class User {
         return this.creationDate;
     }
 
-    getRole(): PrismaRole {
+    getRole(): string {
         return this.role;
     }
 
@@ -55,22 +56,45 @@ export class User {
         email: string;
         password: string;
         creationDate: Date;
-        role: PrismaRole;
+        role: string;
     }) {
         if (!user.username?.trim()) {
             throw new Error('Username is required');
         }
+
+        if (user.username.length < 3 || user.username.length > 50) {
+            throw new Error('The username must be between 3 and 50 characters.');
+        }
+
         if (!user.email?.trim()) {
             throw new Error('Email is required');
         }
+
+        const specificEmailRegex = /^[a-zA-Z]+\.[a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+
+        if (!specificEmailRegex.test(user.email)) {
+            throw new Error('The email format is invalid.');
+        }
+
         if (!user.password?.trim()) {
             throw new Error('Password is required');
         }
-        if (!user.creationDate) {
-            throw new Error('Creation date is required');
+
+        if (user.password.length < 8) {
+            throw new Error('The password must be at least 5 characters long.');
         }
-        if (!user.role) {
+
+        const currentDate = new Date();
+        if (user.creationDate > currentDate) {
+            throw new Error('Creation date cannot be in the future.');
+        }
+
+        if (!user.role?.trim()) {
             throw new Error('Role is required');
+        }
+
+        if (!['player', 'admin', 'guest'].includes(user.role)) {
+            throw new Error('The role is not valid. Allowed roles are: player, admin, guest.');
         }
     }
 
