@@ -385,7 +385,7 @@ const main = async () => {
 
     const leaderboard1 = await prisma.leaderboard.create({
         data: {
-            maxPlayers: 10,
+            maxScores: 10,
             type: 15,
             scores: {
                 connect: [
@@ -404,7 +404,7 @@ const main = async () => {
 
     const leaderboard2 = await prisma.leaderboard.create({
         data: {
-            maxPlayers: 10,
+            maxScores: 10,
             type: 30,
             scores: {
                 connect: [
@@ -423,7 +423,7 @@ const main = async () => {
 
     const leaderboard3 = await prisma.leaderboard.create({
         data: {
-            maxPlayers: 10,
+            maxScores: 10,
             type: 60,
             scores: {
                 connect: [
