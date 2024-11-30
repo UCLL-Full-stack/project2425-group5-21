@@ -1,13 +1,13 @@
 import { TypingTest as TypingTestPrisma } from '@prisma/client';
 
 export class TypingTest {
-    public id?: number;
-    public wpm: number;
-    public accuracy: number;
-    public time: number;
-    public type: string;
-    public userId: number;
-    public gameId?: number | null;
+    readonly id?: number;
+    readonly wpm: number;
+    readonly accuracy: number;
+    readonly time: number;
+    readonly type: string;
+    readonly userId: number;
+    readonly gameId?: number | null;
 
     constructor(typingTest: {
         id?: number;
@@ -57,34 +57,6 @@ export class TypingTest {
         return this.gameId;
     }
 
-    setId(id: number): void {
-        this.id = id;
-    }
-
-    setWpm(wpm: number): void {
-        this.wpm = wpm;
-    }
-
-    setAccuracy(accuracy: number): void {
-        this.accuracy = accuracy;
-    }
-
-    setTime(time: number): void {
-        this.time = time;
-    }
-
-    setType(type: string): void {
-        this.type = type;
-    }
-
-    setUserId(userId: number): void {
-        this.userId = userId;
-    }
-
-    setGameId(gameId: number | undefined | null): void {
-        this.gameId = gameId;
-    }
-
     validate(typingTest: {
         wpm: number;
         accuracy: number;
@@ -103,22 +75,19 @@ export class TypingTest {
             throw new Error('Accuracy is required');
         }
         if (typingTest.accuracy < 0 || typingTest.accuracy > 100) {
-            throw new Error('Accuracy must be between 0 and 100');
+            throw new Error('Accuracy must be a number between 0 and 100');
         }
         if (typingTest.time === undefined || typingTest.time === null) {
             throw new Error('Time is required');
         }
-        if (typingTest.time < 0) {
-            throw new Error('Time must be a positive value');
+        if (![15, 30, 60].includes(typingTest.time)) {
+            throw new Error('Time must be either 15, 30, or 60');
         }
         if (!typingTest.type?.trim()) {
             throw new Error('Type is required');
         }
         if (typingTest.type !== 'singleplayer' && typingTest.type !== 'multiplayer') {
             throw new Error('Type must be either "singleplayer" or "multiplayer"');
-        }
-        if (!typingTest.userId) {
-            throw new Error('User ID is required');
         }
     }
 
