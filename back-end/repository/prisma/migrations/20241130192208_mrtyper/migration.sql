@@ -36,7 +36,7 @@ CREATE TABLE "TypingTest" (
 -- CreateTable
 CREATE TABLE "Leaderboard" (
     "id" SERIAL NOT NULL,
-    "maxPlayers" INTEGER NOT NULL,
+    "maxScores" INTEGER NOT NULL,
     "type" INTEGER NOT NULL,
 
     CONSTRAINT "Leaderboard_pkey" PRIMARY KEY ("id")

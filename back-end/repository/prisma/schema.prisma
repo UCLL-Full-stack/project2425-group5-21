@@ -42,7 +42,7 @@ model TypingTest {
 
 model Leaderboard {
   id              Int           @id @default(autoincrement())
-  maxPlayers      Int
+  maxScores       Int
   type            Int
   scores          TypingTest[]  @relation("LeaderboardScores")
 }
