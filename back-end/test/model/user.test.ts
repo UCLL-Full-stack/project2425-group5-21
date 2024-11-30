@@ -1,114 +1,107 @@
-// import { User } from '../../model/user';
-// import { Role } from '../../types';
+import { User } from '../../model/user';
 
-// test('given: missing first name, when: user is created, then: an error is thrown', () => {
-//     // given
+const userTestData = {
+    username: 'JohnDoe',
+    email: 'john.doe@ucll.be',
+    password: 'Johnd123!',
+    creationDate: new Date(),
+    role: 'player',
+};
 
-//     const invalidUser = {
-//         firstName: '',
-//         lastName: 'Doe',
-//         email: 'john.doe@ucll.be',
-//         password: 'johnd123',
-//         role: Role.Player,
-//     };
+let user: User;
 
-//     // when
-//     const user = () => new User(invalidUser);
+beforeEach(() => {
+    user = new User(userTestData);
+});
 
-//     // then
-//     expect(user).toThrow('First name is required');
-// });
+const { username, email, password, creationDate, role } = userTestData;
 
-// test('given: missing last name, when: user is created, then: an error is thrown', () => {
-//     // given
+const createUser = (overrides = {}) => new User({ ...userTestData, ...overrides });
 
-//     const invalidUser = {
-//         firstName: 'John',
-//         lastName: '',
-//         email: 'john.doe@ucll.be',
-//         password: 'johnd123',
-//         role: Role.Player,
-//     };
+test('given: valid values for user, when: user is created, then: user is created with those values.', () => {
+    expect(user.getUsername()).toEqual(username);
+    expect(user.getEmail()).toEqual(email);
+    expect(user.getPassword()).toEqual(password);
+    expect(user.getCreationDate()).toEqual(creationDate);
+    expect(user.getRole()).toEqual(role);
+});
 
-//     // when
-//     const user = () => new User(invalidUser);
+test('given: missing username, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ username: '' })).toThrow('Username is required');
+});
 
-//     // then
-//     expect(user).toThrow('Last name is required');
-// });
+test('given: invalid username length, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ username: 'Jo' })).toThrow(
+        'The username must be between 3 and 50 characters.'
+    );
+});
 
-// test('given: missing email, when: user is created, then: an error is thrown', () => {
-//     // given
+test('given: invalid username length, when: user is created, then: an error is thrown.', () => {
+    expect(() =>
+        createUser({ username: 'Josfgdsrgsbebebbdbfdvgdfbfdbdfbdbdbdbfdbffbsddwerwer' })
+    ).toThrow('The username must be between 3 and 50 characters.');
+});
 
-//     const invalidUser = {
-//         firstName: 'John',
-//         lastName: 'Doe',
-//         email: '',
-//         password: 'johnd123',
-//         role: Role.Player,
-//     };
+test('given: missing email, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ email: '' })).toThrow('Email is required');
+});
 
-//     // when
-//     const user = () => new User(invalidUser);
+test('given: email without @, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ email: 'johndoeucll.be' })).toThrow('The email format is invalid.');
+});
 
-//     // then
-//     expect(user).toThrow('Email is required');
-// });
+test('given: email without domain extension, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ email: 'john.doe@ucll' })).toThrow('The email format is invalid.');
+});
 
-// test('given: missing password, when: user is created, then: an error is thrown', () => {
-//     // given
+test('given: email without dot in local part, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ email: 'johndoe@ucll.be' })).toThrow('The email format is invalid.');
+});
 
-//     const invalidUser = {
-//         firstName: 'John',
-//         lastName: 'Doe',
-//         email: 'john.doe@ucll.be',
-//         password: '',
-//         role: Role.Player,
-//     };
+test('given: email with incomplete domain extension, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ email: 'john.doe@ucll.b' })).toThrow('The email format is invalid.');
+});
 
-//     // when
-//     const user = () => new User(invalidUser);
+test('given: missing password, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ password: '' })).toThrow('Password is required');
+});
 
-//     // then
-//     expect(user).toThrow('Password is required');
-// });
+test('given: invalid password length, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ password: 'Johnd1!' })).toThrow(
+        'The password must be at least 5 characters long.'
+    );
+});
 
-// test('given: missing role, when: user is created, then: an error is thrown', () => {
-//     // given
+test('given: creation date in the future, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ creationDate: new Date(new Date().getTime() + 10000) })).toThrow(
+        'Creation date cannot be in the future.'
+    );
+});
 
-//     const invalidUser = {
-//         firstName: 'John',
-//         lastName: 'Doe',
-//         email: 'john.doe@ucll.be',
-//         password: 'johnd123',
-//         role: null as any,
-//     };
+test('given: missing role, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ role: '' })).toThrow('Role is required');
+});
 
-//     // when
-//     const user = () => new User(invalidUser);
+test('given: invalid role, when: user is created, then: an error is thrown.', () => {
+    expect(() => createUser({ role: 'invalidRole' })).toThrow(
+        'The role is not valid. Allowed roles are: player, admin, guest.'
+    );
+});
 
-//     // then
-//     expect(user).toThrow('Role is required');
-// });
+test('given: valid data, when: user is created, then: user is created successfully.', () => {
+    const validUser = {
+        username: 'JaneDoe',
+        email: 'jane.doe@ucll.be',
+        password: 'JaneD123!',
+        creationDate: new Date(),
+        role: 'admin',
+    };
 
-// test('given: valid values for user, when: user is created, then: an error is thrown', () => {
-//     // given
+    const user = new User(validUser);
 
-//     const validUser = {
-//         firstName: 'John',
-//         lastName: 'Doe',
-//         email: 'john.doe@ucll.be',
-//         password: 'johnd123',
-//         role: Role.Player,
-//     };
-
-//     // when
-//     const user = new User(validUser);
-
-//     // then
-//     expect(user.getFirstName()).toEqual(validUser.firstName);
-//     expect(user.getLastName()).toEqual(validUser.lastName);
-//     expect(user.getEmail()).toEqual(validUser.email);
-//     expect(user.getPassword()).toBe(validUser.password);
-//     expect(user.getRole()).toBe(validUser.role);
-// });
+    expect(user.getUsername()).toEqual(validUser.username);
+    expect(user.getEmail()).toEqual(validUser.email);
+    expect(user.getPassword()).toEqual(validUser.password);
+    expect(user.getCreationDate()).toEqual(validUser.creationDate);
+    expect(user.getRole()).toEqual(validUser.role);
+});
