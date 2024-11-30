@@ -2,21 +2,21 @@ import { TypingTest } from './typingTest';
 import { Leaderboard as LeaderboardPrisma, TypingTest as TypingTestPrisma } from '@prisma/client';
 
 export class Leaderboard {
-    public id?: number;
-    public maxPlayers: number;
-    public type: number;
-    public scores: TypingTest[];
+    readonly id?: number;
+    readonly maxScores: number;
+    readonly type: number;
+    readonly scores: TypingTest[];
 
     constructor(leaderboard: {
         id?: number;
-        maxPlayers: number;
+        maxScores: number;
         type: number;
         scores: TypingTest[];
     }) {
         this.validate(leaderboard);
 
         this.id = leaderboard.id;
-        this.maxPlayers = leaderboard.maxPlayers;
+        this.maxScores = leaderboard.maxScores;
         this.type = leaderboard.type;
         this.scores = leaderboard.scores;
     }
@@ -25,8 +25,8 @@ export class Leaderboard {
         return this.id;
     }
 
-    getMaxPlayers(): number {
-        return this.maxPlayers;
+    getMaxScores(): number {
+        return this.maxScores;
     }
 
     getType(): number {
@@ -37,29 +37,13 @@ export class Leaderboard {
         return this.scores;
     }
 
-    setId(id: number | undefined): void {
-        this.id = id;
-    }
-
-    setScores(scores: TypingTest[]): void {
-        this.scores = scores;
-    }
-
-    setMaxPlayers(maxPlayers: number): void {
-        this.maxPlayers = maxPlayers;
-    }
-
-    setType(type: number): void {
-        this.type = type;
-    }
-
-    validate(leaderboard: { scores: TypingTest[]; maxPlayers: number; type: number }) {
+    validate(leaderboard: { scores: TypingTest[]; maxScores: number; type: number }) {
         if (!leaderboard.scores || leaderboard.scores.length === 0) {
             throw new Error('Scores must contain at least one typing test');
         }
 
-        if (!leaderboard.maxPlayers || leaderboard.maxPlayers <= 0) {
-            throw new Error('Max players must be greater than 0');
+        if (!leaderboard.maxScores || leaderboard.maxScores <= 0) {
+            throw new Error('Max players must be a positive integer');
         }
 
         if (!leaderboard.type) {
@@ -74,7 +58,7 @@ export class Leaderboard {
     equals(leaderboard: Leaderboard): boolean {
         return (
             this.id === leaderboard.getId() &&
-            this.maxPlayers === leaderboard.getMaxPlayers() &&
+            this.maxScores === leaderboard.getMaxScores() &&
             this.type === leaderboard.getType() &&
             this.scores.length === leaderboard.getScores().length
         );
@@ -82,13 +66,13 @@ export class Leaderboard {
 
     static from({
         id,
-        maxPlayers,
+        maxScores,
         type,
         scores,
     }: LeaderboardPrisma & { scores: TypingTestPrisma[] }): Leaderboard {
         return new Leaderboard({
             id,
-            maxPlayers,
+            maxScores,
             type,
             scores: scores.map((score) => TypingTest.from(score)),
         });
