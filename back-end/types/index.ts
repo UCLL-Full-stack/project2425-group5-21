@@ -6,7 +6,7 @@ export type UserInput = {
     email: string;
     password: string;
     creationDate: Date;
-    role: Role;
+    role: string;
 };
 
 export type TypingTestInput = {
