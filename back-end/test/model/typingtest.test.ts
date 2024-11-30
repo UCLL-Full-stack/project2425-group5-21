@@ -1,108 +1,71 @@
-// import { TypingTest } from '../../model/typingTest';
+import { TypingTest } from '../../model/typingTest';
 
-// test('given: missing wpm, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: undefined as any,
-//         accuracy: 97,
-//         time: 15,
-//     };
+const typingTestData = {
+    wpm: 120,
+    accuracy: 98,
+    time: 15,
+    type: 'singleplayer',
+    userId: 1,
+    gameId: 1,
+};
 
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
+let typingTest: TypingTest;
 
-//     // then
-//     expect(typingtest).toThrow('WPM is required');
-// });
+beforeEach(() => {
+    typingTest = new TypingTest(typingTestData);
+});
 
-// test('given: negative wpm, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: -1,
-//         accuracy: 97,
-//         time: 15,
-//     };
+const { wpm, accuracy, time, type, userId, gameId } = typingTestData;
 
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
+const createTypingTest = (overrides = {}) => new TypingTest({ ...typingTestData, ...overrides });
 
-//     // then
-//     expect(typingtest).toThrow('WPM must be a positive value');
-// });
+test('given: valid values for typingtest, when: typingtest is created, then: typingtest is created with those values.', () => {
+    expect(typingTest.getWpm()).toEqual(wpm);
+    expect(typingTest.getAccuracy()).toEqual(accuracy);
+    expect(typingTest.getTime()).toEqual(time);
+    expect(typingTest.getType()).toEqual(type);
+    expect(typingTest.getUserId()).toEqual(userId);
+    expect(typingTest.getGameId()).toEqual(gameId);
+});
 
-// test('given: missing accuracy, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: 120,
-//         accuracy: undefined as any,
-//         time: 15,
-//     };
+test('given: missing wpm, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ wpm: undefined })).toThrow('WPM is required');
+});
 
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
+test('given: negative wpm, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ wpm: -1 })).toThrow('WPM must be a positive value');
+});
 
-//     // then
-//     expect(typingtest).toThrow('Accuracy is required');
-// });
+test('given: missing accuracy, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ accuracy: undefined })).toThrow('Accuracy is required');
+});
 
-// test('given: accuracy below 0 or above 100, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: 120,
-//         accuracy: 120,
-//         time: 15,
-//     };
+test('given: accuracy below 0, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ accuracy: -1 })).toThrow(
+        'Accuracy must be a number between 0 and 100'
+    );
+});
 
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
+test('given: accuracy above 100, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ accuracy: 101 })).toThrow(
+        'Accuracy must be a number between 0 and 100'
+    );
+});
 
-//     // then
-//     expect(typingtest).toThrow('Accuracy must be between 0 and 100');
-// });
+test('given: missing time, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ time: undefined })).toThrow('Time is required');
+});
 
-// test('given: missing time, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: 120,
-//         accuracy: 98,
-//         time: undefined as any,
-//     };
+test('given: invalid time, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ time: 10 })).toThrow('Time must be either 15, 30, or 60');
+});
 
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
+test('given: missing type, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ type: '' })).toThrow('Type is required');
+});
 
-//     // then
-//     expect(typingtest).toThrow('Time is required');
-// });
-
-// test('given: negative time, when: typingtest is created, then: an error is thrown', () => {
-//     // given
-//     const invalidTypingTest = {
-//         wpm: 120,
-//         accuracy: 98,
-//         time: -1,
-//     };
-
-//     // when
-//     const typingtest = () => new TypingTest(invalidTypingTest);
-
-//     // then
-//     expect(typingtest).toThrow('Time must be a positive value');
-// });
-
-// test('given: valid values for typingtest, when: typingtest is created, then: typingtest is created with those values', () => {
-//     // given
-//     const validTypingTest = {
-//         wpm: 120,
-//         accuracy: 98,
-//         time: 15,
-//     };
-
-//     // when
-//     const typingtest = new TypingTest(validTypingTest);
-
-//     // then
-//     expect(typingtest.getWpm()).toBe(validTypingTest.wpm);
-//     expect(typingtest.getAccuracy()).toBe(validTypingTest.accuracy);
-//     expect(typingtest.getTime()).toBe(validTypingTest.time);
-// });
+test('given: invalid type, when: typingtest is created, then: an error is thrown.', () => {
+    expect(() => createTypingTest({ type: 'invalidType' })).toThrow(
+        'Type must be either "singleplayer" or "multiplayer"'
+    );
+});
