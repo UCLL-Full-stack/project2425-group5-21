@@ -1,105 +1,67 @@
-// import { Leaderboard } from '../../model/leaderboard';
-// import { Profile } from '../../model/profile';
-// import { set } from 'date-fns';
+import { Leaderboard } from '../../model/leaderboard';
+import { TypingTest } from '../../model/typingTest';
 
-// // date
+const typingTestData = {
+    wpm: 120,
+    accuracy: 98,
+    time: 15,
+    type: 'singleplayer',
+    userId: 1,
+    gameId: 1,
+};
 
-// const startDate = set(new Date(), { hours: 8, minutes: 30 });
+const typingTest = new TypingTest(typingTestData);
 
-// // users
+const leaderboardData = {
+    maxScores: 10,
+    type: 30,
+    scores: [typingTest],
+};
 
-// const profile1 = new Profile({
-//     id: 1,
-//     username: 'johndoe',
-//     bio: 'I love to program and to type fast.',
-//     avgWPM: 122.34,
-//     highestWPM: 140.34,
-//     startDate: startDate,
-//     role: 'player',
-// });
+let leaderboard: Leaderboard;
 
-// const profile2 = new Profile({
-//     id: 2,
-//     username: 'janedoe',
-//     bio: 'I enjoy solving puzzles and achieving high typing speeds.',
-//     avgWPM: 98,
-//     highestWPM: 120.34,
-//     startDate: startDate,
-//     role: 'player',
-// });
+beforeEach(() => {
+    leaderboard = new Leaderboard(leaderboardData);
+});
 
-// test('given: 0 max players, when: leaderboard is created, then: an error is thrown', () => {
-//     // given
-//     const invalidLeaderboard = {
-//         rankings: [profile1, profile2],
-//         maxPlayers: 0,
-//         type: 15,
-//     };
+const { maxScores, type, scores } = leaderboardData;
 
-//     // when
-//     const leaderboard = () => new Leaderboard(invalidLeaderboard);
+const createLeaderboard = (overrides = {}) => new Leaderboard({ ...leaderboardData, ...overrides });
 
-//     // then
-//     expect(leaderboard).toThrow('Max players must be greater than 0');
-// });
+test('given: valid values for leaderboard, when: leaderboard is created, then: leaderboard is created with those values.', () => {
+    expect(leaderboard.getMaxScores()).toEqual(maxScores);
+    expect(leaderboard.getType()).toEqual(type);
+    expect(leaderboard.getScores()).toEqual(scores);
+});
 
-// test('given: null type, when: leaderboard is created, then: an error is thrown', () => {
-//     // given
-//     const invalidLeaderboard = {
-//         rankings: [profile1, profile2],
-//         maxPlayers: 2,
-//         type: null,
-//     };
+test('given: missing scores, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ scores: [] })).toThrow(
+        'Scores must contain at least one typing test'
+    );
+});
 
-//     // when
-//     const leaderboard = () => new Leaderboard(invalidLeaderboard);
+test('given: missing maxScores, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ maxScores: undefined })).toThrow(
+        'Max players must be a positive integer'
+    );
+});
 
-//     // then
-//     expect(leaderboard).toThrow('Type is required');
-// });
+test('given: maxScores equal to 0, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ maxScores: -1 })).toThrow(
+        'Max players must be a positive integer'
+    );
+});
 
-// test('given: wrong type (not 15, 30, 60), when: leaderboard is created, then: an error is thrown', () => {
-//     // given
-//     const invalidLeaderboard = {
-//         rankings: [profile1, profile2],
-//         maxPlayers: 2,
-//         type: 10,
-//     };
+test('given: maxScores less than 0, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ maxScores: -1 })).toThrow(
+        'Max players must be a positive integer'
+    );
+});
 
-//     // when
-//     const leaderboard = () => new Leaderboard(invalidLeaderboard);
+test('given: missing type, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ type: undefined })).toThrow('Type is required');
+});
 
-//     // then
-//     expect(leaderboard).toThrow('Type must be either 15, 30, or 60');
-// });
-
-// test('given: no rankings, when: leaderboard is created, then: an error is thrown', () => {
-//     // given
-//     const invalidLeaderboard = {
-//         rankings: [],
-//         maxPlayers: 2,
-//         type: 15,
-//     };
-
-//     // when
-//     const leaderboard = () => new Leaderboard(invalidLeaderboard);
-
-//     // then
-//     expect(leaderboard).toThrow('Rankings must contain at least one player');
-// });
-
-// test('given: valid values for leaderboard, when: leaderboard is created, then: leaderboard is created with those values', () => {
-//     // given
-//     const validLeaderboard = {
-//         rankings: [profile1, profile2],
-//         maxPlayers: 2,
-//         type: 15,
-//     };
-
-//     // when
-//     const leaderboard = new Leaderboard(validLeaderboard);
-
-//     // then
-//     expect(leaderboard.getRankings()).toEqual(validLeaderboard.rankings);
-//     expect(leaderboard.getMaxPlayers()).toEqual(validLeaderboard.maxPlayers);
-// });
+test('given: invalid type, when: leaderboard is created, then: an error is thrown.', () => {
+    expect(() => createLeaderboard({ type: 45 })).toThrow('Type must be either 15, 30, or 60');
+});
