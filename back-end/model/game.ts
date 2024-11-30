@@ -2,10 +2,10 @@ import { User } from './user';
 import { Game as GamePrisma, User as UserPrisma } from '@prisma/client';
 
 export class Game {
-    public id?: number;
-    public startDate: Date;
-    public endDate: Date;
-    public users: User[];
+    readonly id?: number;
+    readonly startDate: Date;
+    readonly endDate: Date;
+    readonly users: User[];
 
     constructor(game: { id?: number; startDate: Date; endDate: Date; users: User[] }) {
         this.validate(game);
@@ -30,22 +30,6 @@ export class Game {
 
     getUsers(): User[] {
         return this.users;
-    }
-
-    setId(id: number | undefined): void {
-        this.id = id;
-    }
-
-    setStartDate(startDate: Date): void {
-        this.startDate = startDate;
-    }
-
-    setEndDate(endDate: Date): void {
-        this.endDate = endDate;
-    }
-
-    setUsers(users: User[]): void {
-        this.users = users;
     }
 
     validate(game: { startDate: Date; endDate: Date; users: User[] }) {
