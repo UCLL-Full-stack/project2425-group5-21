@@ -15,16 +15,12 @@ import { expressjwt } from 'express-jwt';
 const app = express();
 const port = process.env.APP_PORT || 3000;
 
-if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET environment variable is not set');
-}
-
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
 app.use(
     expressjwt({
-        secret: process.env.JWT_SECRET,
+        secret: process.env.JWT_SECRET || 'default_secret',
         algorithms: ['HS256'],
     }).unless({
         path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
@@ -44,7 +40,7 @@ const swaggerOpts = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Courses API',
+            title: 'MRTyper API',
             version: '1.0.0',
         },
         components: {
@@ -64,6 +60,7 @@ const swaggerOpts = {
     },
     apis: ['./controller/*.routes.ts'],
 };
+
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -71,12 +68,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {
         res.status(401).json({
             status: 'unauthorized',
-            message: 'No authorization token was found',
+            message: err.message,
         });
+    } else if (err.name === 'MRTyperError') {
+        res.status(400).json({ status: 'domain error', message: err.message });
     } else if (err.name === 'ValidationError') {
         res.status(422).json({ status: 'validation error', message: err.message });
-    } else if (err.name === 'NotFoundError') {
-        res.status(404).json({ status: 'not found', message: err.message });
     } else {
         res.status(500).json({
             status: 'application error',
