@@ -36,5 +36,5 @@ export type GameInput = {
 export type AuthenticationResponse = {
     token: string;
     username: string;
-    role: String;
+    role: string;
 };
