@@ -67,7 +67,9 @@ test('given: unauthorized role, when: calling getTypingTest, then: an error is t
         await typingtestService.getTypingTest({ username: 'guest', role: 'guest' });
 
     // then
-    await expect(getTypingTest).rejects.toThrow('You are not authorized to access this resource.');
+    await expect(getTypingTest).rejects.toThrow(
+        'Wrong credentials, You are not authorized to access this resource.'
+    );
 });
 
 test('given: calling getAllTypingTests, then: all typing tests are returned', async () => {
