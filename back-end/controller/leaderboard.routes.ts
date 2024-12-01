@@ -30,7 +30,7 @@ const leaderboardRouter = express.Router();
  * /leaderboards:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a list of all leaderboards.
  *     responses:
  *       200:
@@ -58,7 +58,7 @@ leaderboardRouter.get('/', async (req: Request, res: Response, next: NextFunctio
  * /leaderboards/{type}:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a leaderboard by type.
  *     parameters:
  *       - in: path
