@@ -15,7 +15,7 @@ const getTypingTest = async ({
         return typingtestDb.getTypingTestsByUsername(username);
     } else {
         throw new UnauthorizedError('credentials_required', {
-            message: 'You are not authorized to access this resource.',
+            message: 'Wrong credentials, You are not authorized to access this resource.',
         });
     }
 };
