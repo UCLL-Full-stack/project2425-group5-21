@@ -33,7 +33,7 @@ const typingtestRouter = express.Router();
  * /typingtests:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a list of all typingtest.
  *     responses:
  *       200:
