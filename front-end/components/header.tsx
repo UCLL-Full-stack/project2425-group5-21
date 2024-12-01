@@ -7,8 +7,13 @@ const Header: React.FC = () => {
   useEffect(() => {
     const userString = localStorage.getItem("loggedInUser");
     if (userString) {
-      const user: User = JSON.parse(userString);
-      setLoggedInUser(user);
+      try {
+        const user: User = JSON.parse(userString);
+        setLoggedInUser(user);
+      } catch (error) {
+        console.error("Failed to parse loggedInUser from localStorage:", error);
+        localStorage.removeItem("loggedInUser");
+      }
     }
   }, []);
 
