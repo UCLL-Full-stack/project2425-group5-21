@@ -105,7 +105,7 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * /users/{id}:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a user by ID.
  *     parameters:
  *       - in: path
@@ -144,7 +144,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * /users/{username}:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a user by username.
  *     parameters:
  *       - in: path
@@ -177,7 +177,7 @@ userRouter.get('/:username', async (req: Request, res: Response, next: NextFunct
  * /users/{id}/typingTests:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get typing tests by user ID.
  *     parameters:
  *       - in: path
@@ -212,7 +212,7 @@ userRouter.get('/:id/typingTests', async (req: Request, res: Response, next: Nex
  * /users/{id}/typingTests/{type}:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get typing tests by user ID and type.
  *     parameters:
  *       - in: path
