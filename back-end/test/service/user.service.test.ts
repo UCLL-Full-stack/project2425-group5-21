@@ -24,6 +24,7 @@ const user = new User({
 });
 
 let mockUserDbGetUserByUsername: jest.Mock;
+let mockUserDbGetUserByEmail: jest.Mock;
 let mockUserDbCreateUser: jest.Mock;
 let mockBcryptCompare: jest.Mock;
 let mockBcryptHash: jest.Mock;
@@ -31,12 +32,14 @@ let mockGenerateJwtToken: jest.Mock;
 
 beforeEach(() => {
     mockUserDbGetUserByUsername = jest.fn();
+    mockUserDbGetUserByEmail = jest.fn();
     mockUserDbCreateUser = jest.fn();
     mockBcryptCompare = jest.fn();
     mockBcryptHash = jest.fn();
     mockGenerateJwtToken = jest.fn();
 
     userDB.getUserByUsername = mockUserDbGetUserByUsername;
+    userDB.getUserByEmail = mockUserDbGetUserByEmail;
     userDB.createUser = mockUserDbCreateUser;
     bcrypt.compare = mockBcryptCompare;
     bcrypt.hash = mockBcryptHash;
@@ -66,7 +69,7 @@ test('given: a valid user, when: calling createUser, then: user is created with 
     expect(createdUser).toEqual(user);
 });
 
-test('given an existing user, when user is created, then an error is thrown', async () => {
+test('given an existing username, when user is created, then an error is thrown', async () => {
     // given
     mockUserDbGetUserByUsername.mockResolvedValue(user);
 
@@ -76,6 +79,19 @@ test('given an existing user, when user is created, then an error is thrown', as
     // then
     await expect(createUser).rejects.toThrow(
         `User with username ${userInput.username} is already registered.`
+    );
+});
+
+test('given an existing email, when user is created, then an error is thrown', async () => {
+    // given
+    mockUserDbGetUserByEmail.mockResolvedValue(user);
+
+    // when
+    const createUser = async () => await userService.createUser(userInput);
+
+    // then
+    await expect(createUser).rejects.toThrow(
+        `User with email ${userInput.email} is already registered.`
     );
 });
 
