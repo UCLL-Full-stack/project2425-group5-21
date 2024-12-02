@@ -74,6 +74,19 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
     }
 };
 
+const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
+    try {
+        const userPrisma = await database.user.findFirst({
+            where: { email },
+        });
+
+        return userPrisma ? User.from(userPrisma) : null;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 const createUser = async ({
     username,
     email,
@@ -100,4 +113,5 @@ export default {
     getTypingTestsByUserAndType,
     createUser,
     getUserByUsername,
+    getUserByEmail,
 };
