@@ -1,8 +1,8 @@
-import UserService from "@/services/userService";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import userService from "@/services/userService";
 import { StatusMessage } from "@/types";
 import classNames from "classnames";
-import { useRouter } from "next/router";
-import { useState } from "react";
 
 const UserLoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -21,13 +21,18 @@ const UserLoginForm: React.FC = () => {
   const validate = (): boolean => {
     let result = true;
 
-    if (!username && username.trim() === "") {
+    if (!username || username.trim() === "") {
       setUsernameError("Username is required");
       result = false;
+    } else if (username.length < 3 || username.length > 50) {
+      setUsernameError("The username must be between 3 and 50 characters.");
     }
 
-    if (!password && password.trim() === "") {
+    if (!password || password.trim() === "") {
       setPasswordError("Password is required");
+      result = false;
+    } else if (password.length < 5) {
+      setPasswordError("The password must be at least 5 characters long.");
       result = false;
     }
 
@@ -43,12 +48,11 @@ const UserLoginForm: React.FC = () => {
       return;
     }
 
-    const user = { username: username, password };
-    const response = await UserService.loginUser(user);
+    const user = { username, password };
+    const response = await userService.loginUser(user);
 
     if (response.status === 200) {
       const user = await response.json();
-
       localStorage.setItem(
         "loggedInUser",
         JSON.stringify({
@@ -57,21 +61,23 @@ const UserLoginForm: React.FC = () => {
           role: user.role,
         })
       );
-
       setStatusMessages([
         {
           message: "Login succesful. Redirecting to homepage...",
           type: "success",
         },
       ]);
-
       setTimeout(() => {
         router.push("/");
       }, 2000);
     } else {
+      const errorData = await response.json();
+
       setStatusMessages([
         {
-          message: "An error has occurred. Please try again later.",
+          message:
+            errorData.message ||
+            "An error has occurred. Please try again later.",
           type: "error",
         },
       ]);
@@ -80,16 +86,59 @@ const UserLoginForm: React.FC = () => {
 
   return (
     <>
-      <h3 className="px-0">Login</h3>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md"
+          />
+          {usernameError && (
+            <p className="text-red-500 text-sm mt-1">{usernameError}</p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md"
+          />
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
+        </div>
+        <button
+          type="submit"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md"
+        >
+          Login
+        </button>
+      </form>
       {statusMessages && (
         <div className="row">
-          <ul className="list-none mb-3 mx-auto ">
+          <ul className="list-none mb-3 mx-auto">
             {statusMessages.map(({ message, type }, index) => (
               <li
                 key={index}
                 className={classNames({
-                  "text-red-800": type === "error",
-                  "text-green-800": type === "success",
+                  "text-red-500": type === "error",
+                  "text-green-500": type === "success",
                 })}
               >
                 {message}
@@ -98,51 +147,6 @@ const UserLoginForm: React.FC = () => {
           </ul>
         </div>
       )}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="nameInput" className="block mb-2 text-sm font-medium">
-          Username:
-        </label>
-        <div className="block mb-2 text-sm font-medium">
-          <input
-            id="nameInput"
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue:500 block w-full p-2.5"
-          />
-          {usernameError && (
-            <div className="text-red-800 ">{usernameError}</div>
-          )}
-        </div>
-        <div className="mt-2">
-          <div>
-            <label
-              htmlFor="passwordInput"
-              className="block mb-2 text-sm font-medium"
-            >
-              Password:
-            </label>
-          </div>
-          <div className="block mb-2 text-sm font-medium">
-            <input
-              id="passwordInput"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue:500 block w-full p-2.5"
-            />
-            {passwordError && (
-              <div className=" text-red-800">{passwordError}</div>
-            )}
-          </div>
-        </div>
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          type="submit"
-        >
-          Login
-        </button>
-      </form>
     </>
   );
 };
