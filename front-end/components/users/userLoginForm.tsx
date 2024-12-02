@@ -5,15 +5,15 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const UserLoginForm: React.FC = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [nameError, setNameError] = useState<string | null>(null);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
   const router = useRouter();
 
   const clearErrors = () => {
-    setNameError(null);
+    setUsernameError(null);
     setPasswordError(null);
     setStatusMessages([]);
   };
@@ -21,8 +21,8 @@ const UserLoginForm: React.FC = () => {
   const validate = (): boolean => {
     let result = true;
 
-    if (!name && name.trim() === "") {
-      setNameError("Name is required");
+    if (!username && username.trim() === "") {
+      setUsernameError("Username is required");
       result = false;
     }
 
@@ -43,7 +43,7 @@ const UserLoginForm: React.FC = () => {
       return;
     }
 
-    const user = { username: name, password };
+    const user = { username: username, password };
     const response = await UserService.loginUser(user);
 
     if (response.status === 200) {
@@ -106,11 +106,13 @@ const UserLoginForm: React.FC = () => {
           <input
             id="nameInput"
             type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
             className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue:500 block w-full p-2.5"
           />
-          {nameError && <div className="text-red-800 ">{nameError}</div>}
+          {usernameError && (
+            <div className="text-red-800 ">{usernameError}</div>
+          )}
         </div>
         <div className="mt-2">
           <div>
