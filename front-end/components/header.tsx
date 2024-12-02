@@ -51,7 +51,7 @@ const Header: React.FC = () => {
               href="/login"
               className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
             >
-              Login
+              Login / Register
             </Link>
           )}
           {loggedInUser && (
