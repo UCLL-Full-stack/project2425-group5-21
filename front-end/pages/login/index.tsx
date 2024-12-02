@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Header from "@/components/header";
-import UserLoginForm from "@/components/users/userLoginForm";
+import LoginRegisterToggle from "@/components/users/LoginRegisterToggle";
 
 const Login: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
           style={{ backgroundImage: "url(/path/to/your-background-image.png)" }}
         />
         <section className="z-10 w-full max-w-5xl flex flex-col items-center justify-center space-y-8 px-6 py-10">
-          <UserLoginForm />
+          <LoginRegisterToggle />
         </section>
       </main>
     </>
