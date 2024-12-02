@@ -10,8 +10,19 @@ const loginUser = (user: User) => {
   });
 };
 
-const UserService = {
-  loginUser,
+const registerUser = (user: User) => {
+  return fetch(process.env.NEXT_PUBLIC_API_URL + "/users/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
 };
 
-export default UserService;
+const userService = {
+  loginUser,
+  registerUser,
+};
+
+export default userService;
