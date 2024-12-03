@@ -9,43 +9,45 @@ const main = async () => {
     await prisma.game.deleteMany();
     await prisma.leaderboard.deleteMany();
 
-    const user1 = await prisma.user.create({
-        data: {
-            username: 'johndoe',
-            email: 'john.doe@ucll.be',
-            password: await bcrypt.hash('johndoe123', 12),
-            role: 'player',
-        },
-    });
+    const users = [];
+    const usernames = [
+        'johndoe',
+        'janetoe',
+        'michaelking',
+        'lukasvandilken',
+        'alicekaitlin',
+        'bobdebuilder',
+    ];
+    const emails = [
+        'john.doe@ucll.be',
+        'jane.toe@ucll.be',
+        'michael.king@ucll.be',
+        'lukas.vandilken@ucll.be',
+        'alice.kaitlin@ucll.be',
+        'bob.debuilder@ucll.be',
+    ];
+    const passwords = [
+        'johndoe123',
+        'janetoe123',
+        'michaelking123',
+        'lukasvandilken123',
+        'alicekaitlin123',
+        'bobdebuilder123',
+    ];
 
-    const user2 = await prisma.user.create({
-        data: {
-            username: 'janetoe',
-            email: 'jane.toe@ucll.be',
-            password: await bcrypt.hash('janetoe123', 12),
-            role: 'player',
-        },
-    });
+    for (let i = 0; i < usernames.length; i++) {
+        const user = await prisma.user.create({
+            data: {
+                username: usernames[i],
+                email: emails[i],
+                password: await bcrypt.hash(passwords[i], 12),
+                role: 'player',
+            },
+        });
+        users.push(user);
+    }
 
-    const user3 = await prisma.user.create({
-        data: {
-            username: 'michaelking',
-            email: 'michael.king@ucll.be',
-            password: await bcrypt.hash('michaelking123', 12),
-            role: 'player',
-        },
-    });
-
-    const user4 = await prisma.user.create({
-        data: {
-            username: 'lukasvandilken',
-            email: 'lukas.vandilken@ucll.be',
-            password: await bcrypt.hash('lukasvandilken123', 12),
-            role: 'player',
-        },
-    });
-
-    const user5 = await prisma.user.create({
+    const admin = await prisma.user.create({
         data: {
             username: 'lindawalker',
             email: 'linda.walker@ucll.be',
@@ -54,7 +56,7 @@ const main = async () => {
         },
     });
 
-    const user6 = await prisma.user.create({
+    const guest = await prisma.user.create({
         data: {
             username: 'guest',
             email: 'guest.random@mrtyper.be',
@@ -63,375 +65,227 @@ const main = async () => {
         },
     });
 
-    const game1 = await prisma.game.create({
+    const leaderboard15 = await prisma.leaderboard.create({
         data: {
-            startDate: new Date(2017, 10, 2, 8, 30),
-            endDate: new Date(2017, 10, 2, 8, 35),
-            users: {
-                connect: [{ id: user1.id }, { id: user2.id }],
-            },
+            maxScores: 5,
+            type: 15,
         },
     });
 
-    const game2 = await prisma.game.create({
+    const leaderboard30 = await prisma.leaderboard.create({
         data: {
-            startDate: new Date(2017, 10, 2, 21, 30),
-            endDate: new Date(2017, 10, 2, 21, 35),
-            users: {
-                connect: [{ id: user3.id }, { id: user4.id }],
-            },
+            maxScores: 5,
+            type: 30,
         },
     });
 
-    const typingTest1 = await prisma.typingTest.create({
+    const leaderboard60 = await prisma.leaderboard.create({
         data: {
-            wpm: 120,
-            accuracy: 98,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user1.id },
-            },
+            maxScores: 5,
+            type: 60,
         },
     });
 
-    const typingTest2 = await prisma.typingTest.create({
-        data: {
-            wpm: 210,
-            accuracy: 100,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user1.id },
-            },
-        },
-    });
+    for (let i = 0; i < users.length; i++) {
+        const user = users[i];
 
-    const typingTest3 = await prisma.typingTest.create({
-        data: {
-            wpm: 45,
-            accuracy: 67,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user1.id },
-            },
-        },
-    });
+        for (let j = 0; j < 5; j++) {
+            const wpm = Math.floor(Math.random() * 100) + 50;
+            const accuracy = Math.floor(Math.random() * 20) + 80;
 
-    const typingTest4 = await prisma.typingTest.create({
-        data: {
-            wpm: 98,
-            accuracy: 92,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user1.id },
-            },
-        },
-    });
+            await prisma.typingTest.create({
+                data: {
+                    wpm,
+                    accuracy,
+                    time: 15,
+                    type: 'singleplayer',
+                    user: {
+                        connect: { id: user.id },
+                    },
+                    leaderboard: {
+                        connect: { id: leaderboard15.id },
+                    },
+                },
+            });
+        }
 
-    const typingTest5 = await prisma.typingTest.create({
-        data: {
-            wpm: 123,
-            accuracy: 100,
-            time: 60,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user1.id },
-            },
-        },
-    });
+        for (let j = 0; j < 3; j++) {
+            const wpm = Math.floor(Math.random() * 100) + 50;
+            const accuracy = Math.floor(Math.random() * 20) + 80;
 
-    const typingTest6 = await prisma.typingTest.create({
-        data: {
-            wpm: 75,
-            accuracy: 87,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user2.id },
-            },
-        },
-    });
+            await prisma.typingTest.create({
+                data: {
+                    wpm,
+                    accuracy,
+                    time: 30,
+                    type: 'singleplayer',
+                    user: {
+                        connect: { id: user.id },
+                    },
+                    leaderboard: {
+                        connect: { id: leaderboard30.id },
+                    },
+                },
+            });
+        }
 
-    const typingTest7 = await prisma.typingTest.create({
-        data: {
-            wpm: 50,
-            accuracy: 98,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user2.id },
-            },
-        },
-    });
+        for (let j = 0; j < 2; j++) {
+            const wpm = Math.floor(Math.random() * 100) + 50;
+            const accuracy = Math.floor(Math.random() * 20) + 80;
 
-    const typingTest8 = await prisma.typingTest.create({
-        data: {
-            wpm: 130,
-            accuracy: 95,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user2.id },
-            },
-        },
-    });
+            await prisma.typingTest.create({
+                data: {
+                    wpm,
+                    accuracy,
+                    time: 60,
+                    type: 'singleplayer',
+                    user: {
+                        connect: { id: user.id },
+                    },
+                    leaderboard: {
+                        connect: { id: leaderboard60.id },
+                    },
+                },
+            });
+        }
+    }
 
-    const typingTest9 = await prisma.typingTest.create({
-        data: {
-            wpm: 140,
-            accuracy: 97,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user2.id },
-            },
-        },
-    });
+    // const game1 = await prisma.game.create({
+    //     data: {
+    //         startDate: new Date(2024, 10, 2, 8, 30, 0),
+    //         endDate: new Date(2024, 10, 2, 8, 30, 60),
+    //         users: {
+    //             connect: [{ id: users[0].id }, { id: users[1].id }],
+    //         },
+    //     },
+    // });
 
-    const typingTest10 = await prisma.typingTest.create({
+    // const game2 = await prisma.game.create({
+    //     data: {
+    //         startDate: new Date(2024, 6, 2, 1, 30, 0),
+    //         endDate: new Date(2024, 6, 2, 1, 30, 60),
+    //         users: {
+    //             connect: [{ id: users[2].id }, { id: users[3].id }],
+    //         },
+    //     },
+    // });
+
+    // const game3 = await prisma.game.create({
+    //     data: {
+    //         startDate: new Date(2024, 1, 23, 16, 27, 0),
+    //         endDate: new Date(2024, 1, 23, 16, 27, 60),
+    //         users: {
+    //             connect: [{ id: users[0].id }, { id: users[1].id }],
+    //         },
+    //     },
+    // });
+
+    const games = [];
+    const gameTimes = [
+        { start: new Date(2024, 10, 2, 8, 30, 0), end: new Date(2024, 10, 2, 8, 30, 60) },
+        { start: new Date(2024, 6, 2, 1, 30, 0), end: new Date(2024, 6, 2, 1, 30, 60) },
+        { start: new Date(2024, 1, 23, 16, 27, 0), end: new Date(2024, 1, 23, 16, 27, 60) },
+    ];
+
+    for (let i = 0; i < 3; i++) {
+        const game = await prisma.game.create({
+            data: {
+                startDate: gameTimes[i].start,
+                endDate: gameTimes[i].end,
+                users: {
+                    connect: [{ id: users[i * 2].id }, { id: users[i * 2 + 1].id }],
+                },
+            },
+        });
+        games.push(game);
+    }
+
+    const multiplayer1 = await prisma.typingTest.create({
         data: {
-            wpm: 150,
+            wpm: 145,
             accuracy: 99,
-            time: 60,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user2.id },
-            },
-        },
-    });
-
-    const typingTest11 = await prisma.typingTest.create({
-        data: {
-            wpm: 110,
-            accuracy: 90,
             time: 15,
-            type: 'singleplayer',
+            type: 'multiplayer',
             user: {
-                connect: { id: user3.id },
+                connect: { id: users[0].id },
+            },
+            game: {
+                connect: { id: games[0].id },
             },
         },
     });
 
-    const typingTest12 = await prisma.typingTest.create({
-        data: {
-            wpm: 115,
-            accuracy: 93,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user3.id },
-            },
-        },
-    });
-
-    const typingTest13 = await prisma.typingTest.create({
-        data: {
-            wpm: 120,
-            accuracy: 96,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user3.id },
-            },
-        },
-    });
-
-    const typingTest14 = await prisma.typingTest.create({
-        data: {
-            wpm: 80,
-            accuracy: 85,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user3.id },
-            },
-        },
-    });
-
-    const typingTest15 = await prisma.typingTest.create({
-        data: {
-            wpm: 85,
-            accuracy: 88,
-            time: 60,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user3.id },
-            },
-        },
-    });
-
-    const typingTest16 = await prisma.typingTest.create({
-        data: {
-            wpm: 90,
-            accuracy: 90,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user4.id },
-            },
-        },
-    });
-
-    const typingTest17 = await prisma.typingTest.create({
-        data: {
-            wpm: 95,
-            accuracy: 92,
-            time: 15,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user4.id },
-            },
-        },
-    });
-
-    const typingTest18 = await prisma.typingTest.create({
+    const multiplayer2 = await prisma.typingTest.create({
         data: {
             wpm: 100,
-            accuracy: 94,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user4.id },
-            },
-        },
-    });
-
-    const typingTest19 = await prisma.typingTest.create({
-        data: {
-            wpm: 105,
-            accuracy: 96,
-            time: 30,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user4.id },
-            },
-        },
-    });
-
-    const typingTest20 = await prisma.typingTest.create({
-        data: {
-            wpm: 110,
-            accuracy: 98,
-            time: 60,
-            type: 'singleplayer',
-            user: {
-                connect: { id: user4.id },
-            },
-        },
-    });
-
-    const typingTest21 = await prisma.typingTest.create({
-        data: {
-            wpm: 150,
             accuracy: 95,
             time: 15,
             type: 'multiplayer',
             user: {
-                connect: { id: user1.id },
+                connect: { id: users[1].id },
             },
             game: {
-                connect: { id: game1.id },
+                connect: { id: users[0].id },
             },
         },
     });
 
-    const typingTest22 = await prisma.typingTest.create({
+    const multiplayer3 = await prisma.typingTest.create({
         data: {
-            wpm: 160,
+            wpm: 133,
             accuracy: 97,
-            time: 15,
+            time: 30,
             type: 'multiplayer',
             user: {
-                connect: { id: user2.id },
+                connect: { id: users[2].id },
             },
             game: {
-                connect: { id: game1.id },
+                connect: { id: users[1].id },
             },
         },
     });
 
-    const typingTest23 = await prisma.typingTest.create({
+    const multiplayer4 = await prisma.typingTest.create({
         data: {
-            wpm: 170,
+            wpm: 143,
             accuracy: 98,
             time: 30,
             type: 'multiplayer',
             user: {
-                connect: { id: user3.id },
+                connect: { id: users[3].id },
             },
             game: {
-                connect: { id: game2.id },
+                connect: { id: users[1].id },
             },
         },
     });
 
-    const typingTest24 = await prisma.typingTest.create({
+    const multiplayer5 = await prisma.typingTest.create({
         data: {
-            wpm: 180,
+            wpm: 145,
             accuracy: 99,
-            time: 30,
+            time: 60,
             type: 'multiplayer',
             user: {
-                connect: { id: user4.id },
+                connect: { id: users[4].id },
             },
             game: {
-                connect: { id: game2.id },
+                connect: { id: users[2].id },
             },
         },
     });
 
-    const leaderboard1 = await prisma.leaderboard.create({
+    const multiplayer6 = await prisma.typingTest.create({
         data: {
-            maxScores: 10,
-            type: 15,
-            scores: {
-                connect: [
-                    { id: typingTest1.id },
-                    { id: typingTest2.id },
-                    { id: typingTest6.id },
-                    { id: typingTest7.id },
-                    { id: typingTest11.id },
-                    { id: typingTest12.id },
-                    { id: typingTest16.id },
-                    { id: typingTest17.id },
-                ],
+            wpm: 143,
+            accuracy: 98,
+            time: 60,
+            type: 'multiplayer',
+            user: {
+                connect: { id: users[5].id },
             },
-        },
-    });
-
-    const leaderboard2 = await prisma.leaderboard.create({
-        data: {
-            maxScores: 10,
-            type: 30,
-            scores: {
-                connect: [
-                    { id: typingTest3.id },
-                    { id: typingTest4.id },
-                    { id: typingTest8.id },
-                    { id: typingTest9.id },
-                    { id: typingTest13.id },
-                    { id: typingTest14.id },
-                    { id: typingTest18.id },
-                    { id: typingTest19.id },
-                ],
-            },
-        },
-    });
-
-    const leaderboard3 = await prisma.leaderboard.create({
-        data: {
-            maxScores: 10,
-            type: 60,
-            scores: {
-                connect: [
-                    { id: typingTest5.id },
-                    { id: typingTest10.id },
-                    { id: typingTest15.id },
-                    { id: typingTest20.id },
-                ],
+            game: {
+                connect: { id: users[2].id },
             },
         },
     });
