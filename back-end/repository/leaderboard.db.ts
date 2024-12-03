@@ -5,10 +5,28 @@ const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
     try {
         const leaderboardsPrisma = await database.leaderboard.findMany({
             include: {
-                scores: true,
+                scores: {
+                    orderBy: {
+                        wpm: 'desc',
+                    },
+                    distinct: ['userId'],
+                },
             },
         });
-        return leaderboardsPrisma.map((leaderboardPrisma) => Leaderboard.from(leaderboardPrisma));
+
+        if (!leaderboardsPrisma) {
+            return [];
+        }
+
+        const leaderboards = leaderboardsPrisma.map((leaderboardPrisma) => {
+            const limitedScores = leaderboardPrisma.scores.slice(0, leaderboardPrisma.maxScores);
+            return Leaderboard.from({
+                ...leaderboardPrisma,
+                scores: limitedScores,
+            });
+        });
+
+        return leaderboards;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
@@ -20,10 +38,25 @@ const getLeaderboardByType = async ({ type }: { type: number }): Promise<Leaderb
         const leaderboardPrisma = await database.leaderboard.findFirst({
             where: { type },
             include: {
-                scores: true,
+                scores: {
+                    orderBy: {
+                        wpm: 'desc',
+                    },
+                    distinct: ['userId'],
+                },
             },
         });
-        return leaderboardPrisma ? Leaderboard.from(leaderboardPrisma) : null;
+
+        if (!leaderboardPrisma) {
+            return null;
+        }
+
+        const limitedScores = leaderboardPrisma.scores.slice(0, leaderboardPrisma.maxScores);
+
+        return Leaderboard.from({
+            ...leaderboardPrisma,
+            scores: limitedScores,
+        });
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
