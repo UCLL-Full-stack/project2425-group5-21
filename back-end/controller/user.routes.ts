@@ -69,7 +69,7 @@
  *               $ref: '#/components/schemas/Role'
  *      Role:
  *          type: string
- *          enum: [player, admin]
+ *          enum: [player, admin, guest]
  */
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
