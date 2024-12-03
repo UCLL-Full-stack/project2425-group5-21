@@ -40,27 +40,12 @@ const swaggerOpts = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'MRTyper API',
+            title: 'Courses API',
             version: '1.0.0',
         },
-        components: {
-            securitySchemes: {
-                BearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: 'JWT',
-                },
-            },
-        },
-        security: [
-            {
-                BearerAuth: [],
-            },
-        ],
     },
     apis: ['./controller/*.routes.ts'],
 };
-
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
