@@ -8,7 +8,15 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [queuePosition, setQueuePosition] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<number>(10);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("loggedInUser");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (queuePosition !== null && countdown > 0) {
@@ -59,9 +67,9 @@ const Home: React.FC = () => {
             Welcome to MR Typer!
           </h1>
           <p className="text-lg text-center max-w-3xl mb-8">
-            Choose your game mode to start typing! Whether you want to play solo
-            or with friends, the fun begins here. Let’s see how fast you can
-            type!
+            {isAuthenticated
+              ? "Choose your game mode to start typing! Whether you want to play solo or with friends, the fun begins here. Let’s see how fast you can type!"
+              : "Choose singleplayer to start typing! Let’s see how fast you can type!"}
           </p>
 
           <div className="flex space-x-8 justify-center mb-8 w-full">
@@ -78,18 +86,20 @@ const Home: React.FC = () => {
               </p>
             </div>
 
-            <div
-              onClick={() => handleGameModeSelection("multiplayer")}
-              className="bg-[#5ac4d7] text-[#1a1d2e] py-10 px-12 rounded-xl text-3xl font-semibold shadow-xl transform transition-transform hover:scale-105 hover:bg-[#49a8b8] cursor-pointer w-full max-w-xs text-center flex flex-col items-center justify-center hover:shadow-2xl"
-            >
-              <div className="h-24 w-24 bg-[#49a8b8] rounded-full mb-4 flex items-center justify-center transition-transform hover:scale-110">
-                <Globe className="h-16 w-16 text-[#1a1d2e]" />
+            {isAuthenticated && (
+              <div
+                onClick={() => handleGameModeSelection("multiplayer")}
+                className="bg-[#5ac4d7] text-[#1a1d2e] py-10 px-12 rounded-xl text-3xl font-semibold shadow-xl transform transition-transform hover:scale-105 hover:bg-[#49a8b8] cursor-pointer w-full max-w-xs text-center flex flex-col items-center justify-center hover:shadow-2xl"
+              >
+                <div className="h-24 w-24 bg-[#49a8b8] rounded-full mb-4 flex items-center justify-center transition-transform hover:scale-110">
+                  <Globe className="h-16 w-16 text-[#1a1d2e]" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Multiplayer</h3>
+                <p className="text-sm mt-2">
+                  Compete with friends or players around the world in real-time!
+                </p>
               </div>
-              <h3 className="text-2xl font-bold mb-2">Multiplayer</h3>
-              <p className="text-sm mt-2">
-                Compete with friends or players around the world in real-time!
-              </p>
-            </div>
+            )}
           </div>
 
           {queuePosition !== null && (
