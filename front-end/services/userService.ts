@@ -20,9 +20,9 @@ const registerUser = (user: User) => {
   });
 };
 
-const userService = {
+const UserService = {
   loginUser,
   registerUser,
 };
 
-export default userService;
+export default UserService;
