@@ -40,6 +40,12 @@ const Header: React.FC = () => {
             Home
           </Link>
           <Link
+            href="/stats"
+            className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+          >
+            Stats
+          </Link>
+          <Link
             href="/leaderboards"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
