@@ -43,6 +43,9 @@ const getLeaderboardByType = async ({ type }: { type: number }): Promise<Leaderb
                         wpm: 'desc',
                     },
                     distinct: ['userId'],
+                    include: {
+                        user: true,
+                    },
                 },
             },
         });
