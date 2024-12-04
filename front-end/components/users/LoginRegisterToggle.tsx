@@ -10,7 +10,7 @@ const LoginRegisterToggle: React.FC = () => {
       <div className="flex justify-center space-x-4 mb-4">
         <button
           onClick={() => setIsLogin(true)}
-          className={`py-2 px-4 rounded-md ${
+          className={`py-2 px-10 rounded-md ${
             isLogin ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
           }`}
         >
@@ -18,7 +18,7 @@ const LoginRegisterToggle: React.FC = () => {
         </button>
         <button
           onClick={() => setIsLogin(false)}
-          className={`py-2 px-4 rounded-md ${
+          className={`py-2 px-10 rounded-md ${
             !isLogin ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
           }`}
         >
