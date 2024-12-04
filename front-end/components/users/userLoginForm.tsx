@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import userService from "@/services/userService";
+import userService from "@/services/UserService";
 import { StatusMessage } from "@/types";
 import classNames from "classnames";
 
@@ -130,23 +130,16 @@ const UserLoginForm: React.FC = () => {
           Login
         </button>
       </form>
-      {statusMessages && (
-        <div className="row">
-          <ul className="list-none mb-3 mx-auto">
-            {statusMessages.map(({ message, type }, index) => (
-              <li
-                key={index}
-                className={classNames({
-                  "text-red-500": type === "error",
-                  "text-green-500": type === "success",
-                })}
-              >
-                {message}
-              </li>
-            ))}
-          </ul>
+      {statusMessages.map((status, index) => (
+        <div
+          key={index}
+          className={`mt-4 text-center text-lg font-semibold ${
+            status.type === "success" ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {status.message}
         </div>
-      )}
+      ))}
     </>
   );
 };
