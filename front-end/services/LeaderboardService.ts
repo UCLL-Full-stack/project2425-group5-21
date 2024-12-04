@@ -1,26 +1,17 @@
-// import { Profile } from "@/types";
+const getLeaderboardByType = async (type: number) => {
+  const userString = localStorage.getItem("loggedInUser");
+  const token = userString ? JSON.parse(userString).token : null;
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/leaderboards/${type}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
-// const getAllLeaderboards = async () => {
-//   return fetch(process.env.NEXT_PUBLIC_API_URL + "/leaderboards", {
-//     method: "GET",
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//   });
-// };
+const LeaderboardService = {
+  getLeaderboardByType,
+};
 
-// const getLeaderboardByType = async (type: number) => {
-//   return fetch(process.env.NEXT_PUBLIC_API_URL + `/leaderboards/${type}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//   });
-// };
-
-// const LeaderboardService = {
-//   getAllLeaderboards,
-//   getLeaderboardByType,
-// };
-
-// export default LeaderboardService;
+export default LeaderboardService;
