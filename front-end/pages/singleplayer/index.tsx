@@ -107,10 +107,11 @@ const Singleplayer: React.FC = () => {
   const [typedLetters, setTypedLetters] = useState<string>("");
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const [currentLetterIndex, setCurrentLetterIndex] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<number>(15);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
   const [stats, setStats] = useState<any>(null);
+  const [selectedTime, setSelectedTime] = useState<number | null>(null);
   const wordRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -191,7 +192,9 @@ const Singleplayer: React.FC = () => {
       ? Math.round((correctCharsTyped / totalCharsTyped) * 100)
       : 0;
 
-    const wpm = Math.round((typedWordsArray.length / 15) * 60);
+    const wpm = Math.round(
+      (typedWordsArray.length / (selectedTime || 15)) * 60
+    );
 
     setStats({
       accuracy,
@@ -203,7 +206,7 @@ const Singleplayer: React.FC = () => {
     setIsGameStarted(false);
     setIsGameFinished(false);
     setStats(null);
-    setTimeLeft(15);
+    setTimeLeft(selectedTime || 15);
     setTypedLetters("");
     setCurrentWordIndex(0);
     setCurrentLetterIndex(0);
@@ -215,27 +218,61 @@ const Singleplayer: React.FC = () => {
     setSelectedWords(randomWords);
   };
 
+  const startGame = (time: number) => {
+    setSelectedTime(time);
+    setTimeLeft(time);
+    setIsGameStarted(true);
+  };
+
   const splitWords = selectedWords.join(" ").split(" ");
   const typedWordsArray = typedLetters.trim().split(" ");
 
   return (
     <>
       <Head>
-        <title>MR Typer | Your favorite typeracer</title>
-        <meta name="description" content="Courses app" />
+        <title>MR Typer | Singleplayer</title>
+        <meta name="description" content="Singleplayer typing test" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="h-screen bg-[#120e17] flex flex-col justify-center items-center">
-        <div className="w-[80%] flex items-center">
-          <p className="font-bold text-3xl">
-            Time Left: {timeLeft} {isGameFinished && "Game Over!"}
-          </p>
-        </div>
+      <main className="h-screen bg-[#120e17] flex flex-col justify-center items-center text-white">
+        {!isGameStarted && !isGameFinished && (
+          <div className="flex flex-col items-center space-y-4 -mt-40">
+            <h2 className="text-3xl font-bold mb-4">Select Time Duration</h2>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => startGame(15)}
+                className="bg-[#5ac4d7] text-[#1a1d2e] py-2 px-4 rounded-lg text-xl font-semibold shadow-md transform transition-transform hover:scale-105 hover:bg-[#49a8b8]"
+              >
+                15 Seconds
+              </button>
+              <button
+                onClick={() => startGame(30)}
+                className="bg-[#5ac4d7] text-[#1a1d2e] py-2 px-4 rounded-lg text-xl font-semibold shadow-md transform transition-transform hover:scale-105 hover:bg-[#49a8b8]"
+              >
+                30 Seconds
+              </button>
+              <button
+                onClick={() => startGame(60)}
+                className="bg-[#5ac4d7] text-[#1a1d2e] py-2 px-4 rounded-lg text-xl font-semibold shadow-md transform transition-transform hover:scale-105 hover:bg-[#49a8b8]"
+              >
+                60 Seconds
+              </button>
+            </div>
+          </div>
+        )}
+
+        {isGameStarted && (
+          <div className="w-[80%] flex items-center -mt-40">
+            <p className="font-bold text-3xl text-[#5ac4d7] -ml40">
+              {timeLeft} {isGameFinished && "Game Over!"}
+            </p>
+          </div>
+        )}
 
         {isGameFinished ? (
-          <div className="w-[80%] text-center mt-8">
+          <div className="w-[80%] text-center mt-8 -mt-40">
             <h2 className="text-white text-4xl font-bold mb-6">Game Stats</h2>
             <ul className="text-white text-lg">
               <li>Accuracy: {stats.accuracy}%</li>
@@ -249,43 +286,47 @@ const Singleplayer: React.FC = () => {
             </button>
           </div>
         ) : (
-          <section className="relative w-[80%] h-[25%] flex flex-wrap justify-start items-center">
-            {splitWords.map((word, wordIndex) => {
-              const typedWord = typedWordsArray[wordIndex] || "";
-              return (
-                <div
-                  className="flex items-center px-2 relative"
-                  key={wordIndex}
-                  ref={(el) => (wordRefs.current[wordIndex] = el)}
-                >
-                  {word.split("").map((letter, letterIndex) => {
-                    const isTyped = letterIndex < typedWord.length;
-                    const isCorrect = typedWord[letterIndex] === letter;
-                    const isCursorPosition =
-                      wordIndex === currentWordIndex &&
-                      letterIndex === currentLetterIndex;
+          isGameStarted && (
+            <section className="relative w-[80%] h-[25%] flex flex-wrap justify-start items-center">
+              {splitWords.map((word, wordIndex) => {
+                const typedWord = typedWordsArray[wordIndex] || "";
+                return (
+                  <div
+                    className="flex items-center px-2 relative"
+                    key={wordIndex}
+                    ref={(el) => (wordRefs.current[wordIndex] = el)}
+                  >
+                    {word.split("").map((letter, letterIndex) => {
+                      const isTyped = letterIndex < typedWord.length;
+                      const isCorrect = typedWord[letterIndex] === letter;
+                      const isCursorPosition =
+                        wordIndex === currentWordIndex &&
+                        letterIndex === currentLetterIndex;
 
-                    let className =
-                      "font-bold text-4xl transition-colors duration-300 ";
-                    if (isTyped) {
-                      className += isCorrect ? "text-white/70" : "text-red-500";
-                    } else {
-                      className += "text-white/30";
-                    }
+                      let className =
+                        "font-bold text-4xl transition-colors duration-300 ";
+                      if (isTyped) {
+                        className += isCorrect
+                          ? "text-white/70"
+                          : "text-red-500";
+                      } else {
+                        className += "text-white/30";
+                      }
 
-                    return (
-                      <span key={letterIndex} className="relative">
-                        {isCursorPosition && (
-                          <span className="absolute -left-1 w-1 h-10 mt-1 bg-white animate-pulse transition-all"></span>
-                        )}
-                        <p className={className}>{letter}</p>
-                      </span>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </section>
+                      return (
+                        <span key={letterIndex} className="relative">
+                          {isCursorPosition && (
+                            <span className="absolute -left-1 w-1 h-10 mt-1 bg-white animate-pulse transition-all"></span>
+                          )}
+                          <p className={className}>{letter}</p>
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </section>
+          )
         )}
       </main>
     </>
