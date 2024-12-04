@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
-import Header from "@/components/header.jsx";
+import Header from "@/components/header";
 
-const Home: React.FC = () => {
+const Multiplayer: React.FC = () => {
   const allWords = [
     "from",
     "quick",
@@ -200,4 +200,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Multiplayer;
