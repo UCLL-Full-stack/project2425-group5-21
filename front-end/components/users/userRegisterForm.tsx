@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import userService from "@/services/userService";
+import userService from "@/services/UserService";
 import { StatusMessage } from "@/types";
 import classNames from "classnames";
 
