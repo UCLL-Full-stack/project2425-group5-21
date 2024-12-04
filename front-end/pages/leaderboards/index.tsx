@@ -52,7 +52,7 @@ const Leaderboard: React.FC = () => {
         <title>Leaderboard</title>
       </Head>
       <Header />
-      <main className="h-screen bg-[#120e17] flex flex-col items-center text-white">
+      <main className="h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
         {isAuthenticated ? (
           <>
             <div className="flex h-20 items-center justify-between w-11/12 max-w-3xl mt-40">
@@ -130,7 +130,7 @@ const Leaderboard: React.FC = () => {
         ) : (
           <div>
             {error && (
-              <div className="text-red-400 mt-60 text-2xl">{error}</div>
+              <div className="text-red-400 mt-80 text-2xl">{error}</div>
             )}
           </div>
         )}
