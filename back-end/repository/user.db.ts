@@ -30,7 +30,7 @@ const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
     try {
         const userTypingTests = await database.user.findUnique({
             where: { id: userId },
-            include: { TypingTests: true },
+            include: { TypingTests: { include: { user: true } } },
         });
 
         if (!userTypingTests) {
@@ -49,10 +49,8 @@ const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
 const getTypingTestsByUserAndType = async (userId: number, type: string): Promise<TypingTest[]> => {
     try {
         const typingTestsPrisma = await database.typingTest.findMany({
-            where: {
-                userId,
-                type,
-            },
+            where: { userId, type },
+            include: { user: true },
         });
         return typingTestsPrisma.map((typingTestPrisma) => TypingTest.from(typingTestPrisma));
     } catch (error) {
