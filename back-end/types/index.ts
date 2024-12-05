@@ -16,12 +16,12 @@ export type TypingTestInput = {
     time: number;
     type: string;
     user: UserInput;
-    gameId?: number;
+    gameId?: number | null;
 };
 
 export type LeaderboardInput = {
     id?: number;
-    maxPlayers: number;
+    maxScores: number;
     type: number;
     scores: TypingTestInput[];
 };
