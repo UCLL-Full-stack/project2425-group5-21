@@ -3,13 +3,16 @@ import database from '../util/database';
 
 const getAllTypingTests = async (): Promise<TypingTest[]> => {
     try {
-        const typingTestsPrisma = await database.typingTest.findMany();
+        const typingTestsPrisma = await database.typingTest.findMany({
+            include: { user: true },
+        });
         return typingTestsPrisma.map((typingTestPrisma) => TypingTest.from(typingTestPrisma));
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
     }
 };
+
 const getTypingTestsByUsername = async (username: string): Promise<TypingTest[]> => {
     try {
         const typingTestsPrisma = await database.typingTest.findMany({
@@ -18,6 +21,7 @@ const getTypingTestsByUsername = async (username: string): Promise<TypingTest[]>
                     username,
                 },
             },
+            include: { user: true },
         });
         return typingTestsPrisma.map((typingTestPrisma) => TypingTest.from(typingTestPrisma));
     } catch (error) {
