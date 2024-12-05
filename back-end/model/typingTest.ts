@@ -1,4 +1,4 @@
-import { TypingTest as TypingTestPrisma } from '@prisma/client';
+import { TypingTest as TypingTestPrisma, User as UserPrisma } from '@prisma/client';
 
 export class TypingTest {
     readonly id?: number;
@@ -6,7 +6,7 @@ export class TypingTest {
     readonly accuracy: number;
     readonly time: number;
     readonly type: string;
-    readonly userId: number;
+    readonly user: UserPrisma;
     readonly gameId?: number | null;
 
     constructor(typingTest: {
@@ -15,7 +15,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        userId: number;
+        user: UserPrisma;
         gameId?: number | null;
     }) {
         this.validate(typingTest);
@@ -25,7 +25,7 @@ export class TypingTest {
         this.accuracy = typingTest.accuracy;
         this.time = typingTest.time;
         this.type = typingTest.type;
-        this.userId = typingTest.userId;
+        this.user = typingTest.user;
         this.gameId = typingTest.gameId;
     }
 
@@ -49,8 +49,8 @@ export class TypingTest {
         return this.type;
     }
 
-    getUserId(): number {
-        return this.userId;
+    getUser(): UserPrisma {
+        return this.user;
     }
 
     getGameId(): number | undefined | null {
@@ -62,7 +62,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        userId?: number;
+        user: UserPrisma;
         gameId?: number | null;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
@@ -98,19 +98,27 @@ export class TypingTest {
             this.accuracy === typingTest.getAccuracy() &&
             this.time === typingTest.getTime() &&
             this.type === typingTest.getType() &&
-            this.userId === typingTest.getUserId() &&
+            this.user.id === typingTest.getUser().id &&
             this.gameId === typingTest.getGameId()
         );
     }
 
-    static from({ id, wpm, accuracy, time, type, userId, gameId }: TypingTestPrisma): TypingTest {
+    static from({
+        id,
+        wpm,
+        accuracy,
+        time,
+        type,
+        user,
+        gameId,
+    }: TypingTestPrisma & { user: UserPrisma }): TypingTest {
         return new TypingTest({
             id,
             wpm,
             accuracy,
             time,
             type,
-            userId,
+            user,
             gameId,
         });
     }
@@ -121,7 +129,7 @@ export class TypingTest {
             accuracy: this.accuracy,
             time: this.time,
             type: this.type,
-            userId: this.userId,
+            userId: this.user.id,
             gameId: this.gameId,
         };
     }
