@@ -10,6 +10,9 @@ const getAllLeaderboards = async (): Promise<Leaderboard[]> => {
                         wpm: 'desc',
                     },
                     distinct: ['userId'],
+                    include: {
+                        user: true,
+                    },
                 },
             },
         });
