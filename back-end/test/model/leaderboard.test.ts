@@ -1,12 +1,20 @@
 import { Leaderboard } from '../../model/leaderboard';
 import { TypingTest } from '../../model/typingTest';
+import { User } from '../../model/user';
 
 const typingTestData = {
     wpm: 120,
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    userId: 1,
+    user: {
+        id: 1,
+        username: 'testuser',
+        email: 'testuser@example.com',
+        password: 'hashedpassword',
+        role: 'player',
+        creationDate: new Date(),
+    },
     gameId: 1,
 };
 

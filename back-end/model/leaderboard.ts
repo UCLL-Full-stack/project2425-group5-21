@@ -17,6 +17,8 @@ export class Leaderboard {
         maxScores: number;
         scores: TypingTest[];
     }) {
+        this.validate(leaderboard);
+
         this.id = leaderboard.id;
         this.type = leaderboard.type;
         this.maxScores = leaderboard.maxScores;
