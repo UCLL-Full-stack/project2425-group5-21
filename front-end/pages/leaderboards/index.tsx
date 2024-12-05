@@ -17,7 +17,7 @@ const Leaderboard: React.FC = () => {
       if (!response.ok) {
         if (response.status === 401) {
           setError(
-            "You are not authorized to view this page. Please login first."
+            "You are not authorized to view the leaderboard page. Please login first."
           );
         } else {
           const errorData = await response.json();
@@ -36,7 +36,9 @@ const Leaderboard: React.FC = () => {
     if (token) {
       setIsAuthenticated(true);
     } else {
-      setError("You are not authorized to view this page. Please login first.");
+      setError(
+        "You are not authorized to view the leaderboard page. Please login first."
+      );
     }
   }, []);
 
@@ -113,7 +115,7 @@ const Leaderboard: React.FC = () => {
                         {index + 1}
                       </td>
                       <td className="py-4 font-semibold text-[#d4d7f2]">
-                        {score.userId}
+                        {score.user.username}
                       </td>
                       <td className="py-4 font-semibold text-[#d4d7f2]">
                         {score.wpm} wpm
