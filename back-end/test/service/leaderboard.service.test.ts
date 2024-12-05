@@ -2,100 +2,121 @@ import { Leaderboard } from '../../model/leaderboard';
 import leaderboardDb from '../../repository/leaderboard.db';
 import leaderboardService from '../../service/leaderboard.service';
 import { TypingTest } from '../../model/typingTest';
+import { LeaderboardInput, TypingTestInput, UserInput } from '../../types';
+import { User } from '../../model/user';
 
-jest.mock('../../repository/leaderboard.db');
+const userInput1: UserInput = {
+    username: 'testuser',
+    email: 'test.user@example.com',
+    password: 'hashedpassword',
+    role: 'player',
+    creationDate: new Date(),
+};
 
-const typingTestData1 = {
+const userInput2: UserInput = {
+    username: 'testuser1',
+    email: 'test.userr@example.com',
+    password: 'hashedpassword1',
+    role: 'player',
+    creationDate: new Date(),
+};
+
+const userInput3: UserInput = {
+    username: 'testuser3',
+    email: 'test.userrr@example.com',
+    password: 'hashedpassword3',
+    role: 'player',
+    creationDate: new Date(),
+};
+
+const user1 = new User({
+    ...userInput1,
+});
+
+const user2 = new User({
+    ...userInput2,
+});
+
+const user3 = new User({
+    ...userInput3,
+});
+
+const typingTestData1: TypingTestInput = {
     wpm: 120,
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    user: {
-        id: 1,
-        username: 'testuser',
-        email: 'testuser@example.com',
-        password: 'hashedpassword',
-        role: 'player',
-        creationDate: new Date(),
-    },
+    user: user1,
     gameId: 1,
 };
 
-const typingTestData2 = {
+const typingTestData2: TypingTestInput = {
     wpm: 120,
     accuracy: 98,
     time: 30,
     type: 'singleplayer',
-    user: {
-        id: 2,
-        username: 'testuser1',
-        email: 'testuser1@example.com',
-        password: 'hashedpassword1',
-        role: 'player',
-        creationDate: new Date(),
-    },
+    user: user2,
     gameId: 1,
 };
 
-const typingTestData3 = {
+const typingTestData3: TypingTestInput = {
     wpm: 120,
     accuracy: 98,
     time: 60,
     type: 'singleplayer',
-    user: {
-        id: 3,
-        username: 'testuser3',
-        email: 'testuser3@example.com',
-        password: 'hashedpassword3',
-        role: 'player',
-        creationDate: new Date(),
-    },
+    user: user3,
     gameId: 1,
 };
 
 const typingTest1 = new TypingTest({
     ...typingTestData1,
+    user: user1,
 });
 
 const typingTest2 = new TypingTest({
     ...typingTestData2,
+    user: user2,
 });
 
 const typingTest3 = new TypingTest({
     ...typingTestData3,
+    user: user3,
 });
 
-const leaderboardData1 = {
+const leaderboardData1: LeaderboardInput = {
     id: 1,
-    maxScores: 10,
+    maxScores: 5,
     type: 15,
     scores: [typingTest1],
 };
 
-const leaderboardData2 = {
+const leaderboardData2: LeaderboardInput = {
     id: 1,
-    maxScores: 10,
+    maxScores: 5,
     type: 30,
     scores: [typingTest2],
 };
 
-const leaderboardData3 = {
+const leaderboardData3: LeaderboardInput = {
     id: 1,
-    maxScores: 10,
+    maxScores: 5,
     type: 60,
     scores: [typingTest3],
 };
 
 const leaderboard1 = new Leaderboard({
     ...leaderboardData1,
+    scores: [typingTest1],
 });
 
 const leaderboard2 = new Leaderboard({
     ...leaderboardData2,
+    scores: [typingTest2],
 });
 
 const leaderboard3 = new Leaderboard({
     ...leaderboardData3,
+    scores: [typingTest3],
 });
 
 let mockLeaderboardDbGetAllLeaderboards: jest.Mock;
