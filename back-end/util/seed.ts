@@ -150,41 +150,11 @@ const main = async () => {
         }
     }
 
-    // const game1 = await prisma.game.create({
-    //     data: {
-    //         startDate: new Date(2024, 10, 2, 8, 30, 0),
-    //         endDate: new Date(2024, 10, 2, 8, 30, 60),
-    //         users: {
-    //             connect: [{ id: users[0].id }, { id: users[1].id }],
-    //         },
-    //     },
-    // });
-
-    // const game2 = await prisma.game.create({
-    //     data: {
-    //         startDate: new Date(2024, 6, 2, 1, 30, 0),
-    //         endDate: new Date(2024, 6, 2, 1, 30, 60),
-    //         users: {
-    //             connect: [{ id: users[2].id }, { id: users[3].id }],
-    //         },
-    //     },
-    // });
-
-    // const game3 = await prisma.game.create({
-    //     data: {
-    //         startDate: new Date(2024, 1, 23, 16, 27, 0),
-    //         endDate: new Date(2024, 1, 23, 16, 27, 60),
-    //         users: {
-    //             connect: [{ id: users[0].id }, { id: users[1].id }],
-    //         },
-    //     },
-    // });
-
     const games = [];
     const gameTimes = [
-        { start: new Date(2024, 10, 2, 8, 30, 0), end: new Date(2024, 10, 2, 8, 30, 60) },
-        { start: new Date(2024, 6, 2, 1, 30, 0), end: new Date(2024, 6, 2, 1, 30, 60) },
-        { start: new Date(2024, 1, 23, 16, 27, 0), end: new Date(2024, 1, 23, 16, 27, 60) },
+        { start: new Date(2024, 10, 2, 8, 30, 0), end: new Date(2024, 10, 2, 8, 31, 0) },
+        { start: new Date(2024, 6, 2, 1, 30, 0), end: new Date(2024, 6, 2, 1, 31, 0) },
+        { start: new Date(2024, 1, 23, 16, 27, 0), end: new Date(2024, 1, 23, 16, 28, 0) },
     ];
 
     for (let i = 0; i < 3; i++) {
@@ -225,7 +195,7 @@ const main = async () => {
                 connect: { id: users[1].id },
             },
             game: {
-                connect: { id: users[0].id },
+                connect: { id: games[0].id },
             },
         },
     });
@@ -240,7 +210,7 @@ const main = async () => {
                 connect: { id: users[2].id },
             },
             game: {
-                connect: { id: users[1].id },
+                connect: { id: games[1].id },
             },
         },
     });
@@ -255,7 +225,7 @@ const main = async () => {
                 connect: { id: users[3].id },
             },
             game: {
-                connect: { id: users[1].id },
+                connect: { id: games[1].id },
             },
         },
     });
@@ -270,7 +240,7 @@ const main = async () => {
                 connect: { id: users[4].id },
             },
             game: {
-                connect: { id: users[2].id },
+                connect: { id: games[2].id },
             },
         },
     });
@@ -285,7 +255,7 @@ const main = async () => {
                 connect: { id: users[5].id },
             },
             game: {
-                connect: { id: users[2].id },
+                connect: { id: games[2].id },
             },
         },
     });
