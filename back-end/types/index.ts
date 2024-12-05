@@ -15,7 +15,7 @@ export type TypingTestInput = {
     accuracy: number;
     time: number;
     type: string;
-    userId: number;
+    user: UserInput;
     gameId?: number;
 };
 
