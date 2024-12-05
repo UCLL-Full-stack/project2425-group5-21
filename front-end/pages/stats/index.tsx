@@ -11,7 +11,9 @@ const Stats: React.FC = () => {
     if (token) {
       setIsAuthenticated(true);
     } else {
-      setError("You are not authorized to view this page. Please login first.");
+      setError(
+        "You are not authorized to view the stats page. Please login first."
+      );
     }
   }, []);
 
