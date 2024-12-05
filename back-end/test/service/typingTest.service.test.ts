@@ -1,4 +1,5 @@
 import { TypingTest } from '../../model/typingTest';
+import { User } from '../../model/user';
 import typingtestDb from '../../repository/typingtest.db';
 import typingtestService from '../../service/typingtest.service';
 import { TypingTestInput } from '../../types';
@@ -6,25 +7,30 @@ import { UserInput } from '../../types';
 
 jest.mock('../../repository/typingtest.db');
 
-const user: UserInput = {
+const userInput: UserInput = {
     username: 'testuser',
-    email: 'testuser@example.com',
+    email: 'test.user@example.com',
     password: 'hashedpassword',
     role: 'player',
     creationDate: new Date(),
 };
+
+const user = new User({
+    ...userInput,
+});
 
 const typingTestInput: TypingTestInput = {
     wpm: 120,
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    user: user,
+    user: userInput,
     gameId: 1,
 };
 
 const typingTest = new TypingTest({
     ...typingTestInput,
+    user: user,
 });
 
 let mockTypingtestDbGetAllTypingTests: jest.Mock;
