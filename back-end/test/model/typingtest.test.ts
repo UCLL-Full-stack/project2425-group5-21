@@ -1,18 +1,20 @@
 import { TypingTest } from '../../model/typingTest';
+import { User } from '../../model/user';
+
+const usertest = new User({
+    username: 'testuser',
+    email: 'test.user@example.com',
+    password: 'hashedpassword',
+    role: 'player',
+    creationDate: new Date(),
+});
 
 const typingTestData = {
     wpm: 120,
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    user: {
-        id: 1,
-        username: 'testuser',
-        email: 'testuser@example.com',
-        password: 'hashedpassword',
-        role: 'player',
-        creationDate: new Date(),
-    },
+    user: usertest,
     gameId: 1,
 };
 
