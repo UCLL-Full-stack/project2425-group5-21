@@ -6,7 +6,7 @@ export class TypingTest {
     readonly accuracy: number;
     readonly time: number;
     readonly type: string;
-    readonly user: User;
+    readonly user: UserPrisma;
     readonly gameId?: number | null;
 
     constructor(typingTest: {
@@ -15,7 +15,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        user: User;
+        user: UserPrisma;
         gameId?: number | null;
     }) {
         this.validate(typingTest);
@@ -49,7 +49,7 @@ export class TypingTest {
         return this.type;
     }
 
-    getUser(): User {
+    getUser(): UserPrisma {
         return this.user;
     }
 
@@ -62,7 +62,7 @@ export class TypingTest {
         accuracy: number;
         time: number;
         type: string;
-        user: User;
+        user: UserPrisma;
         gameId?: number | null;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
