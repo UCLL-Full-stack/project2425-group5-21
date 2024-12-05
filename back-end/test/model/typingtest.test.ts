@@ -5,7 +5,14 @@ const typingTestData = {
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    userId: 1,
+    user: {
+        id: 1,
+        username: 'testuser',
+        email: 'testuser@example.com',
+        password: 'hashedpassword',
+        role: 'player',
+        creationDate: new Date(),
+    },
     gameId: 1,
 };
 
@@ -15,7 +22,7 @@ beforeEach(() => {
     typingTest = new TypingTest(typingTestData);
 });
 
-const { wpm, accuracy, time, type, userId, gameId } = typingTestData;
+const { wpm, accuracy, time, type, user, gameId } = typingTestData;
 
 const createTypingTest = (overrides = {}) => new TypingTest({ ...typingTestData, ...overrides });
 
@@ -24,7 +31,7 @@ test('given: valid values for typingtest, when: typingtest is created, then: typ
     expect(typingTest.getAccuracy()).toEqual(accuracy);
     expect(typingTest.getTime()).toEqual(time);
     expect(typingTest.getType()).toEqual(type);
-    expect(typingTest.getUserId()).toEqual(userId);
+    expect(typingTest.getUser()).toEqual(user);
     expect(typingTest.getGameId()).toEqual(gameId);
 });
 
