@@ -10,7 +10,14 @@ const typingTestData1 = {
     accuracy: 98,
     time: 15,
     type: 'singleplayer',
-    userId: 1,
+    user: {
+        id: 1,
+        username: 'testuser',
+        email: 'testuser@example.com',
+        password: 'hashedpassword',
+        role: 'player',
+        creationDate: new Date(),
+    },
     gameId: 1,
 };
 
@@ -19,7 +26,14 @@ const typingTestData2 = {
     accuracy: 98,
     time: 30,
     type: 'singleplayer',
-    userId: 1,
+    user: {
+        id: 2,
+        username: 'testuser1',
+        email: 'testuser1@example.com',
+        password: 'hashedpassword1',
+        role: 'player',
+        creationDate: new Date(),
+    },
     gameId: 1,
 };
 
@@ -28,7 +42,14 @@ const typingTestData3 = {
     accuracy: 98,
     time: 60,
     type: 'singleplayer',
-    userId: 1,
+    user: {
+        id: 3,
+        username: 'testuser3',
+        email: 'testuser3@example.com',
+        password: 'hashedpassword3',
+        role: 'player',
+        creationDate: new Date(),
+    },
     gameId: 1,
 };
 
