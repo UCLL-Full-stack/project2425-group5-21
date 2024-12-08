@@ -31,7 +31,31 @@ const getGameByIdWithUsers = async (id: number): Promise<Game | null> => {
     }
 };
 
+const removeGamesByUserId = async (userId: number): Promise<void> => {
+    try {
+        const games = await database.game.findMany({
+            where: {
+                users: {
+                    some: {
+                        id: userId,
+                    },
+                },
+            },
+        });
+
+        for (const game of games) {
+            await database.game.delete({
+                where: { id: game.id },
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllGamesWithUsers,
     getGameByIdWithUsers,
+    removeGamesByUserId,
 };
