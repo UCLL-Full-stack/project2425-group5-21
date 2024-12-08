@@ -8,7 +8,7 @@ const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"player" | "admin">("player");
+  const [role, setRole] = useState<"player" | "admin" | "moderator">("player");
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -164,11 +164,14 @@ const RegisterForm: React.FC = () => {
         <select
           id="role"
           value={role}
-          onChange={(e) => setRole(e.target.value as "player" | "admin")}
+          onChange={(e) =>
+            setRole(e.target.value as "player" | "admin" | "moderator")
+          }
           className="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md"
         >
           <option value="player">Player</option>
           <option value="admin">Admin</option>
+          <option value="moderator">Moderator</option>
         </select>
       </div>
       <button
