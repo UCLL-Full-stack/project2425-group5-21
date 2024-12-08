@@ -1,5 +1,4 @@
 import { User } from '../model/user';
-import { TypingTest } from '../model/typingTest';
 import database from '../util/database';
 import { UserInput } from '../types';
 
@@ -20,39 +19,6 @@ const getUserById = async (id: number): Promise<User | null> => {
         });
 
         return userPrisma ? User.from(userPrisma) : null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
-};
-
-const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
-    try {
-        const userTypingTests = await database.user.findUnique({
-            where: { id: userId },
-            include: { TypingTests: { include: { user: true } } },
-        });
-
-        if (!userTypingTests) {
-            throw new Error(`User with ID ${userId} not found.`);
-        }
-
-        return userTypingTests.TypingTests.map((typingTestPrisma) =>
-            TypingTest.from(typingTestPrisma)
-        );
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
-};
-
-const getTypingTestsByUserAndType = async (userId: number, type: string): Promise<TypingTest[]> => {
-    try {
-        const typingTestsPrisma = await database.typingTest.findMany({
-            where: { userId, type },
-            include: { user: true },
-        });
-        return typingTestsPrisma.map((typingTestPrisma) => TypingTest.from(typingTestPrisma));
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
@@ -115,13 +81,24 @@ const deleteUser = async (userId: number): Promise<void> => {
     }
 };
 
+const updateUsername = async (userId: number, newUsername: string): Promise<void> => {
+    try {
+        await database.user.update({
+            where: { id: userId },
+            data: { username: newUsername },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllUsers,
     getUserById,
-    getTypingTestsByUser,
-    getTypingTestsByUserAndType,
     createUser,
     getUserByUsername,
     getUserByEmail,
     deleteUser,
+    updateUsername,
 };
