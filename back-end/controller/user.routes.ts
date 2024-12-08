@@ -179,87 +179,6 @@ userRouter.get('/:username', async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
- * /users/{id}/typingTests:
- *   get:
- *     security:
- *      - bearerAuth: []
- *     summary: Get typing tests by user ID.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the user.
- *         schema:
- *           type: number
- *     responses:
- *       200:
- *         description: A list of typing tests for the given user ID.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                  $ref: '#/components/schemas/TypingTest'
- */
-userRouter.get('/:id/typingTests', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const typingTests = await userService.getTypingTestsByUser(Number(req.params.id));
-        res.status(200).json(typingTests);
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ status: 'error', errorMessage: error.message });
-        }
-    }
-});
-
-/**
- * @swagger
- * /users/{id}/typingTests/{type}:
- *   get:
- *     security:
- *      - bearerAuth: []
- *     summary: Get typing tests by user ID and type.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the user.
- *         schema:
- *           type: number
- *       - in: path
- *         name: type
- *         required: true
- *         description: Type of the typing test (singleplayer or multiplayer).
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: A list of typing tests for the given user ID and type.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                  $ref: '#/components/schemas/TypingTest'
- */
-userRouter.get(
-    '/:id/typingTests/:type',
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userId = Number(req.params.id);
-            const type = req.params.type;
-            const typingTests = await userService.getTypingTestsByUserAndType(userId, type);
-            res.status(200).json(typingTests);
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(400).json({ status: 'error', errorMessage: error.message });
-            }
-        }
-    }
-);
-
-/**
- * @swagger
  * /users/login:
  *   post:
  *     summary: Login using username/password. Returns an object with JWT token, user name and role when successful.
@@ -345,6 +264,59 @@ userRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction
         res.status(200).json({ message: 'User succesfully deleted' });
     } catch (error) {
         next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /user/{id}/username:
+ *   put:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Update a user's username
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The user ID
+ *       - in: body
+ *         name: username
+ *         schema:
+ *           type: object
+ *           required:
+ *             - username
+ *           properties:
+ *             username:
+ *               type: string
+ *         required: true
+ *         description: The new username
+ *     responses:
+ *       200:
+ *         description: Username updated successfully
+ *       404:
+ *         description: User not found
+ *       409:
+ *         description: Username already taken
+ *       500:
+ *         description: Internal server error
+ */
+userRouter.put('/:id/username', async (req: Request, res: Response, next: NextFunction) => {
+    const userId = parseInt(req.params.id, 10);
+    const { username } = req.body;
+
+    try {
+        await userService.updateUsername(userId, username);
+        res.status(200).send({ message: 'Username updated successfully' });
+    } catch (error) {
+        if (error instanceof Error && error.message.includes('does not exist')) {
+            res.status(404).send({ error: error.message });
+        } else if (error instanceof Error && error.message.includes('is already taken')) {
+            res.status(409).send({ error: error.message });
+        } else {
+            next(error);
+        }
     }
 });
 
