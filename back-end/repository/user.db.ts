@@ -104,6 +104,17 @@ const createUser = async ({
     }
 };
 
+const deleteUser = async (userId: number): Promise<void> => {
+    try {
+        await database.user.delete({
+            where: { id: userId },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllUsers,
     getUserById,
@@ -112,4 +123,5 @@ export default {
     createUser,
     getUserByUsername,
     getUserByEmail,
+    deleteUser,
 };
