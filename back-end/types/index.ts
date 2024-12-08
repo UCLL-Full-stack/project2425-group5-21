@@ -1,4 +1,4 @@
-export type Role = 'player' | 'admin' | 'guest';
+export type Role = 'player' | 'admin' | 'moderator';
 
 export type UserInput = {
     id?: number;
