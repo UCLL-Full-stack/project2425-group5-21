@@ -58,10 +58,10 @@ const main = async () => {
 
     const guest = await prisma.user.create({
         data: {
-            username: 'guest',
-            email: 'guest.random@mrtyper.be',
-            password: await bcrypt.hash('guest123', 12),
-            role: 'guest',
+            username: 'karljackson',
+            email: 'karl.jackson@mrtyper.be',
+            password: await bcrypt.hash('karljackson123', 12),
+            role: 'moderator',
         },
     });
 
