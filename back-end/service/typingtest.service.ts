@@ -1,6 +1,7 @@
 import { UnauthorizedError } from 'express-jwt';
 import { TypingTest } from '../model/typingTest';
 import typingtestDb from '../repository/typingtest.db';
+import userDB from '../repository/user.db';
 
 const getTypingTest = async ({
     username,
@@ -24,4 +25,31 @@ const getAllTypingTests = async (): Promise<TypingTest[]> => {
     return typingtestDb.getAllTypingTests();
 };
 
-export default { getAllTypingTests, getTypingTest };
+const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
+    const user = await userDB.getUserById(userId);
+    if (!user) {
+        throw new Error(`User with ID ${userId} does not exist.`);
+    }
+
+    return typingtestDb.getTypingTestsByUser(userId);
+};
+
+const getTypingTestsByUserAndType = async (userId: number, type: string): Promise<TypingTest[]> => {
+    const user = await userDB.getUserById(userId);
+    if (!user) {
+        throw new Error(`User with ID ${userId} does not exist.`);
+    }
+
+    if (type !== 'singleplayer' && type !== 'multiplayer') {
+        throw new Error('Invalid type. Type must be either singleplayer or multiplayer.');
+    }
+
+    return typingtestDb.getTypingTestsByUserAndType(userId, type);
+};
+
+export default {
+    getAllTypingTests,
+    getTypingTest,
+    getTypingTestsByUser,
+    getTypingTestsByUserAndType,
+};
