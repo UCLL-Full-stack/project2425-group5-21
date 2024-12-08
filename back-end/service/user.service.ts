@@ -13,15 +13,11 @@ const getAllUsers = async (): Promise<User[]> => {
 };
 
 const getUserById = async (id: number): Promise<User | null> => {
+    const user = await userDB.getUserById(id);
+    if (!user) {
+        throw new Error(`User with ID ${id} does not exist.`);
+    }
     return userDB.getUserById(id);
-};
-
-const getTypingTestsByUser = async (userId: number): Promise<TypingTest[]> => {
-    return userDB.getTypingTestsByUser(userId);
-};
-
-const getTypingTestsByUserAndType = async (userId: number, type: string): Promise<TypingTest[]> => {
-    return userDB.getTypingTestsByUserAndType(userId, type);
 };
 
 const getUserByUsername = async ({ username }: { username: string }): Promise<User> => {
@@ -88,13 +84,26 @@ const deleteUser = async (userId: number): Promise<void> => {
     await userDB.deleteUser(userId);
 };
 
+const updateUsername = async (userId: number, newUsername: string): Promise<void> => {
+    const user = await userDB.getUserById(userId);
+    if (!user) {
+        throw new Error(`User with ID ${userId} does not exist.`);
+    }
+
+    const existingUser = await userDB.getUserByUsername({ username: newUsername });
+    if (existingUser) {
+        throw new Error(`Username ${newUsername} is already taken.`);
+    }
+
+    await userDB.updateUsername(userId, newUsername);
+};
+
 export default {
     getAllUsers,
     getUserById,
-    getTypingTestsByUser,
-    getTypingTestsByUserAndType,
     createUser,
     getUserByUsername,
     authenticate,
     deleteUser,
+    updateUsername,
 };
