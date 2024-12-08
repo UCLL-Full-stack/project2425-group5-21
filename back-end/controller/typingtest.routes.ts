@@ -61,4 +61,83 @@ typingtestRouter.get('/', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+/**
+ * @swagger
+ * /typingtests/user/{id}:
+ *   get:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Get typing tests by user ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user.
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: A list of typing tests for the given user ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/Typingtest'
+ */
+typingtestRouter.get('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const typingTests = await typingtestService.getTypingTestsByUser(Number(req.params.id));
+        res.status(200).json(typingTests);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ status: 'error', errorMessage: error.message });
+        }
+    }
+});
+
+/**
+ * @swagger
+ * /typingtests/user/{id}/{type}:
+ *   get:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Get typing tests by user ID and type.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user.
+ *         schema:
+ *           type: number
+ *       - in: path
+ *         name: type
+ *         required: true
+ *         description: Type of the typing test.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of typing tests for the given user ID and type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/Typingtest'
+ */
+typingtestRouter.get('/user/:id/:type', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const typingTests = await typingtestService.getTypingTestsByUserAndType(
+            Number(req.params.id),
+            req.params.type
+        );
+        res.status(200).json(typingTests);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ status: 'error', errorMessage: error.message });
+        }
+    }
+});
+
 export { typingtestRouter };
