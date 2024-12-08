@@ -1,4 +1,4 @@
-export type Role = "admin" | "player" | "guest";
+export type Role = "admin" | "player" | "moderator";
 
 export type User = {
   id?: number;
@@ -22,7 +22,7 @@ export type TypingTest = {
   accuracy?: number;
   time?: number;
   type?: string;
-  userId?: number;
+  user?: User;
   gameId?: number;
 };
 
