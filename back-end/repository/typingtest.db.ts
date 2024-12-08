@@ -30,7 +30,21 @@ const getTypingTestsByUsername = async (username: string): Promise<TypingTest[]>
     }
 };
 
+const deleteTypingTestsByUserId = async (userId: number): Promise<void> => {
+    try {
+        await database.typingTest.deleteMany({
+            where: {
+                userId,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllTypingTests,
     getTypingTestsByUsername,
+    deleteTypingTestsByUserId,
 };
