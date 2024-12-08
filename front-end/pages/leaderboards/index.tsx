@@ -15,14 +15,8 @@ const Leaderboard: React.FC = () => {
     try {
       const response = await LeaderboardService.getLeaderboardByType(type);
       if (!response.ok) {
-        if (response.status === 401) {
-          setError(
-            "You are not authorized to view the leaderboard page. Please login first."
-          );
-        } else {
-          const errorData = await response.json();
-          throw new Error(`${errorData.status}: ${errorData.message}`);
-        }
+        const errorData = await response.json();
+        throw new Error(`${errorData.status}: ${errorData.message}`);
       }
       const leaderboard = await response.json();
       setLeaderboard(leaderboard);
@@ -57,13 +51,13 @@ const Leaderboard: React.FC = () => {
       <main className="h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
         {isAuthenticated ? (
           <>
-            <div className="flex h-20 items-center justify-between w-11/12 max-w-3xl mt-40">
+            <div className="flex h-30 items-center justify-between w-11/12 max-w-3xl mt-20">
               <h1 className="text-4xl font-extrabold tracking-widest my-8 text-white">
                 Leaderboard
               </h1>
               <h1
                 onClick={() => setSelectedType(15)}
-                className={`text-2xl font-extrabold tracking-widest my-8 cursor-pointer ${
+                className={`text-3xl font-extrabold tracking-widest my-8 cursor-pointer ${
                   selectedType === 15 ? "text-[#49a8b8]" : "text-white"
                 }`}
               >
@@ -71,7 +65,7 @@ const Leaderboard: React.FC = () => {
               </h1>
               <h1
                 onClick={() => setSelectedType(30)}
-                className={`text-2xl font-extrabold tracking-widest my-8 cursor-pointer ${
+                className={`text-3xl font-extrabold tracking-widest my-8 cursor-pointer ${
                   selectedType === 30 ? "text-[#49a8b8]" : "text-white"
                 }`}
               >
@@ -79,28 +73,27 @@ const Leaderboard: React.FC = () => {
               </h1>
               <h1
                 onClick={() => setSelectedType(60)}
-                className={`text-2xl font-extrabold tracking-widest my-8 cursor-pointer ${
+                className={`text-3xl font-extrabold tracking-widest my-8 cursor-pointer ${
                   selectedType === 60 ? "text-[#49a8b8]" : "text-white"
                 }`}
               >
                 60
               </h1>
             </div>
-
-            <div className="w-11/12 max-w-4xl bg-[#2a2d40] rounded-lg shadow-lg overflow-hidden">
+            <div className="w-11/12 max-w-7xl bg-[#2a2d40] rounded-lg shadow-lg overflow-hidden">
               <table className="w-full table-auto text-center text-lg">
                 <thead>
                   <tr className="bg-[#3b3f5c] text-[#b0b3c8]">
-                    <th className="py-4 font-semibold uppercase tracking-wider">
+                    <th className="py-6 font-semibold uppercase tracking-wider">
                       Rank
                     </th>
-                    <th className="py-4 font-semibold uppercase tracking-wider">
+                    <th className="py-6 font-semibold uppercase tracking-wider">
                       Username
                     </th>
-                    <th className="py-4 font-semibold uppercase tracking-wider">
+                    <th className="py-6 font-semibold uppercase tracking-wider">
                       WPM
                     </th>
-                    <th className="py-4 font-semibold uppercase tracking-wider">
+                    <th className="py-6 font-semibold uppercase tracking-wider">
                       Accuracy
                     </th>
                   </tr>
@@ -111,16 +104,16 @@ const Leaderboard: React.FC = () => {
                       key={score.id}
                       className="hover:bg-[#393d56] transition duration-200"
                     >
-                      <td className="py-4 text-[#8e97f0] font-medium">
+                      <td className="py-6 text-[#8e97f0] font-medium">
                         {index + 1}
                       </td>
-                      <td className="py-4 font-semibold text-[#d4d7f2]">
-                        {score.user.username}
+                      <td className="py-6 font-semibold text-[#d4d7f2]">
+                        {score.user?.username}
                       </td>
-                      <td className="py-4 font-semibold text-[#d4d7f2]">
+                      <td className="py-6 font-semibold text-[#d4d7f2]">
                         {score.wpm} wpm
                       </td>
-                      <td className="py-4 font-semibold text-[#d4d7f2]">
+                      <td className="py-6 font-semibold text-[#d4d7f2]">
                         {score.accuracy}%
                       </td>
                     </tr>
