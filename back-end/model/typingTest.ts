@@ -7,7 +7,7 @@ export class TypingTest {
     readonly time: number;
     readonly type: string;
     readonly user: User;
-    readonly gameId?: number | null;
+    readonly gameId?: number;
 
     constructor(typingTest: {
         id?: number;
@@ -16,7 +16,7 @@ export class TypingTest {
         time: number;
         type: string;
         user: User;
-        gameId?: number | null;
+        gameId?: number;
     }) {
         this.validate(typingTest);
 
@@ -53,7 +53,7 @@ export class TypingTest {
         return this.user;
     }
 
-    getGameId(): number | undefined | null {
+    getGameId(): number | undefined {
         return this.gameId;
     }
 
@@ -63,7 +63,7 @@ export class TypingTest {
         time: number;
         type: string;
         user: User;
-        gameId?: number | null;
+        gameId?: number;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
             throw new Error('WPM is required');
@@ -119,7 +119,7 @@ export class TypingTest {
             time,
             type,
             user: User.from(user),
-            gameId,
+            gameId: gameId ?? undefined,
         });
     }
 
