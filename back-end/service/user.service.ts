@@ -4,6 +4,9 @@ import userDB from '../repository/user.db';
 import { AuthenticationResponse, UserInput } from '../types';
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from '../util/jwt';
+import typingtestDb from '../repository/typingtest.db';
+import leaderboardDb from '../repository/leaderboard.db';
+import gameDb from '../repository/game.db';
 
 const getAllUsers = async (): Promise<User[]> => {
     return userDB.getAllUsers();
@@ -74,6 +77,17 @@ const createUser = async ({
     return await userDB.createUser(user);
 };
 
+const deleteUser = async (userId: number): Promise<void> => {
+    const user = await userDB.getUserById(userId);
+    if (!user) {
+        throw new Error(`User with ID ${userId} does not exist.`);
+    }
+
+    await typingtestDb.deleteTypingTestsByUserId(userId);
+    await gameDb.removeGamesByUserId(userId);
+    await userDB.deleteUser(userId);
+};
+
 export default {
     getAllUsers,
     getUserById,
@@ -82,4 +96,5 @@ export default {
     createUser,
     getUserByUsername,
     authenticate,
+    deleteUser,
 };
