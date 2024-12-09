@@ -10,7 +10,7 @@ const getTypingTest = async ({
     username: string;
     role: string;
 }): Promise<TypingTest[]> => {
-    if (role === 'admin') {
+    if (role === 'admin' || role === 'moderator') {
         return typingtestDb.getAllTypingTests();
     } else if (role === 'player') {
         return typingtestDb.getTypingTestsByUsername(username);
