@@ -69,22 +69,25 @@ const Home: React.FC = () => {
           <p className="text-lg text-center max-w-3xl mb-8">
             {isAuthenticated
               ? "Choose your game mode to start typing! Whether you want to play solo or with friends, the fun begins here. Let’s see how fast you can type!"
-              : "Choose singleplayer to start typing! Let’s see how fast you can type!"}
+              : "If you want to play singleplayer or multiplayer, please login first. If you don't have an account, sign up now to join the fun and improve your typing skills. Challenge yourself, compete with others, and track your progress over time!"}
           </p>
 
           <div className="flex space-x-8 justify-center mb-8 w-full">
-            <div
-              onClick={() => handleGameModeSelection("singleplayer")}
-              className="bg-[#5ac4d7] text-[#1a1d2e] py-10 px-12 rounded-xl text-3xl font-semibold shadow-xl transform transition-transform hover:scale-105 hover:bg-[#49a8b8] cursor-pointer w-full max-w-xs text-center flex flex-col items-center justify-center hover:shadow-2xl"
-            >
-              <div className="h-24 w-24 bg-[#49a8b8] rounded-full mb-4 flex items-center justify-center transition-transform hover:scale-110">
-                <User className="h-16 w-16 text-[#1a1d2e]" />
+            {isAuthenticated && (
+              <div
+                onClick={() => handleGameModeSelection("singleplayer")}
+                className="bg-[#5ac4d7] text-[#1a1d2e] py-10 px-12 rounded-xl text-3xl font-semibold shadow-xl transform transition-transform hover:scale-105 hover:bg-[#49a8b8] cursor-pointer w-full max-w-xs text-center flex flex-col items-center justify-center hover:shadow-2xl"
+              >
+                <div className="h-24 w-24 bg-[#49a8b8] rounded-full mb-4 flex items-center justify-center transition-transform hover:scale-110">
+                  <User className="h-16 w-16 text-[#1a1d2e]" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Singleplayer</h3>
+                <p className="text-sm mt-2">
+                  Play solo and challenge yourself to improve your typing
+                  skills.
+                </p>
               </div>
-              <h3 className="text-2xl font-bold mb-2">Singleplayer</h3>
-              <p className="text-sm mt-2">
-                Play solo and challenge yourself to improve your typing skills.
-              </p>
-            </div>
+            )}
 
             {isAuthenticated && (
               <div
