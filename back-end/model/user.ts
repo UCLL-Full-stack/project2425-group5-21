@@ -1,5 +1,4 @@
 import { User as UserPrisma } from '@prisma/client';
-import { Role } from '../types';
 
 export class User {
     readonly id?: number;
@@ -93,8 +92,8 @@ export class User {
             throw new Error('Role is required');
         }
 
-        if (!['player', 'admin', 'guest'].includes(user.role)) {
-            throw new Error('The role is not valid. Allowed roles are: player, admin, guest.');
+        if (!['player', 'admin', 'moderator'].includes(user.role)) {
+            throw new Error('The role is not valid. Allowed roles are: player, admin, moderator.');
         }
     }
 
