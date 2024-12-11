@@ -69,7 +69,7 @@ export class User {
             throw new Error('Email is required');
         }
 
-        const specificEmailRegex = /^[a-zA-Z]+\.[a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+        const specificEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
         if (!specificEmailRegex.test(user.email)) {
             throw new Error('The email format is invalid.');
