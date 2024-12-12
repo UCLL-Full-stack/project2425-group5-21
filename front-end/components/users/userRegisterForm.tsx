@@ -36,7 +36,7 @@ const RegisterForm: React.FC = () => {
       setEmailError("Email is required");
     } else {
       const specificEmailRegex =
-        /^[a-zA-Z]+\.[a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if (!specificEmailRegex.test(email)) {
         setEmailError("The email format is invalid.");
       }
