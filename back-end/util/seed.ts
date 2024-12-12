@@ -56,7 +56,7 @@ const main = async () => {
         },
     });
 
-    const guest = await prisma.user.create({
+    const moderator = await prisma.user.create({
         data: {
             username: 'karljackson',
             email: 'karl.jackson@mrtyper.be',
