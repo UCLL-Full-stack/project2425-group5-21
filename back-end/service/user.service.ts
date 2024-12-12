@@ -90,6 +90,10 @@ const updateUsername = async (userId: number, newUsername: string): Promise<void
         throw new Error(`User with ID ${userId} does not exist.`);
     }
 
+    if (user.username === newUsername) {
+        throw new Error(`New username ${newUsername} cannot be the same as the current username.`);
+    }
+
     const existingUser = await userDB.getUserByUsername({ username: newUsername });
     if (existingUser) {
         throw new Error(`Username ${newUsername} is already taken.`);
