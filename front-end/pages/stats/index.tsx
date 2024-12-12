@@ -13,6 +13,7 @@ const Stats: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [newUsername, setNewUsername] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isRemoving, setIsRemoving] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -82,6 +83,28 @@ const Stats: React.FC = () => {
     setStatusMessage(null);
   };
 
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      const response = await UserService.deleteUser(userId);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`${errorData.status}: ${errorData.message}`);
+      }
+
+      localStorage.removeItem("loggedInUser");
+
+      setStatusMessage(
+        "User has been successfully deleted. Redirecting to login page..."
+      );
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete user.");
+    }
+  };
+
   const calculateAverages = (time: number) => {
     const filteredTests = typingTests.filter((test) => test.time === time);
     const totalWpm = filteredTests.reduce((sum, test) => sum + test.wpm, 0);
@@ -127,7 +150,7 @@ const Stats: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
+      <main className="min-h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
         {isAuthenticated ? (
           <>
             <div className="w-11/12 max-w-8xl mb-8 mt-20">
@@ -164,9 +187,17 @@ const Stats: React.FC = () => {
                         <td className="py-6">
                           <button
                             onClick={() => setIsEditing(true)}
-                            className="bg-[#4a90e2] hover:bg-[#357ac9] text-white font-bold py-2 px-4 rounded"
+                            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                           >
                             Change name
+                          </button>
+                        </td>
+                        <td className="py-6">
+                          <button
+                            onClick={() => setIsRemoving(true)}
+                            className="bg-red-500 hover:bg-red-600 text-white bg-red-500 font-bold py-2 px-4 rounded"
+                          >
+                            Delete
                           </button>
                         </td>
                       </tr>
@@ -191,13 +222,13 @@ const Stats: React.FC = () => {
                   <div className="flex justify-end space-x-4">
                     <button
                       onClick={() => setIsEditing(false)}
-                      className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleUsernameChange}
-                      className="bg-[#4a90e2] hover:bg-[#357ac9] text-white font-bold py-2 px-4 rounded"
+                      className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                     >
                       Change name
                     </button>
@@ -216,6 +247,38 @@ const Stats: React.FC = () => {
                     <p className="mt-2 text-[12px] font-bold text-green-500">
                       {statusMessage}
                     </p>
+                  )}
+                </div>
+              </div>
+            )}
+            {isRemoving && (
+              <div className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-50">
+                <div className="bg-[#2a2d40] p-6 rounded-lg shadow-lg text-white">
+                  <h2 className="text-2xl font-semibold mb-4">Delete User</h2>
+                  <p className="mb-4">
+                    Are you sure you want to delete your account?
+                  </p>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={() => setIsRemoving(false)}
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user?.id ?? 0)}
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  {statusMessage && (
+                    <p className="mt-2 text-[12px] font-semibold text-green-500">
+                      {statusMessage}
+                    </p>
+                  )}
+                  {error && (
+                    <p className="mt-2 text-[12px] text-red-500">{error}</p>
                   )}
                 </div>
               </div>
