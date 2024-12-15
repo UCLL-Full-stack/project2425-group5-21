@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { User } from "@/types";
+import Language from "@/components/language/Language";
+import { useTranslation } from "next-i18next";
 
 const Header: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   useEffect(() => {
     const userString = localStorage.getItem("loggedInUser");
@@ -29,7 +33,7 @@ const Header: React.FC = () => {
           className="text-2xl font-semibold text-white-50 text-[#e8e6ea]"
           href="#"
         >
-          MR Typer
+          {t("app.title")}
         </a>
 
         <nav className="flex space-x-6 ml-auto">
@@ -37,19 +41,19 @@ const Header: React.FC = () => {
             href="/"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
-            Home
+            {t("header.nav.home")}
           </Link>
           <Link
             href="/stats"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
-            Stats
+            {t("header.nav.stats")}
           </Link>
           <Link
             href="/leaderboards"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
-            Leaderboard
+            {t("header.nav.leaderboard")}
           </Link>
 
           {!loggedInUser && (
@@ -57,7 +61,7 @@ const Header: React.FC = () => {
               href="/login"
               className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
             >
-              Login / Register
+              {t("header.nav.login/logout")}
             </Link>
           )}
           {loggedInUser && (
@@ -66,14 +70,16 @@ const Header: React.FC = () => {
               onClick={handleClick}
               className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
             >
-              Logout
+              {t("header.nav.logout")}
             </a>
           )}
           {loggedInUser && (
             <div className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-              Welcome, {loggedInUser.username}!
+              {t("header.welcome")}, {loggedInUser.username}!
             </div>
           )}
+
+          <Language />
         </nav>
       </div>
     </header>
