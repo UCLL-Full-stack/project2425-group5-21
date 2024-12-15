@@ -1,37 +1,15 @@
 import React from "react";
 
-const usernames = [
-  "johndoe",
-  "janetoe",
-  "michaelking",
-  "lukasvandilken",
-  "alicekaitlin",
-  "bobdebuilder",
-  "lindawalker",
-  "karljackson",
-];
+const usernames = ["johndoe", "janetoe", "lindawalker", "karljackson"];
 
 const passwords = [
   "johndoe123",
   "janetoe123",
-  "michaelking123",
-  "lukasvandilken123",
-  "alicekaitlin123",
-  "bobdebuilder123",
   "lindawalker123",
   "karljackson123",
 ];
 
-const roles = [
-  "player",
-  "player",
-  "player",
-  "player",
-  "player",
-  "player",
-  "admin",
-  "moderator",
-];
+const roles = ["player", "player", "admin", "moderator"];
 
 const PredefinedUsers: React.FC = () => {
   return (
