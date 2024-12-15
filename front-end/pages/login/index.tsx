@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Header from "@/components/header";
-import LoginRegisterToggle from "@/components/users/LoginRegisterToggle";
+import LoginRegisterToggle from "@/components/login/loginRegisterToggle";
 
 const Login: React.FC = () => {
   return (
