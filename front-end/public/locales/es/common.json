@@ -1,0 +1,24 @@
+{
+  "app.title": "MR Typer",
+  "general.error": "Se ha producido un error. Vuelva a intentarlo más tarde.",
+  "login": {
+    "title": "Inicio de sesión",
+    "button": "Conéctese",
+    "success": "Inicio de sesión exitoso. Redirigiendo a la página de inicio...",
+    "validate": {
+      "name": "Nombre obligatorio",
+      "password": "Se requiere contraseña"
+    },
+    "label": { "username": "Nombre de usuario:", "password": "Contraseña:" }
+  },
+  "header": {
+    "welcome": "Bienvenido",
+    "nav": {
+      "home": "Inicio",
+      "stats": "Estadísticas",
+      "leaderboard": "Tabla de clasificación",
+      "login/logout": "Conéctese/Cerrar sesión",
+      "logout": "Cerrar sesión"
+    }
+  }
+}
