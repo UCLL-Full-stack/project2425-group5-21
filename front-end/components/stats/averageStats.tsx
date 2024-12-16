@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { TypingTest, User } from "@/types";
 import TypingTestService from "@/services/TypingTestService";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const AverageStats: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [typingTests, setTypingTests] = useState<TypingTest[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -32,9 +35,7 @@ const AverageStats: React.FC = () => {
       setIsAuthenticated(true);
       getAllTypingTests();
     } else {
-      setError(
-        "You are not authorized to view the stats page. Please login first."
-      );
+      setError(t("unauthorized.stats.error"));
     }
   }, []);
 
@@ -60,20 +61,20 @@ const AverageStats: React.FC = () => {
     <>
       <div className="w-1/2 mr-20">
         <h2 className="text-left text-2xl font-semibold py-4 text-[#b0b3c8]">
-          Average WPM and Accuracy
+          {t("stats.average.averageWpmAccuracy")}
         </h2>
         <div className="bg-[#2a2d40] rounded-b-lg shadow-lg overflow-hidden rounded-t-lg">
           <table className="w-full table-auto text-center text-lg">
             <thead>
               <tr className="bg-[#3b3f5c] text-[#b0b3c8]">
                 <th className="py-4 font-semibold tracking-wider text-[15px]">
-                  15 seconds
+                  {t("stats.average.seconds15")}
                 </th>
                 <th className="py-4 font-semibold tracking-wider text-[15px]">
-                  30 seconds
+                  {t("stats.average.seconds30")}
                 </th>
                 <th className="py-4 font-semibold tracking-wider text-[15px]">
-                  60 seconds
+                  {t("stats.average.seconds60")}
                 </th>
               </tr>
             </thead>
