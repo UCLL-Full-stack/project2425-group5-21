@@ -39,7 +39,7 @@
       "home": "Home",
       "stats": "Stats",
       "leaderboard": "Leaderboard",
-      "login/logout": "Login/Logout",
+      "login.register": "Login / Register",
       "logout": "Logout"
     }
   },

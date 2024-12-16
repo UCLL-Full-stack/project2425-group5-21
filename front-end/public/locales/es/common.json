@@ -43,7 +43,7 @@
       "home": "Inicio",
       "stats": "Estadísticas",
       "leaderboard": "Tabla de clasificación",
-      "login/logout": "Conéctese/Cerrar sesión",
+      "login.register": "Conéctese / Registrarse",
       "logout": "Cerrar sesión"
     }
   },
