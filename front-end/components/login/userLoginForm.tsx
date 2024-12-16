@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import userService from "@/services/UserService";
 import { StatusMessage } from "@/types";
+import { useTranslation } from "next-i18next";
 
 const UserLoginForm: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState<string | null>(null);
@@ -21,17 +24,17 @@ const UserLoginForm: React.FC = () => {
     let result = true;
 
     if (!username || username.trim() === "") {
-      setUsernameError("Username is required");
+      setUsernameError(t("login.register.validate.name"));
       result = false;
     } else if (username.length < 3 || username.length > 50) {
-      setUsernameError("The username must be between 3 and 50 characters.");
+      setUsernameError(t("login.register.validate.namelength"));
     }
 
     if (!password || password.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError(t("login.register.validate.password"));
       result = false;
     } else if (password.length < 5) {
-      setPasswordError("The password must be at least 5 characters long.");
+      setPasswordError(t("login.register.validate.passwordlength"));
       result = false;
     }
 
@@ -62,7 +65,7 @@ const UserLoginForm: React.FC = () => {
       );
       setStatusMessages([
         {
-          message: "Login succesful. Redirecting to homepage...",
+          message: t("login.register.successlogin"),
           type: "success",
         },
       ]);
@@ -74,9 +77,7 @@ const UserLoginForm: React.FC = () => {
 
       setStatusMessages([
         {
-          message:
-            errorData.message ||
-            "An error has occurred. Please try again later.",
+          message: errorData.message || t("general.error"),
           type: "error",
         },
       ]);
@@ -91,7 +92,7 @@ const UserLoginForm: React.FC = () => {
             htmlFor="username"
             className="block text-sm font-medium text-gray-300"
           >
-            Username
+            {t("login.register.label.username")}
           </label>
           <input
             type="text"
@@ -109,7 +110,7 @@ const UserLoginForm: React.FC = () => {
             htmlFor="password"
             className="block text-sm font-medium text-gray-300"
           >
-            Password
+            {t("login.register.label.password")}
           </label>
           <input
             type="password"
@@ -126,7 +127,7 @@ const UserLoginForm: React.FC = () => {
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded-md"
         >
-          Login
+          {t("login.register.button.login")}
         </button>
       </form>
       {statusMessages.map((status, index) => (
