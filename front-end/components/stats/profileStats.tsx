@@ -6,8 +6,11 @@ import AverageStats from "@/components/stats/averageStats";
 import HighestStats from "@/components/stats/highestStats";
 import DeleteUser from "@/components/stats/deleteUser";
 import UpdateUsername from "@/components/stats/updateUsername";
+import { useTranslation } from "next-i18next";
 
 const ProfileStats: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [typingTests, setTypingTests] = useState<TypingTest[]>([]);
@@ -36,9 +39,7 @@ const ProfileStats: React.FC = () => {
       setIsAuthenticated(true);
       getAllTypingTests();
     } else {
-      setError(
-        "You are not authorized to view the stats page. Please login first."
-      );
+      setError(t("unauthorized.stats.error"));
     }
   }, []);
 
