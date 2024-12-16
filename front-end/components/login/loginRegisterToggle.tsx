@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import UserLoginForm from "@/components/login/userLoginForm";
 import RegisterForm from "@/components/register/userRegisterForm";
+import { useTranslation } from "next-i18next";
 
 const LoginRegisterToggle: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [isLogin, setIsLogin] = useState(true);
 
   return (
@@ -14,7 +17,7 @@ const LoginRegisterToggle: React.FC = () => {
             isLogin ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
           }`}
         >
-          Login
+          {t("login.register.button.login")}
         </button>
         <button
           onClick={() => setIsLogin(false)}
@@ -22,7 +25,7 @@ const LoginRegisterToggle: React.FC = () => {
             !isLogin ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
           }`}
         >
-          Register
+          {t("login.register.button.register")}
         </button>
       </div>
       {isLogin ? <UserLoginForm /> : <RegisterForm />}
