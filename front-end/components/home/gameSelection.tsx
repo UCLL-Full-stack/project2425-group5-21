@@ -2,6 +2,7 @@ import React from "react";
 import { Globe, User } from "@geist-ui/icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const GameSelection: React.FC<{
   mode: "singleplayer" | "multiplayer";
@@ -9,6 +10,8 @@ const GameSelection: React.FC<{
   setCountdown: React.Dispatch<React.SetStateAction<number>>;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
 }> = ({ mode, setQueuePosition, setCountdown, setError }) => {
+  const { t } = useTranslation("common");
+
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -21,7 +24,7 @@ const GameSelection: React.FC<{
         setCountdown(10);
       }
     } catch (err) {
-      setError("Something went wrong while selecting the mode.");
+      setError(t("general.error"));
     }
   };
 
@@ -33,10 +36,12 @@ const GameSelection: React.FC<{
   }, []);
 
   const isSingleplayer = mode === "singleplayer";
-  const title = isSingleplayer ? "Singleplayer" : "Multiplayer";
+  const title = isSingleplayer
+    ? t("home.game.singleplayer.title")
+    : t("home.game.multiplayer.title");
   const description = isSingleplayer
-    ? "Play solo and challenge yourself to improve your typing skills."
-    : "Compete with friends or players around the world in real-time!";
+    ? t("home.game.singleplayer.description")
+    : t("home.game.multiplayer.description");
   const Icon = isSingleplayer ? User : Globe;
 
   return (
