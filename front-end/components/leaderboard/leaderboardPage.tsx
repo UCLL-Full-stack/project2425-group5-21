@@ -3,8 +3,11 @@ import LeaderboardService from "@/services/LeaderboardService";
 import LeaderboardTable from "@/components/leaderboard/leaderBoardTable";
 import LeaderboardTypes from "@/components/leaderboard/leaderboardTypes";
 import type { Leaderboard } from "@/types";
+import { useTranslation } from "next-i18next";
 
 const LeaderboardPage: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [leaderboard, setLeaderboard] = useState<Leaderboard | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,9 +33,7 @@ const LeaderboardPage: React.FC = () => {
     if (token) {
       setIsAuthenticated(true);
     } else {
-      setError(
-        "You are not authorized to view the leaderboard page. Please login first."
-      );
+      setError(t("unauthorized.leaderboard.error"));
     }
   }, []);
 
