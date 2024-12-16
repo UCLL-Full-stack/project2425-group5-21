@@ -235,7 +235,7 @@ const Singleplayer: React.FC = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header></Header>
       <main className="h-screen bg-[#120e17] flex flex-col justify-center items-center text-white">
         {!isGameStarted && !isGameFinished && (
           <div className="flex flex-col items-center space-y-4 -mt-40">

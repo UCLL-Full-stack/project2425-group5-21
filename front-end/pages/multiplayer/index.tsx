@@ -156,7 +156,7 @@ const Multiplayer: React.FC = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header></Header>
       <main className="h-screen bg-[#120e17] flex flex-col justify-center items-center">
         <section className="relative w-[80%] h-[25%] flex flex-wrap justify-center items-center">
           {splitWords.map((word, wordIndex) => {
