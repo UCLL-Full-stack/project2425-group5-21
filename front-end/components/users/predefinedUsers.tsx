@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 const usernames = ["johndoe", "janetoe", "lindawalker", "karljackson"];
 
@@ -12,14 +13,22 @@ const passwords = [
 const roles = ["player", "player", "admin", "moderator"];
 
 const PredefinedUsers: React.FC = () => {
+  const { t } = useTranslation("common");
+
   return (
     <div className="w-11/12 max-w-7xl bg-[#2a2d40] rounded-lg shadow-lg overflow-hidden mt-10">
       <table className="w-full table-auto text-center text-lg">
         <thead>
           <tr className="bg-[#3b3f5c] text-[#b0b3c8]">
-            <th className="py-6 font-semibold tracking-wider">Username</th>
-            <th className="py-6 font-semibold tracking-wider">Password</th>
-            <th className="py-6 font-semibold tracking-wider">Role</th>
+            <th className="py-6 font-semibold tracking-wider">
+              {t("home.users.username")}
+            </th>
+            <th className="py-6 font-semibold tracking-wider">
+              {t("home.users.password")}
+            </th>
+            <th className="py-6 font-semibold tracking-wider">
+              {t("home.users.role")}
+            </th>
           </tr>
         </thead>
         <tbody>
