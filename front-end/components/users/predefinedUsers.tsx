@@ -20,13 +20,13 @@ const PredefinedUsers: React.FC = () => {
       <table className="w-full table-auto text-center text-lg">
         <thead>
           <tr className="bg-[#3b3f5c] text-[#b0b3c8]">
-            <th className="py-6 font-semibold tracking-wider">
+            <th className="py-6 font-semibold tracking-wider w-1/3">
               {t("home.users.username")}
             </th>
-            <th className="py-6 font-semibold tracking-wider">
+            <th className="py-6 font-semibold tracking-wider w-1/3">
               {t("home.users.password")}
             </th>
-            <th className="py-6 font-semibold tracking-wider">
+            <th className="py-6 font-semibold tracking-wider w-1/3">
               {t("home.users.role")}
             </th>
           </tr>
