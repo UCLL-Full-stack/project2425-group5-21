@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "next-i18next";
 
 const WelcomeSection = () => {
+  const { t } = useTranslation("common");
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -12,12 +15,12 @@ const WelcomeSection = () => {
   return (
     <div>
       <h1 className="text-5xl font-extrabold mb-4 text-center">
-        Welcome to MR Typer!
+        {t("home.title")}
       </h1>
       <p className="text-lg text-center max-w-3xl mb-8">
         {isAuthenticated
-          ? "Choose your game mode to start typing! Whether you want to play solo or with friends, the fun begins here. Let’s see how fast you can type!"
-          : "If you want to play singleplayer or multiplayer, please login first. If you don't have an account, sign up now to join the fun and improve your typing skills. Challenge yourself, compete with others, and track your progress over time!"}
+          ? t("home.authenticatedMessage")
+          : t("home.unauthenticatedMessage")}
       </p>
     </div>
   );
