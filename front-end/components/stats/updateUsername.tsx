@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import UserService from "@/services/UserService";
 import { useRouter } from "next/router";
 import { User } from "@/types";
+import { useTranslation } from "next-i18next";
 
 const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
+  const { t } = useTranslation("common");
+
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [newUsername, setNewUsername] = useState<string>("");
@@ -12,7 +15,7 @@ const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
 
   const handleUsernameChange = async () => {
     if (newUsername.length < 3) {
-      setError("Username must be at least 3 characters long.");
+      setError(t("stats.profile.updateUsername.validate.usernameTooShort"));
       return;
     }
 
@@ -28,13 +31,14 @@ const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
         localStorage.removeItem("loggedInUser");
 
         setStatusMessage(
-          "Username has been updated. Redirecting to login page..."
+          t("stats.profile.updateUsername.validate.usernameUpdated")
         );
+
         setTimeout(() => {
           router.push("/login");
         }, 3000);
       } catch (err: any) {
-        setError(err.message || "Failed to update username.");
+        setError(err.message || t("general.error"));
         setStatusMessage(null);
       }
     }
@@ -52,36 +56,38 @@ const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
         onClick={() => setIsEditing(true)}
         className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
       >
-        Change name
+        {t("stats.profile.updateUsername.changeName")}
       </button>
       {isEditing && (
         <div className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-50">
           <div className="bg-[#2a2d40] p-7 rounded-lg shadow-lg text-white">
-            <h2 className="text-2xl font-semibold mb-4">Change Username</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              {t("stats.profile.updateUsername.changeUsername")}
+            </h2>
             <input
               type="text"
               value={newUsername}
               onChange={handleInputChange}
               className="mb-4 p-2 border rounded w-full"
-              placeholder="Enter new username"
+              placeholder={t("stats.profile.updateUsername.enterNewUsername")}
             />
             <div className="flex justify-end space-x-4">
               <button
                 onClick={() => setIsEditing(false)}
                 className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded"
               >
-                Cancel
+                {t("stats.profile.updateUsername.cancel")}
               </button>
               <button
                 onClick={handleUsernameChange}
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
               >
-                Change name
+                {t("stats.profile.updateUsername.changeName")}
               </button>
             </div>
             {!error && (
               <p className="mt-4 text-[12px] font-bold text-gray-400">
-                Please log in again with your new username.
+                {t("stats.profile.updateUsername.validate.loginAgain")}
               </p>
             )}
             {error && (
