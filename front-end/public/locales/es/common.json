@@ -9,7 +9,7 @@
   "general.error": "Se ha producido un error. Vuelva a intentarlo más tarde.",
   "unauthorized.stats.error": "No está autorizado para ver la página de estadísticas. Por favor, inicie sesión primero.",
   "unauthorized.leaderboard.error": "No está autorizado para ver la tabla de clasificación. Por favor, inicie sesión primero.",
-  "login.register": {
+  "login": {
     "title": "Inicio de sesión",
     "button": {
       "login": "Conéctese",
@@ -43,7 +43,7 @@
       "home": "Inicio",
       "stats": "Estadísticas",
       "leaderboard": "Tabla de clasificación",
-      "login.register": "Conéctese / Registrarse",
+      "login.register": "Iniciar sesión/Registrarse",
       "logout": "Cerrar sesión"
     }
   },
@@ -66,5 +66,50 @@
         "description": "¡Compite con amigos o jugadores de todo el mundo en tiempo real!"
       }
     }
+  },
+  "stats": {
+    "profile": {
+      "title": "Perfil",
+      "joined": "Se unió",
+      "testsCompleted": "Pruebas completadas",
+      "timeTyping": "Tiempo escribiendo",
+      "minutes": "minutos",
+      "updateUsername": {
+        "changeName": "Cambiar nombre",
+        "changeUsername": "Cambiar nombre de usuario",
+        "enterNewUsername": "Ingrese nuevo nombre de usuario",
+        "cancel": "Cancelar",
+        "validate": {
+          "usernameUpdated": "El nombre de usuario ha sido actualizado. Redirigiendo a la página de inicio de sesión...",
+          "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres.",
+          "loginAgain": "Por favor, inicie sesión nuevamente con su nuevo nombre de usuario."
+        }
+      },
+      "deleteUser": {
+        "delete": "Eliminar",
+        "deleteUser": "Eliminar usuario",
+        "confirmDelete": "¿Está seguro de que desea eliminar su cuenta?",
+        "userDeleted": "El usuario ha sido eliminado con éxito. Redirigiendo a la página de inicio de sesión...",
+        "cancel": "Cancelar"
+      }
+    },
+    "average": {
+      "averageWpmAccuracy": "Mayor WPM y Precisión",
+      "seconds15": "15 segundos",
+      "seconds30": "30 segundos",
+      "seconds60": "60 segundos"
+    },
+    "highest": {
+      "highestWpmAccuracy": "Promedio de WPM y Precisión",
+      "seconds15": "15 segundos",
+      "seconds30": "30 segundos",
+      "seconds60": "60 segundos"
+    }
+  },
+  "leaderboard": {
+    "title": "Tabla de clasificación",
+    "rank": "Rango",
+    "username": "Nombre de usuario",
+    "accuracy": "Precisión"
   }
 }

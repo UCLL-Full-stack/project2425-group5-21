@@ -62,5 +62,50 @@
         "description": "Compete with friends or players around the world in real-time!"
       }
     }
+  },
+  "stats": {
+    "profile": {
+      "title": "Profile",
+      "joined": "Joined",
+      "testsCompleted": "Tests Completed",
+      "timeTyping": "Time Typing",
+      "minutes": "minutes",
+      "updateUsername": {
+        "changeName": "Change name",
+        "changeUsername": "Change Username",
+        "enterNewUsername": "Enter new username",
+        "cancel": "Cancel",
+        "validate": {
+          "usernameUpdated": "Username has been updated. Redirecting to login page...",
+          "usernameTooShort": "Username must be at least 3 characters long.",
+          "loginAgain": "Please log in again with your new username."
+        }
+      },
+      "deleteUser": {
+        "delete": "Delete",
+        "deleteUser": "Delete User",
+        "confirmDelete": "Are you sure you want to delete your account?",
+        "userDeleted": "User has been successfully deleted. Redirecting to login page...",
+        "cancel": "Cancel"
+      }
+    },
+    "average": {
+      "averageWpmAccuracy": "Average WPM and Accuracy",
+      "seconds15": "15 seconds",
+      "seconds30": "30 seconds",
+      "seconds60": "60 seconds"
+    },
+    "highest": {
+      "highestWpmAccuracy": "Highest WPM and Accuracy",
+      "seconds15": "15 seconds",
+      "seconds30": "30 seconds",
+      "seconds60": "60 seconds"
+    }
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "username": "Username",
+    "accuracy": "Accuracy"
   }
 }
