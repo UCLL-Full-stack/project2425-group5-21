@@ -3,8 +3,11 @@ import { useRouter } from "next/router";
 import userService from "@/services/UserService";
 import { StatusMessage } from "@/types";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 
 const RegisterForm: React.FC = () => {
+  const { t } = useTranslation("common");
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,27 +29,26 @@ const RegisterForm: React.FC = () => {
     let result = true;
 
     if (!username || username.trim() === "") {
-      setUsernameError("Username is required");
+      setUsernameError(t("login.register.validate.name"));
       result = false;
     } else if (username.length < 3 || username.length > 50) {
-      setUsernameError("The username must be between 3 and 50 characters.");
+      setUsernameError(t("login.register.validate.namelength"));
     }
 
     if (!email?.trim()) {
-      setEmailError("Email is required");
+      setEmailError(t("login.register.validate.email"));
     } else {
-      const specificEmailRegex =
-        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      const specificEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if (!specificEmailRegex.test(email)) {
-        setEmailError("The email format is invalid.");
+        setEmailError(t("login.register.validate.validemail"));
       }
     }
 
     if (!password || password.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError(t("login.register.validate.password"));
       result = false;
     } else if (password.length < 5) {
-      setPasswordError("The password must be at least 5 characters long.");
+      setPasswordError(t("login.register.validate.passwordlength"));
       result = false;
     }
 
@@ -77,7 +79,7 @@ const RegisterForm: React.FC = () => {
       );
       setStatusMessages([
         {
-          message: "Registration successful! Redirecting to homepage...",
+          message: t("login.register.successregister"),
           type: "success",
         },
       ]);
@@ -89,9 +91,7 @@ const RegisterForm: React.FC = () => {
 
       setStatusMessages([
         {
-          message:
-            errorData.message ||
-            "An error has occurred. Please try again later.",
+          message: errorData.message || t("general.error"),
           type: "error",
         },
       ]);
@@ -105,7 +105,7 @@ const RegisterForm: React.FC = () => {
           htmlFor="username"
           className="block text-sm font-medium text-gray-300"
         >
-          Username
+          {t("login.register.label.username")}
         </label>
         <input
           type="text"
@@ -123,7 +123,7 @@ const RegisterForm: React.FC = () => {
           htmlFor="email"
           className="block text-sm font-medium text-gray-300"
         >
-          Email
+          {t("login.register.label.email")}
         </label>
         <input
           type="email"
@@ -141,7 +141,7 @@ const RegisterForm: React.FC = () => {
           htmlFor="password"
           className="block text-sm font-medium text-gray-300"
         >
-          Password
+          {t("login.register.label.password")}
         </label>
         <input
           type="password"
@@ -159,7 +159,7 @@ const RegisterForm: React.FC = () => {
           htmlFor="role"
           className="block text-sm font-medium text-gray-300"
         >
-          Role
+          {t("login.register.label.role")}
         </label>
         <select
           id="role"
@@ -169,16 +169,18 @@ const RegisterForm: React.FC = () => {
           }
           className="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md"
         >
-          <option value="player">Player</option>
-          <option value="admin">Admin</option>
-          <option value="moderator">Moderator</option>
+          <option value="player">{t("login.register.option.player")}</option>
+          <option value="admin">{t("login.register.option.admin")}</option>
+          <option value="moderator">
+            {t("login.register.option.moderator")}
+          </option>
         </select>
       </div>
       <button
         type="submit"
         className="w-full py-2 px-4 bg-blue-600 text-white rounded-md"
       >
-        Register
+        {t("login.register.button.register")}
       </button>
       {statusMessages && (
         <div className="row">
