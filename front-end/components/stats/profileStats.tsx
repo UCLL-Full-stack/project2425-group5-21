@@ -50,7 +50,7 @@ const ProfileStats: React.FC = () => {
           <>
             <div className="w-11/12 max-w-8xl mb-8 mt-20">
               <h2 className="text-left text-4xl font-semibold py-4 text-[#b0b3c8]">
-                Profile
+                {t("stats.profile.title")}
               </h2>
               <div className="bg-[#2a2d40] rounded-b-lg shadow-lg overflow-hidden rounded-t-lg">
                 <table className="w-full table-auto text-center text-lg">
@@ -60,24 +60,25 @@ const ProfileStats: React.FC = () => {
                         <td className="py-6 font-semibold text-[#d4d7f2] text-[30px]">
                           {user.username}
                           <div className="text-[13px] text-[#b0b3c8] mt-1">
-                            Joined:{" "}
+                            {t("stats.profile.joined")}:{" "}
                             {user.creationDate
                               ? new Date(user.creationDate).toLocaleDateString()
                               : "N/A"}
                           </div>
                         </td>
                         <td className="py-6 font-semibold text-[#d4d7f2] text-[22px]">
-                          Tests Completed: {typingTests.length}
+                          {t("stats.profile.testsCompleted")}:{" "}
+                          {typingTests.length}
                         </td>
                         <td className="py-6 font-semibold text-[#d4d7f2] text-[22px]">
-                          Time Typing:{" "}
+                          {t("stats.profile.timeTyping")}:{" "}
                           {Math.floor(
                             typingTests.reduce(
                               (sum, test) => sum + (test.time ?? 0),
                               0
                             ) / 60
                           )}{" "}
-                          minutes
+                          {t("stats.profile.minutes")}
                         </td>
                         <td className="py-6">
                           <UpdateUsername user={user} />
@@ -107,4 +108,5 @@ const ProfileStats: React.FC = () => {
     </>
   );
 };
+
 export default ProfileStats;
