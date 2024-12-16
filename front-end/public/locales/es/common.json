@@ -1,15 +1,41 @@
 {
-  "app.title": "MR Typer",
+  "app": {
+    "title": "MR Typer",
+    "title.home": "MR Typer | Inicio",
+    "title.stats": "MR Typer | Estadísticas",
+    "title.leaderboard": "MR Typer | Tabla de clasificación",
+    "title.login": "MR Typer | Iniciar sesión / Registrarse"
+  },
   "general.error": "Se ha producido un error. Vuelva a intentarlo más tarde.",
-  "login": {
+  "unauthorized.stats.error": "No está autorizado para ver la página de estadísticas. Por favor, inicie sesión primero.",
+  "unauthorized.leaderboard.error": "No está autorizado para ver la tabla de clasificación. Por favor, inicie sesión primero.",
+  "login.register": {
     "title": "Inicio de sesión",
-    "button": "Conéctese",
-    "success": "Inicio de sesión exitoso. Redirigiendo a la página de inicio...",
+    "button": {
+      "login": "Conéctese",
+      "register": "Registrarse"
+    },
+    "successlogin": "Inicio de sesión exitoso. Redirigiendo a la página de inicio...",
+    "successregister": "¡Registro exitoso! Redirigiendo a la página de inicio...",
     "validate": {
       "name": "Nombre obligatorio",
-      "password": "Se requiere contraseña"
+      "namelength": "El nombre de usuario debe tener entre 3 y 50 caracteres.",
+      "password": "Se requiere contraseña",
+      "passwordlength": "La contraseña debe tener al menos 5 caracteres.",
+      "email": "Se requiere correo electrónico",
+      "validemail": "El formato del correo electrónico es inválido."
     },
-    "label": { "username": "Nombre de usuario:", "password": "Contraseña:" }
+    "label": {
+      "username": "Nombre de usuario",
+      "password": "Contraseña",
+      "email": "Correo electrónico",
+      "role": "Rol"
+    },
+    "option": {
+      "player": "Jugador",
+      "admin": "Administrador",
+      "moderator": "Moderador"
+    }
   },
   "header": {
     "welcome": "Bienvenido",
@@ -19,6 +45,26 @@
       "leaderboard": "Tabla de clasificación",
       "login/logout": "Conéctese/Cerrar sesión",
       "logout": "Cerrar sesión"
+    }
+  },
+  "home": {
+    "title": "¡Bienvenido a MR Typer!",
+    "authenticatedMessage": "¡Elige tu modo de juego para empezar a escribir! Ya sea que quieras jugar solo o con amigos, la diversión comienza aquí. ¡Veamos qué tan rápido puedes escribir!",
+    "unauthenticatedMessage": "Si quieres jugar en solitario o multijugador, por favor inicia sesión primero. Si no tienes una cuenta, regístrate ahora para unirte a la diversión y mejorar tus habilidades de escritura. ¡Desafíate a ti mismo, compite con otros y sigue tu progreso a lo largo del tiempo!",
+    "users": {
+      "username": "Nombre de usuario",
+      "password": "Contraseña",
+      "role": "Rol"
+    },
+    "game": {
+      "singleplayer": {
+        "title": "Un jugador",
+        "description": "Juega solo y desafíate a mejorar tus habilidades de escritura."
+      },
+      "multiplayer": {
+        "title": "Multijugador",
+        "description": "¡Compite con amigos o jugadores de todo el mundo en tiempo real!"
+      }
     }
   }
 }

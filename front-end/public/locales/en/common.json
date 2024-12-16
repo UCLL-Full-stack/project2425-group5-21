@@ -1,15 +1,37 @@
 {
-  "app.title": "MR Typer",
+  "app": {
+    "title": "MR Typer",
+    "title.home": "MR Typer | Home",
+    "title.stats": "MR Typer | Stats",
+    "title.leaderboard": "MR Typer | Leaderboard",
+    "title.login": "MR Typer | Login / Register"
+  },
   "general.error": "An error has occurred. Please try again later.",
-  "login": {
+  "unauthorized.stats.error": "You are not authorized to view the stats page. Please login first.",
+  "unauthorized.leaderboard.error": "You are not authorized to view the leaderboard page. Please login first.",
+  "login.register": {
     "title": "Login",
-    "button": "Login",
-    "success": "Login succesful. Redirecting to homepage...",
+    "button": {
+      "login": "Login",
+      "register": "Register"
+    },
+    "successlogin": "Login succesful. Redirecting to homepage...",
+    "successregister": "Registration successful! Redirecting to homepage...",
     "validate": {
       "name": "Name is required",
-      "password": "Password is required"
+      "namelength": "The username must be between 3 and 50 characters.",
+      "password": "Password is required",
+      "passwordlength": "The password must be at least 5 characters long.",
+      "email": "Email is required",
+      "validemail": "The email format is invalid."
     },
-    "label": { "username": "Username:", "password": "Password:" }
+    "label": {
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "role": "Role"
+    },
+    "option": { "player": "Player", "admin": "Admin", "moderator": "Moderator" }
   },
   "header": {
     "welcome": "Welcome",
@@ -19,6 +41,26 @@
       "leaderboard": "Leaderboard",
       "login/logout": "Login/Logout",
       "logout": "Logout"
+    }
+  },
+  "home": {
+    "title": "Welcome to MR Typer!",
+    "authenticatedMessage": "Choose your game mode to start typing! Whether you want to play solo or with friends, the fun begins here. Let’s see how fast you can type!",
+    "unauthenticatedMessage": "If you want to play singleplayer or multiplayer, please login first. If you don't have an account, sign up now to join the fun and improve your typing skills. Challenge yourself, compete with others, and track your progress over time!",
+    "users": {
+      "username": "Username",
+      "password": "Password",
+      "role": "Role"
+    },
+    "game": {
+      "singleplayer": {
+        "title": "Singleplayer",
+        "description": "Play solo and challenge yourself to improve your typing skills."
+      },
+      "multiplayer": {
+        "title": "Multiplayer",
+        "description": "Compete with friends or players around the world in real-time!"
+      }
     }
   }
 }
