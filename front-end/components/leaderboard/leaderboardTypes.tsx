@@ -1,14 +1,17 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 const LeaderboardTypes: React.FC<{
   selectedType: number;
   setSelectedType: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ selectedType, setSelectedType }) => {
+  const { t } = useTranslation("common");
+
   return (
     <div className="flex flex-col items-center w-11/12 max-w-3xl mt-20">
       <div className="flex h-30 items-center justify-between w-full">
         <h1 className="text-4xl font-extrabold tracking-widest my-8 text-white">
-          Leaderboard
+          {t("leaderboard.title")}
         </h1>
         <h1
           onClick={() => setSelectedType(15)}
