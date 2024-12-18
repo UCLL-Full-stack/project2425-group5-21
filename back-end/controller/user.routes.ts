@@ -48,7 +48,9 @@
  *              format: date-time
  *              description: Date when the user was created.
  *            role:
- *               $ref: '#/components/schemas/Role'
+ *              type: string
+ *              description: User's role.
+ *              $ref: '#/components/schemas/Role'
  *      UserInput:
  *          type: object
  *          properties:
@@ -81,6 +83,7 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
+ *     tags: [User]
  *     security:
  *       - bearerAuth: []
  *     summary: Get a list of all users.
@@ -109,6 +112,7 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /users/{id}:
  *   get:
+ *     tags: [User]
  *     security:
  *      - bearerAuth: []
  *     summary: Get a user by ID.
@@ -148,6 +152,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /users/{username}:
  *   get:
+ *     tags: [User]
  *     security:
  *      - bearerAuth: []
  *     summary: Get a user by username.
@@ -181,6 +186,7 @@ userRouter.get('/:username', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /users/login:
  *   post:
+ *     tags: [User]
  *     summary: Login using username/password. Returns an object with JWT token, user name and role when successful.
  *     requestBody:
  *       required: true
@@ -210,6 +216,7 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /users/signup:
  *   post:
+ *     tags: [User]
  *     summary: Create a user
  *     requestBody:
  *       required: true
@@ -239,6 +246,7 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
  * @swagger
  * /users/{id}:
  *   delete:
+ *     tags: [User]
  *     security:
  *      - bearerAuth: []
  *     summary: Delete a user by ID
@@ -271,6 +279,7 @@ userRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /user/{id}/username:
  *   put:
+ *     tags: [User]
  *     security:
  *      - bearerAuth: []
  *     summary: Update a user's username

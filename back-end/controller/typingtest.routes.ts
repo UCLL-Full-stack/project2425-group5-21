@@ -37,6 +37,7 @@ const typingtestRouter = express.Router();
  * @swagger
  * /typingtests:
  *   get:
+ *     tags: [Typingtest]
  *     security:
  *      - bearerAuth: []
  *     summary: Get a list of all typingtest.
@@ -65,6 +66,7 @@ typingtestRouter.get('/', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /typingtests/user/{id}:
  *   get:
+ *     tags: [Typingtest]
  *     security:
  *      - bearerAuth: []
  *     summary: Get typing tests by user ID.
@@ -100,6 +102,7 @@ typingtestRouter.get('/user/:id', async (req: Request, res: Response, next: Next
  * @swagger
  * /typingtests/user/{id}/{type}:
  *   get:
+ *     tags: [Typingtest]
  *     security:
  *      - bearerAuth: []
  *     summary: Get typing tests by user ID and type.
