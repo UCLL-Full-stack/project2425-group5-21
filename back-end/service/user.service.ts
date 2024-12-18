@@ -1,11 +1,9 @@
 import { User } from '../model/user';
-import { TypingTest } from '../model/typingTest';
 import userDB from '../repository/user.db';
 import { AuthenticationResponse, UserInput } from '../types';
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from '../util/jwt';
 import typingtestDb from '../repository/typingtest.db';
-import leaderboardDb from '../repository/leaderboard.db';
 import gameDb from '../repository/game.db';
 
 const getAllUsers = async (): Promise<User[]> => {
@@ -98,6 +96,9 @@ const updateUsername = async (userId: number, newUsername: string): Promise<void
     if (existingUser) {
         throw new Error(`Username ${newUsername} is already taken.`);
     }
+
+    const updatedUser = new User({ ...user, username: newUsername });
+    updatedUser.validate(updatedUser);
 
     await userDB.updateUsername(userId, newUsername);
 };
