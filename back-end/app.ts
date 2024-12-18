@@ -11,8 +11,18 @@ import { typingtestRouter } from './controller/typingtest.routes';
 import { leaderboardRouter } from './controller/leaderboard.routes';
 import { gameRouter } from './controller/game.routes';
 import { expressjwt } from 'express-jwt';
+import helmet from 'helmet';
+import { connect } from 'http2';
 
 const app = express();
+app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            connectSrc: ['self', 'https://api.ucll.be'],
+        },
+    })
+);
 const port = process.env.APP_PORT || 3000;
 
 app.use(cors({ origin: 'http://localhost:8080' }));
