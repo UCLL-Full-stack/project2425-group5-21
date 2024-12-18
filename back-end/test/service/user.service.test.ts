@@ -1,6 +1,7 @@
 import { User } from '../../model/user';
-import { TypingTest } from '../../model/typingTest';
 import userDB from '../../repository/user.db';
+import typingtestDb from '../../repository/typingtest.db';
+import gameDb from '../../repository/game.db';
 import userService from '../../service/user.service';
 import { AuthenticationResponse, UserInput } from '../../types';
 import bcrypt from 'bcrypt';
@@ -23,24 +24,42 @@ const user = new User({
     password: 'hashedpassword',
 });
 
+let mockUserDbGetAllUsers: jest.Mock;
 let mockUserDbGetUserByUsername: jest.Mock;
+let mockUserDbGetUserById: jest.Mock;
 let mockUserDbGetUserByEmail: jest.Mock;
 let mockUserDbCreateUser: jest.Mock;
+let mockUserDbDeleteUser: jest.Mock;
+let mockTypingtestDbDeleteTypingTestsByUserId: jest.Mock;
+let mockGameDbRemoveGamesByUserId: jest.Mock;
+let mockUserDbUpdateUsername: jest.Mock;
 let mockBcryptCompare: jest.Mock;
 let mockBcryptHash: jest.Mock;
 let mockGenerateJwtToken: jest.Mock;
 
 beforeEach(() => {
+    mockUserDbGetAllUsers = jest.fn();
     mockUserDbGetUserByUsername = jest.fn();
+    mockUserDbGetUserById = jest.fn();
     mockUserDbGetUserByEmail = jest.fn();
     mockUserDbCreateUser = jest.fn();
+    mockUserDbDeleteUser = jest.fn();
+    mockTypingtestDbDeleteTypingTestsByUserId = jest.fn();
+    mockGameDbRemoveGamesByUserId = jest.fn();
+    mockUserDbUpdateUsername = jest.fn();
     mockBcryptCompare = jest.fn();
     mockBcryptHash = jest.fn();
     mockGenerateJwtToken = jest.fn();
 
+    userDB.getAllUsers = mockUserDbGetAllUsers;
     userDB.getUserByUsername = mockUserDbGetUserByUsername;
+    userDB.getUserById = mockUserDbGetUserById;
     userDB.getUserByEmail = mockUserDbGetUserByEmail;
     userDB.createUser = mockUserDbCreateUser;
+    userDB.deleteUser = mockUserDbDeleteUser;
+    typingtestDb.deleteTypingTestsByUserId = mockTypingtestDbDeleteTypingTestsByUserId;
+    gameDb.removeGamesByUserId = mockGameDbRemoveGamesByUserId;
+    userDB.updateUsername = mockUserDbUpdateUsername;
     bcrypt.compare = mockBcryptCompare;
     bcrypt.hash = mockBcryptHash;
     jest.spyOn(jwtUtil, 'generateJwtToken').mockImplementation(mockGenerateJwtToken);
@@ -48,6 +67,70 @@ beforeEach(() => {
 
 afterEach(() => {
     jest.clearAllMocks();
+});
+
+test('given: calling getAllUsers, then: all users are returned', async () => {
+    // given
+    mockUserDbGetAllUsers.mockResolvedValue([user]);
+
+    // when
+    const users = await userService.getAllUsers();
+
+    // then
+    expect(mockUserDbGetAllUsers).toHaveBeenCalledTimes(1);
+    expect(users).toEqual([user]);
+});
+
+test('given: valid userId, when: calling getUserById, then: user is returned', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+
+    // when
+    const foundUser = await userService.getUserById(1);
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(foundUser).toEqual(user);
+});
+
+test('given: invalid userId, when: calling getUserById, then: null is returned', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(null);
+
+    // when
+    const call = userService.getUserById(999);
+
+    // then
+    await expect(call).rejects.toThrow('User with ID 999 does not exist.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(999);
+});
+
+test('given: valid username, when: calling getUserByUsername, then: user is returned', async () => {
+    // given
+    mockUserDbGetUserByUsername.mockResolvedValue(user);
+
+    // when
+    const foundUser = await userService.getUserByUsername({ username: 'johndoe' });
+
+    // then
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledWith({ username: 'johndoe' });
+    expect(foundUser).toEqual(user);
+});
+
+test('given: invalid username, when: calling getUserByUsername, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserByUsername.mockResolvedValue(null);
+
+    // when
+    const call = userService.getUserByUsername({ username: 'invaliduser' });
+
+    // then
+    await expect(call).rejects.toThrow('User with username: invaliduser does not exist.');
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledWith({ username: 'invaliduser' });
 });
 
 test('given: a valid user, when: calling createUser, then: user is created with those values', async () => {
@@ -144,4 +227,96 @@ test('given non-existing user, when user is authenticated, then an error is thro
     await expect(authenticate).rejects.toThrow(
         `User with username: ${userInput.username} does not exist.`
     );
+});
+
+test('given: valid userId, when: calling deleteUser, then: user is deleted', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+
+    // when
+    await userService.deleteUser(1);
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockTypingtestDbDeleteTypingTestsByUserId).toHaveBeenCalledTimes(1);
+    expect(mockTypingtestDbDeleteTypingTestsByUserId).toHaveBeenCalledWith(1);
+    expect(mockGameDbRemoveGamesByUserId).toHaveBeenCalledTimes(1);
+    expect(mockGameDbRemoveGamesByUserId).toHaveBeenCalledWith(1);
+    expect(mockUserDbDeleteUser).toHaveBeenCalledTimes(1);
+    expect(mockUserDbDeleteUser).toHaveBeenCalledWith(1);
+});
+
+test('given: invalid userId, when: calling deleteUser, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(null);
+
+    // when
+    const call = userService.deleteUser(999);
+
+    // then
+    await expect(call).rejects.toThrow('User with ID 999 does not exist.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(999);
+});
+
+test('given: valid userId and new username, when: calling updateUsername, then: username is updated', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+    mockUserDbGetUserByUsername.mockResolvedValue(null);
+
+    // when
+    await userService.updateUsername(1, 'newusername');
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledWith({ username: 'newusername' });
+    expect(mockUserDbUpdateUsername).toHaveBeenCalledTimes(1);
+    expect(mockUserDbUpdateUsername).toHaveBeenCalledWith(1, 'newusername');
+});
+
+test('given: invalid userId, when: calling updateUsername, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(null);
+
+    // when
+    const call = userService.updateUsername(999, 'newusername');
+
+    // then
+    await expect(call).rejects.toThrow('User with ID 999 does not exist.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(999);
+});
+
+test('given: same username, when: calling updateUsername, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+
+    // when
+    const call = userService.updateUsername(1, 'johndoe');
+
+    // then
+    await expect(call).rejects.toThrow(
+        'New username johndoe cannot be the same as the current username.'
+    );
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+});
+
+test('given: existing username, when: calling updateUsername, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+    mockUserDbGetUserByUsername.mockResolvedValue(user);
+
+    // when
+    const call = userService.updateUsername(1, 'existingusername');
+
+    // then
+    await expect(call).rejects.toThrow('Username existingusername is already taken.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserByUsername).toHaveBeenCalledWith({ username: 'existingusername' });
 });

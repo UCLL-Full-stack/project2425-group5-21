@@ -88,15 +88,15 @@ test('given: valid gameId, when: calling getGameByIdWithUsers, then: game with u
     expect(foundGame).toEqual(game);
 });
 
-test('given: invalid gameId, when: calling getGameByIdWithUsers, then: null is returned', async () => {
+test('given: invalid gameId, when: calling getGameByIdWithUsers, then: an error is thrown', async () => {
     // given
     mockGameDbGetGameByIdWithUsers.mockResolvedValue(null);
 
     // when
-    const foundGame = await gameService.getGameByIdWithUsers(999);
+    const call = gameService.getGameByIdWithUsers(999);
 
     // then
+    await expect(call).rejects.toThrow('Game with ID 999 does not exist.');
     expect(mockGameDbGetGameByIdWithUsers).toHaveBeenCalledTimes(1);
     expect(mockGameDbGetGameByIdWithUsers).toHaveBeenCalledWith(999);
-    expect(foundGame).toBeNull();
 });

@@ -1,6 +1,7 @@
 import { TypingTest } from '../../model/typingTest';
 import { User } from '../../model/user';
 import typingtestDb from '../../repository/typingtest.db';
+import userDb from '../../repository/user.db';
 import typingtestService from '../../service/typingtest.service';
 import { TypingTestInput } from '../../types';
 import { UserInput } from '../../types';
@@ -31,17 +32,27 @@ const typingTestInput: TypingTestInput = {
 const typingTest = new TypingTest({
     ...typingTestInput,
     user: user,
+    gameId: 1,
 });
 
 let mockTypingtestDbGetAllTypingTests: jest.Mock;
 let mockTypingtestDbGetTypingTestsByUsername: jest.Mock;
+let mockTypingtestDbGetTypingTestsByUserId: jest.Mock;
+let mockTypingtestDbGetTypingTestsByUserIdAndType: jest.Mock;
+let mockUserDbGetUserById: jest.Mock;
 
 beforeEach(() => {
     mockTypingtestDbGetAllTypingTests = jest.fn();
     mockTypingtestDbGetTypingTestsByUsername = jest.fn();
+    mockTypingtestDbGetTypingTestsByUserId = jest.fn();
+    mockTypingtestDbGetTypingTestsByUserIdAndType = jest.fn();
+    mockUserDbGetUserById = jest.fn();
 
     typingtestDb.getAllTypingTests = mockTypingtestDbGetAllTypingTests;
     typingtestDb.getTypingTestsByUsername = mockTypingtestDbGetTypingTestsByUsername;
+    typingtestDb.getTypingTestsByUser = mockTypingtestDbGetTypingTestsByUserId;
+    typingtestDb.getTypingTestsByUserAndType = mockTypingtestDbGetTypingTestsByUserIdAndType;
+    userDb.getUserById = mockUserDbGetUserById;
 });
 
 afterEach(() => {
@@ -54,6 +65,21 @@ test('given: admin role, when: calling getTypingTest, then: all typing tests are
 
     // when
     const typingTests = await typingtestService.getTypingTest({ username: 'admin', role: 'admin' });
+
+    // then
+    expect(mockTypingtestDbGetAllTypingTests).toHaveBeenCalledTimes(1);
+    expect(typingTests).toEqual([typingTest]);
+});
+
+test('given: moderator role, when: calling getTypingTest, then: all typing tests are returned', async () => {
+    // given
+    mockTypingtestDbGetAllTypingTests.mockResolvedValue([typingTest]);
+
+    // when
+    const typingTests = await typingtestService.getTypingTest({
+        username: 'moderator',
+        role: 'moderator',
+    });
 
     // then
     expect(mockTypingtestDbGetAllTypingTests).toHaveBeenCalledTimes(1);
@@ -97,4 +123,93 @@ test('given: calling getAllTypingTests, then: all typing tests are returned', as
     // then
     expect(mockTypingtestDbGetAllTypingTests).toHaveBeenCalledTimes(1);
     expect(typingTests).toEqual([typingTest]);
+});
+
+test('given: valid userId, when: calling getTypingTestsByUser, then: typing tests for the user are returned', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+    mockTypingtestDbGetTypingTestsByUserId.mockResolvedValue([typingTest]);
+
+    // when
+    const typingTests = await typingtestService.getTypingTestsByUser(1);
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockTypingtestDbGetTypingTestsByUserId).toHaveBeenCalledTimes(1);
+    expect(mockTypingtestDbGetTypingTestsByUserId).toHaveBeenCalledWith(1);
+    expect(typingTests).toEqual([typingTest]);
+});
+
+test('given: invalid userId, when: calling getTypingTestsByUser, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(null);
+
+    // when
+    const call = typingtestService.getTypingTestsByUser(999);
+
+    // then
+    await expect(call).rejects.toThrow('User with ID 999 does not exist.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(999);
+});
+
+test('given: valid userId and type: singeplayer, when: calling getTypingTestsByUserAndType, then: typing tests for the user and type: singeplayer are returned', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+    mockTypingtestDbGetTypingTestsByUserIdAndType.mockResolvedValue([typingTest]);
+
+    // when
+    const typingTests = await typingtestService.getTypingTestsByUserAndType(1, 'singleplayer');
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockTypingtestDbGetTypingTestsByUserIdAndType).toHaveBeenCalledTimes(1);
+    expect(mockTypingtestDbGetTypingTestsByUserIdAndType).toHaveBeenCalledWith(1, 'singleplayer');
+    expect(typingTests).toEqual([typingTest]);
+});
+
+test('given: valid userId and type: multiplayer, when: calling getTypingTestsByUserAndType, then: typing tests for the user and type: multiplayer are returned', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+    mockTypingtestDbGetTypingTestsByUserIdAndType.mockResolvedValue([typingTest]);
+
+    // when
+    const typingTests = await typingtestService.getTypingTestsByUserAndType(1, 'multiplayer');
+
+    // then
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
+    expect(mockTypingtestDbGetTypingTestsByUserIdAndType).toHaveBeenCalledTimes(1);
+    expect(mockTypingtestDbGetTypingTestsByUserIdAndType).toHaveBeenCalledWith(1, 'multiplayer');
+    expect(typingTests).toEqual([typingTest]);
+});
+
+test('given: invalid userId, when: calling getTypingTestsByUserAndType, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(null);
+
+    // when
+    const call = typingtestService.getTypingTestsByUserAndType(999, 'singleplayer');
+
+    // then
+    await expect(call).rejects.toThrow('User with ID 999 does not exist.');
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(999);
+});
+
+test('given: invalid type, when: calling getTypingTestsByUserAndType, then: an error is thrown', async () => {
+    // given
+    mockUserDbGetUserById.mockResolvedValue(user);
+
+    // when
+    const call = typingtestService.getTypingTestsByUserAndType(1, 'invalidtype');
+
+    // then
+    await expect(call).rejects.toThrow(
+        'Invalid type. Type must be either singleplayer or multiplayer.'
+    );
+    expect(mockUserDbGetUserById).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserById).toHaveBeenCalledWith(1);
 });

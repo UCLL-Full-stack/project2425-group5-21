@@ -71,16 +71,19 @@ const typingTestData3: TypingTestInput = {
 const typingTest1 = new TypingTest({
     ...typingTestData1,
     user: user1,
+    gameId: 1,
 });
 
 const typingTest2 = new TypingTest({
     ...typingTestData2,
     user: user2,
+    gameId: 1,
 });
 
 const typingTest3 = new TypingTest({
     ...typingTestData3,
     user: user3,
+    gameId: 1,
 });
 
 const leaderboardData1: LeaderboardInput = {
