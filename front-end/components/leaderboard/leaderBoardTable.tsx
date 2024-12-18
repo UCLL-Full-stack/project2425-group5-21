@@ -1,11 +1,19 @@
 import React from "react";
+import { useRouter } from "next/router";
 import type { Leaderboard } from "@/types";
 import { useTranslation } from "next-i18next";
 
-const LeaderboardTable: React.FC<{ leaderboard: Leaderboard | null }> = ({
-  leaderboard,
-}) => {
+type Props = {
+  leaderboard: Leaderboard | null;
+};
+
+const LeaderboardTable: React.FC<Props> = ({ leaderboard }) => {
   const { t } = useTranslation("common");
+  const router = useRouter();
+
+  const handleRowClick = (userId: string) => {
+    router.push(`/leaderboards/${userId}`);
+  };
 
   return (
     <div className="w-11/12 max-w-7xl bg-[#2a2d40] rounded-lg shadow-lg overflow-hidden">
@@ -29,6 +37,10 @@ const LeaderboardTable: React.FC<{ leaderboard: Leaderboard | null }> = ({
             <tr
               key={score.id}
               className="hover:bg-[#393d56] transition duration-200"
+              onClick={() =>
+                score.user?.id && handleRowClick(score.user.id.toString())
+              }
+              role="button"
             >
               <td className="py-6 text-[#8e97f0] font-medium">{index + 1}</td>
               <td className="py-6 font-semibold text-[#d4d7f2]">
