@@ -17,7 +17,7 @@ const getUserById = async (id: number): Promise<User | null> => {
     if (!user) {
         throw new Error(`User with ID ${id} does not exist.`);
     }
-    return userDB.getUserById(id);
+    return user;
 };
 
 const getUserByUsername = async ({ username }: { username: string }): Promise<User> => {
