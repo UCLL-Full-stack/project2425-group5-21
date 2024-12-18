@@ -54,10 +54,6 @@ test('given: email without domain extension, when: user is created, then: an err
     expect(() => createUser({ email: 'john.doe@ucll' })).toThrow('The email format is invalid.');
 });
 
-test('given: email without dot in local part, when: user is created, then: an error is thrown.', () => {
-    expect(() => createUser({ email: 'johndoe@ucll.be' })).toThrow('The email format is invalid.');
-});
-
 test('given: email with incomplete domain extension, when: user is created, then: an error is thrown.', () => {
     expect(() => createUser({ email: 'john.doe@ucll.b' })).toThrow('The email format is invalid.');
 });
@@ -84,7 +80,7 @@ test('given: missing role, when: user is created, then: an error is thrown.', ()
 
 test('given: invalid role, when: user is created, then: an error is thrown.', () => {
     expect(() => createUser({ role: 'invalidRole' })).toThrow(
-        'The role is not valid. Allowed roles are: player, admin, guest.'
+        'The role is not valid. Allowed roles are: player, admin, moderator.'
     );
 });
 

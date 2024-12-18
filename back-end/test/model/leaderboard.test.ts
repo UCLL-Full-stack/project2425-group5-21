@@ -56,7 +56,7 @@ test('given: missing maxScores, when: leaderboard is created, then: an error is 
 });
 
 test('given: maxScores equal to 0, when: leaderboard is created, then: an error is thrown.', () => {
-    expect(() => createLeaderboard({ maxScores: -1 })).toThrow(
+    expect(() => createLeaderboard({ maxScores: 0 })).toThrow(
         'Max players must be a positive integer'
     );
 });
