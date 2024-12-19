@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import Header from "@/components/header";
 import { createTypingTest } from "@/services/TypingTestService";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+
 
 const Singleplayer: React.FC = () => {
   const allWords = [
@@ -245,6 +248,7 @@ const Singleplayer: React.FC = () => {
     <>
       <Head>
         <title>MR Typer | Singleplayer</title>
+        
         <meta name="description" content="Singleplayer typing test" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -345,6 +349,16 @@ const Singleplayer: React.FC = () => {
       </main>
     </>
   );
+};
+
+export const getServerSideProps = async (context: { locale: any }) => {
+  const { locale } = context;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
 };
 
 export default Singleplayer;
