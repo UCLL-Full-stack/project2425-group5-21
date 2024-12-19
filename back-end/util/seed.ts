@@ -113,6 +113,16 @@ const main = async () => {
             const wpm = Math.floor(Math.random() * 100) + 50;
             const accuracy = Math.floor(Math.random() * 20) + 80;
 
+            const game = await prisma.game.create({
+                data: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    users: {
+                        connect: { id: user.id },
+                    },
+                },
+            });
+
             await prisma.typingTest.create({
                 data: {
                     wpm,
@@ -121,6 +131,9 @@ const main = async () => {
                     type: 'singleplayer',
                     user: {
                         connect: { id: user.id },
+                    },
+                    game: {
+                        connect: { id: game.id },
                     },
                     leaderboard: {
                         connect: { id: leaderboard30.id },
