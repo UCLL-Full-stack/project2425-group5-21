@@ -1,7 +1,10 @@
 import { UnauthorizedError } from 'express-jwt';
 import { TypingTest } from '../model/typingTest';
+import { Game } from '../model/game';
+import { User } from '../model/user';
 import typingtestDb from '../repository/typingtest.db';
 import userDB from '../repository/user.db';
+import gameDb from '../repository/game.db';
 
 const getTypingTest = async ({
     username,
@@ -47,9 +50,62 @@ const getTypingTestsByUserAndType = async (userId: number, type: string): Promis
     return typingtestDb.getTypingTestsByUserAndType(userId, type);
 };
 
+
+interface CreateTypingTestParams {
+    wpm: number;
+    accuracy: number;
+    time: number;
+    type: string;
+    username: string;
+}
+
+const createTypingTest = async ({
+    wpm,
+    accuracy,
+    time,
+    type,
+    username
+}: CreateTypingTestParams): Promise<TypingTest> => {
+    // Get user by username
+    const user = await userDB.getUserByUsername({username});
+    if (!user) {
+        throw new Error(`User ${username} does not exist.`);
+    }
+
+    if (type !== 'singleplayer' && type !== 'multiplayer') {
+        throw new Error('Type must be either "singleplayer" or "multiplayer"');
+    }
+
+    // Create new game
+    const game = new Game({
+        startDate: new Date(Date.now() - (time * 1000)),
+        endDate: new Date(),
+        users: [user]
+    });
+
+    const savedGame = await gameDb.createGame(game);
+
+    // Create typing test
+    const typingTest = new TypingTest({
+        wpm,
+        accuracy,
+        time,
+        type,
+        user,
+        gameId: savedGame.getId()
+    });
+
+    console.log(savedGame)
+    console.log(savedGame.getId())
+    console.log(typingTest)
+
+    return typingtestDb.createTypingTest(typingTest);
+};
+
 export default {
     getAllTypingTests,
     getTypingTest,
     getTypingTestsByUser,
     getTypingTestsByUserAndType,
+    createTypingTest
 };
