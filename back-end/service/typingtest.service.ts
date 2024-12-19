@@ -6,11 +6,16 @@ import userDB from '../repository/user.db';
 const getTypingTest = async ({
     username,
     role,
+    selectedUser,
 }: {
     username: string;
     role: string;
+    selectedUser?: string;
 }): Promise<TypingTest[]> => {
     if (role === 'admin' || role === 'moderator') {
+        if (selectedUser) {
+            return typingtestDb.getTypingTestsByUsername(selectedUser);
+        }
         return typingtestDb.getAllTypingTests();
     } else if (role === 'player') {
         return typingtestDb.getTypingTestsByUsername(username);

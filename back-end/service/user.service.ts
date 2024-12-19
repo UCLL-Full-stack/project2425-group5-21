@@ -10,6 +10,10 @@ const getAllUsers = async (): Promise<User[]> => {
     return userDB.getAllUsers();
 };
 
+const getAllPlayers = async (): Promise<User[]> => {
+    return userDB.getAllPlayers();
+};
+
 const getUserById = async (id: number): Promise<User | null> => {
     const user = await userDB.getUserById(id);
     if (!user) {
@@ -111,4 +115,5 @@ export default {
     authenticate,
     deleteUser,
     updateUsername,
+    getAllPlayers,
 };

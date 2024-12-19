@@ -55,7 +55,8 @@ typingtestRouter.get('/', async (req: Request, res: Response, next: NextFunction
     try {
         const request = req as Request & { auth: { username: string; role: string } };
         const { username, role } = request.auth;
-        const typingTests = await typingtestService.getTypingTest({ username, role });
+        const { selectedUser } = req.query;
+        const typingTests = await typingtestService.getTypingTest({ username, role, selectedUser: selectedUser as string, });
         res.status(200).json(typingTests);
     } catch (error) {
         next(error);

@@ -110,6 +110,35 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 /**
  * @swagger
+ * /users:
+ *   get:
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get a list of all players.
+ *     responses:
+ *       200:
+ *         description: A list of players.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/User'
+ */
+userRouter.get('/players', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const players = await userService.getAllPlayers();
+        res.status(200).json(players);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ status: 'error', errorMessage: error.message });
+        }
+    }
+});
+
+/**
+ * @swagger
  * /users/{id}:
  *   get:
  *     tags: [User]
