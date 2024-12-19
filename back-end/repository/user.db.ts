@@ -12,6 +12,20 @@ const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
+const getAllPlayers = async (): Promise<User[]> => {
+    try {
+        const usersPrisma = await database.user.findMany({
+            where: {
+                role: 'player',
+            },
+        });
+        return usersPrisma.map((userPrisma) => User.from(userPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 const getUserById = async (id: number): Promise<User | null> => {
     try {
         const userPrisma = await database.user.findUnique({
@@ -101,4 +115,5 @@ export default {
     getUserByEmail,
     deleteUser,
     updateUsername,
+    getAllPlayers,
 };

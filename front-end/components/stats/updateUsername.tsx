@@ -28,15 +28,13 @@ const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
           throw new Error(`${errorData.status}: ${errorData.message}`);
         }
 
-        localStorage.removeItem("loggedInUser");
-
         setStatusMessage(
           t("stats.profile.updateUsername.validate.usernameUpdated")
         );
 
         setTimeout(() => {
-          router.push("/login");
-        }, 3000);
+          router.push("/");
+        }, 2000);
       } catch (err: any) {
         setError(err.message || t("general.error"));
         setStatusMessage(null);
@@ -85,11 +83,6 @@ const UpdateUsername: React.FC<{ user: User }> = ({ user }) => {
                 {t("stats.profile.updateUsername.changeName")}
               </button>
             </div>
-            {!error && (
-              <p className="mt-4 text-[12px] font-bold text-gray-400">
-                {t("stats.profile.updateUsername.validate.loginAgain")}
-              </p>
-            )}
             {error && (
               <p className="mt-2 text-[12px] font-bold text-red-500">{error}</p>
             )}

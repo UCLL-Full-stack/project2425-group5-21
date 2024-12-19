@@ -1,7 +1,10 @@
-const getTypingTests = async () => {
+const getTypingTests = async (username?: string) => {
   const userString = localStorage.getItem("loggedInUser");
   const token = userString ? JSON.parse(userString).token : null;
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/typingtests`, {
+  const url = username
+      ? `${process.env.NEXT_PUBLIC_API_URL}/typingtests?selectedUser=${username}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/typingtests`;
+  return fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

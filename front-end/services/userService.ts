@@ -58,12 +58,26 @@ const getUserById = async (userId: number) => {
   });
 };
 
+const getAllPlayers = async () => {
+  const userString = localStorage.getItem("loggedInUser");
+  const token = userString ? JSON.parse(userString).token : null;
+
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/players`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 const UserService = {
   loginUser,
   registerUser,
   updateUsername,
   deleteUser,
   getUserById,
+  getAllPlayers,
 };
 
 export default UserService;
