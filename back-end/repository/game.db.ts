@@ -54,8 +54,25 @@ const removeGamesByUserId = async (userId: number): Promise<void> => {
     }
 };
 
+const createGame = async (game: Game): Promise<Game> => {
+    const createdGame = await database.game.create({
+        data: {
+            startDate: game.getStartDate(),
+            endDate: game.getEndDate(),
+            users: {
+                connect: game.getUsers().map(user => ({id: user.getId()}))
+            },
+        },
+        include: {
+            users: true
+        }
+    });
+    return Game.from(createdGame);
+};
+
 export default {
     getAllGamesWithUsers,
     getGameByIdWithUsers,
     removeGamesByUserId,
+    createGame,
 };
