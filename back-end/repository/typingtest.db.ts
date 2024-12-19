@@ -69,10 +69,33 @@ const getTypingTestsByUserAndType = async (userId: number, type: string): Promis
     }
 };
 
+const createTypingTest = async (typingTest: TypingTest): Promise<TypingTest> => {
+    try {
+        const typingTestPrisma = await database.typingTest.create({
+            data: {
+                wpm: typingTest.getWpm(),
+                accuracy: typingTest.getAccuracy(),
+                time: typingTest.getTime(),
+                type: typingTest.getType(),
+                userId: typingTest.getUser().getId()!,
+                ...(typingTest.getGameId() !== undefined && {
+                    gameId: typingTest.getGameId()
+                })
+            },
+            include: { user: true }
+        });
+        return TypingTest.from(typingTestPrisma);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllTypingTests,
     getTypingTestsByUsername,
     getTypingTestsByUser,
     getTypingTestsByUserAndType,
     deleteTypingTestsByUserId,
+    createTypingTest,
 };
