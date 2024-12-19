@@ -4,7 +4,9 @@
     "title.home": "MR Typer | Home",
     "title.stats": "MR Typer | Stats",
     "title.leaderboard": "MR Typer | Leaderboard",
-    "title.login": "MR Typer | Login / Register"
+    "title.login": "MR Typer | Login / Register",
+    "title.singleplayer": "MR Typer | Singleplayer",
+    "title.multiplayer": "MR Typer | Multiplayer"
   },
   "general.error": "An error has occurred. Please try again later.",
   "unauthorized.stats.error": "You are not authorized to view the stats page. Please login first.",

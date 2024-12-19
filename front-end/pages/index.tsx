@@ -38,4 +38,5 @@ export const getServerSideProps = async (context: { locale: any }) => {
   };
 };
 
+
 export default Home;

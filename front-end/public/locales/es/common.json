@@ -4,7 +4,9 @@
     "title.home": "MR Typer | Inicio",
     "title.stats": "MR Typer | Estadísticas",
     "title.leaderboard": "MR Typer | Tabla de clasificación",
-    "title.login": "MR Typer | Iniciar sesión / Registrarse"
+    "title.login": "MR Typer | Iniciar sesión / Registrarse",
+    "title.singleplayer": "MR Typer | Un jugador",
+    "title.multiplayer": "MR Typer | Multijugador"
   },
   "general.error": "Se ha producido un error. Vuelva a intentarlo más tarde.",
   "unauthorized.stats.error": "No está autorizado para ver la página de estadísticas. Por favor, inicie sesión primero.",
