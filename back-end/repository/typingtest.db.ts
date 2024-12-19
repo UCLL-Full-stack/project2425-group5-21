@@ -80,6 +80,9 @@ const createTypingTest = async (typingTest: TypingTest): Promise<TypingTest> => 
                 userId: typingTest.getUser().getId()!,
                 ...(typingTest.getGameId() !== undefined && {
                     gameId: typingTest.getGameId()
+                }),
+                ...(typingTest.getLeaderboardId() !== undefined && {
+                    leaderboardId: typingTest.getLeaderboardId()
                 })
             },
             include: { user: true }
