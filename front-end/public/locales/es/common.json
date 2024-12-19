@@ -80,17 +80,19 @@
         "enterNewUsername": "Ingrese nuevo nombre de usuario",
         "cancel": "Cancelar",
         "validate": {
-          "usernameUpdated": "El nombre de usuario ha sido actualizado. Redirigiendo a la página de inicio de sesión...",
-          "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres.",
-          "loginAgain": "Por favor, inicie sesión nuevamente con su nuevo nombre de usuario."
+          "usernameUpdated": "El nombre de usuario ha sido actualizado. Redireccionando a la página de inicio...",
+          "usernameTooShort": "El nombre de usuario debe tener al menos 3 caracteres."
         }
       },
       "deleteUser": {
         "delete": "Eliminar",
         "deleteUser": "Eliminar usuario",
-        "confirmDelete": "¿Está seguro de que desea eliminar su cuenta?",
-        "userDeleted": "El usuario ha sido eliminado con éxito. Redirigiendo a la página de inicio de sesión...",
+        "confirmDelete": "¿Estás segura de que quieres eliminar esta cuenta?",
+        "userDeleted": "El usuario ha sido eliminado correctamente. Redireccionando a la página de inicio...",
         "cancel": "Cancelar"
+      },
+      "selectPlayer": {
+        "select": "Seleccionar jugador"
       }
     },
     "average": {

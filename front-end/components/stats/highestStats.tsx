@@ -4,40 +4,8 @@ import TypingTestService from "@/services/TypingTestService";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
-const HighestStats: React.FC = () => {
+const HighestStats: React.FC<{ typingTests: TypingTest[] }> = ({ typingTests }) => {
   const { t } = useTranslation("common");
-
-  const [typingTests, setTypingTests] = useState<TypingTest[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-  const getAllTypingTests = async () => {
-    setError(null);
-    try {
-      const response = await TypingTestService.getTypingTests();
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`${errorData.status}: ${errorData.message}`);
-      }
-      const typingTests = await response.json();
-      setTypingTests(typingTests);
-      setUser(typingTests[0].user);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch typing tests data");
-    }
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem("loggedInUser");
-    if (token) {
-      setIsAuthenticated(true);
-      getAllTypingTests();
-    } else {
-      setError(t("unauthorized.stats.error"));
-    }
-  }, []);
 
   const calculateHighest = (time: number) => {
     const filteredTests = typingTests.filter((test) => test.time === time);

@@ -20,12 +20,10 @@ const DeleteUser: React.FC<{ userId: number }> = ({ userId }) => {
         throw new Error(`${errorData.status}: ${errorData.message}`);
       }
 
-      localStorage.removeItem("loggedInUser");
-
       setStatusMessage(t("stats.profile.deleteUser.userDeleted"));
 
       setTimeout(() => {
-        router.push("/login");
+        router.push("/");
       }, 2000);
     } catch (err: any) {
       setError(err.message || t("general.error"));

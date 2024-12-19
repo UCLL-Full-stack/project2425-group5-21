@@ -76,17 +76,19 @@
         "enterNewUsername": "Enter new username",
         "cancel": "Cancel",
         "validate": {
-          "usernameUpdated": "Username has been updated. Redirecting to login page...",
-          "usernameTooShort": "Username must be at least 3 characters long.",
-          "loginAgain": "Please log in again with your new username."
+          "usernameUpdated": "Username has been updated. Redirecting to home page...",
+          "usernameTooShort": "Username must be at least 3 characters long."
         }
       },
       "deleteUser": {
         "delete": "Delete",
         "deleteUser": "Delete User",
-        "confirmDelete": "Are you sure you want to delete your account?",
-        "userDeleted": "User has been successfully deleted. Redirecting to login page...",
+        "confirmDelete": "Are you sure you want to delete this account?",
+        "userDeleted": "User has been successfully deleted. Redirecting to home page...",
         "cancel": "Cancel"
+      },
+      "selectPlayer": {
+        "select": "Select player"
       }
     },
     "average": {
