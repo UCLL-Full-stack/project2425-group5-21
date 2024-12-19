@@ -83,6 +83,15 @@ const createTypingTest = async ({
         users: [user]
     });
 
+    let leaderboardID = 0;
+    if(time == 15){
+        leaderboardID = 1;
+    } else if(time == 30){
+        leaderboardID = 2;
+    } else if(time == 60){
+        leaderboardID = 3;
+    }
+
     const savedGame = await gameDb.createGame(game);
 
     // Create typing test
@@ -92,7 +101,8 @@ const createTypingTest = async ({
         time,
         type,
         user,
-        gameId: savedGame.getId()
+        gameId: savedGame.getId(),
+        leaderboardId: leaderboardID
     });
 
     console.log(savedGame)
