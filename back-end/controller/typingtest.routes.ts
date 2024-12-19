@@ -143,4 +143,56 @@ typingtestRouter.get('/user/:id/:type', async (req: Request, res: Response, next
     }
 });
 
+/**
+ * @swagger
+ * /typingtests:
+ *   post:
+ *     tags: [Typingtest]
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Create a new typing test with game.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               wpm:
+ *                 type: number
+ *               accuracy:
+ *                 type: number
+ *               time:
+ *                 type: number
+ *               type:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Created typing test
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Typingtest'
+ */
+typingtestRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = req as Request & { auth: { username: string; role: string } };
+        const { username } = request.auth;
+        const { wpm, accuracy, time, type } = req.body;
+
+        const typingTest = await typingtestService.createTypingTest({
+            wpm,
+            accuracy,
+            time,
+            type,
+            username
+        });
+
+        res.status(201).json(typingTest);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 export { typingtestRouter };
