@@ -121,14 +121,18 @@ const ProfileStats: React.FC = () => {
                                                 {typingTests.length}
                                             </td>
                                             <td className="py-6 font-semibold text-[#d4d7f2] text-[22px]">
-                                                {t("stats.profile.timeTyping")}:{" "}
                                                 {Math.floor(
                                                     typingTests.reduce(
                                                         (sum, test) => sum + (test.time ?? 0),
                                                         0
                                                     ) / 60
                                                 )}{" "}
-                                                {t("stats.profile.minutes")}
+                                                {t("stats.profile.minutes")}{" "}
+                                                {typingTests.reduce(
+                                                    (sum, test) => sum + (test.time ?? 0),
+                                                    0
+                                                ) % 60}{" "}
+                                                {t("stats.profile.seconds")}
                                             </td>
                                             {role !== "player" && (
                                                 <td className="py-6">

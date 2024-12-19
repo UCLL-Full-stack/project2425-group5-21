@@ -74,6 +74,7 @@
       "testsCompleted": "Pruebas completadas",
       "timeTyping": "Tiempo escribiendo",
       "minutes": "minutos",
+      "seconds": "segundos",
       "updateUsername": {
         "changeName": "Cambiar nombre",
         "changeUsername": "Cambiar nombre de usuario",
