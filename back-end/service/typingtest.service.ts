@@ -105,9 +105,7 @@ const createTypingTest = async ({
         leaderboardId: leaderboardID
     });
 
-    console.log(savedGame)
-    console.log(savedGame.getId())
-    console.log(typingTest)
+
 
     return typingtestDb.createTypingTest(typingTest);
 };
