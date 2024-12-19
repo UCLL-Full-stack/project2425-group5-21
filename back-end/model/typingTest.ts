@@ -8,6 +8,7 @@ export class TypingTest {
     readonly type: string;
     readonly user: User;
     readonly gameId?: number;
+    readonly leaderboardId?: number;
 
     constructor(typingTest: {
         id?: number;
@@ -17,6 +18,7 @@ export class TypingTest {
         type: string;
         user: User;
         gameId?: number;
+        leaderboardId?: number;
     }) {
         this.validate(typingTest);
 
@@ -27,6 +29,7 @@ export class TypingTest {
         this.type = typingTest.type;
         this.user = typingTest.user;
         this.gameId = typingTest.gameId;
+        this.leaderboardId = typingTest.leaderboardId;
     }
 
     getId(): number | undefined {
@@ -57,6 +60,10 @@ export class TypingTest {
         return this.gameId;
     }
 
+    getLeaderboardId(): number | undefined {
+        return this.leaderboardId;
+    }
+
     validate(typingTest: {
         wpm: number;
         accuracy: number;
@@ -64,6 +71,7 @@ export class TypingTest {
         type: string;
         user: User;
         gameId?: number;
+        leaderboardId?: number;
     }) {
         if (typingTest.wpm === undefined || typingTest.wpm === null) {
             throw new Error('WPM is required');
@@ -89,6 +97,7 @@ export class TypingTest {
         if (typingTest.type !== 'singleplayer' && typingTest.type !== 'multiplayer') {
             throw new Error('Type must be either "singleplayer" or "multiplayer"');
         }
+
     }
 
     equals(typingTest: TypingTest): boolean {
@@ -99,7 +108,8 @@ export class TypingTest {
             this.time === typingTest.getTime() &&
             this.type === typingTest.getType() &&
             this.user.id === typingTest.getUser().id &&
-            this.gameId === typingTest.getGameId()
+            this.gameId === typingTest.getGameId() &&
+            this.leaderboardId === typingTest.getLeaderboardId()
         );
     }
 
@@ -111,6 +121,7 @@ export class TypingTest {
         type,
         user,
         gameId,
+        leaderboardId,
     }: TypingTestPrisma & { user: UserPrisma }): TypingTest {
         return new TypingTest({
             id,
@@ -120,6 +131,7 @@ export class TypingTest {
             type,
             user: User.from(user),
             gameId: gameId ?? undefined,
+            leaderboardId: leaderboardId ?? undefined,
         });
     }
 
@@ -131,6 +143,7 @@ export class TypingTest {
             type: this.type,
             user: this.user,
             gameId: this.gameId,
+            leaderboardId: this.leaderboardId,
         };
     }
 }
