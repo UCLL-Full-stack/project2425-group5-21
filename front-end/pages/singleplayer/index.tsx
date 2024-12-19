@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import Header from "@/components/header";
+import { createTypingTest } from "@/services/TypingTestService";
 
 const Singleplayer: React.FC = () => {
   const allWords = [
@@ -173,7 +174,7 @@ const Singleplayer: React.FC = () => {
     };
   }, [typedLetters, isGameStarted, isGameFinished]);
 
-  const finishGame = () => {
+  const finishGame = async () => {
     setIsGameStarted(false);
     setIsGameFinished(true);
 
@@ -200,6 +201,19 @@ const Singleplayer: React.FC = () => {
       accuracy,
       wpm,
     });
+
+  
+    try {
+      await createTypingTest({
+        wpm: wpm,
+        accuracy: accuracy,
+        time: selectedTime || 15,
+        type: 'singleplayer',
+      });
+    } catch (error) {
+      console.error('Failed to save typing test:', error);
+    }
+
   };
 
   const resetGame = () => {
@@ -334,3 +348,5 @@ const Singleplayer: React.FC = () => {
 };
 
 export default Singleplayer;
+
+
