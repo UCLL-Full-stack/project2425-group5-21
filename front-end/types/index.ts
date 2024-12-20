@@ -12,7 +12,7 @@ export type User = {
 export type Leaderboard = {
   id?: number;
   maxScores?: number;
-  type?: string;
+  type?: number;
   scores?: TypingTest[];
 };
 
