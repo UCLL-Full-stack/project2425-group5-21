@@ -3,6 +3,8 @@ import Header from "@/components/header";
 import LoginRegisterToggle from "@/components/login/loginRegisterToggle";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import PredefinedUsers from "@/components/users/predefinedUsers";
+import React from "react";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
@@ -16,8 +18,9 @@ const Login: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header></Header>
-      <main className="h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-center z-0" />
+        <main className="min-h-screen bg-[#120e17] flex flex-col items-center text-white relative pt-10">
+          <PredefinedUsers />
+          <div className="absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-center z-0" />
         <section className="z-10 w-full max-w-5xl flex flex-col items-center justify-center space-y-8 px-6 py-10">
           <LoginRegisterToggle />
         </section>
